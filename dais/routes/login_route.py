@@ -35,7 +35,7 @@ def authenticate_user(email, password):
         'exp': expiration_time,
         'user_id': user.id,
         'is_superuser': user.is_superuser,
-        'is_admin': user.is_admin,
+        'is_staff': user.is_staff,
         'license_id': user.license_id,
     }, settings.SECRET_KEY, algorithm='HS256')
 
@@ -43,6 +43,6 @@ def authenticate_user(email, password):
         "token": token,
         "user_id": user.id,
         "is_superuser": user.is_superuser,
-        "is_admin": user.is_admin,
+        "is_staff": user.is_staff,
         "license_id": user.license_id,
     }

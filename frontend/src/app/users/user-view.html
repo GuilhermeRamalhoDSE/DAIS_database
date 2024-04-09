@@ -1,0 +1,59 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="UserController">
+    <div class="box">
+        <div class="box-header">
+            <h2>User Details</h2>
+            <small>Details of registered users</small>
+        </div>
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <div class="col-sm-6">
+                    Search: <input id="filter" type="text" class="form-control input-sm w-auto inline m-r"
+                        ng-model="searchText" />
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-fw primary" ng-click="goToCreateUser()">
+                        <i class="fa fa-fw fa-plus text-muted"></i>
+                        <span>New User</span>
+                    </button>
+                    <a>
+                        <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
+                <thead>
+                    <tr>
+                        <th  ng-if="isSuperuser()">User ID</th>
+                        <th>Company</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Admin</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in users | filter:searchText">
+                        <td  ng-if="isSuperuser()">{{ user.id }}</td>
+                        <td>{{ user.license_name}}</td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <i class="fa fa-check text-success" ng-show="user.is_staff"></i>
+                            <i class="fa fa-times text-danger" ng-show="!user.is_staff"></i>
+                        </td>
+                        <td>
+                            <button class="btn btn-default btn-xs" ng-click="editUser(user.id)">Edit</button>
+                            <button class="btn btn-danger btn-xs" ng-click="deleteUser(user.id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

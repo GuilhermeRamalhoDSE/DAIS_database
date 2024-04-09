@@ -9,5 +9,5 @@ class LoginResponseSchema(Schema):
     token: str
     user_id: int
     is_superuser: bool
-    is_admin: bool
+    is_staff: bool
     license_id: Optional[int] = None 

@@ -1,0 +1,145 @@
+<body>
+    <div class="app" id="app">
+        <div id="aside" class="app-aside modal nav-dropdown">
+            <div class="left navside dark dk" data-layout="column">
+                <div class="navbar no-radius">
+                    <a class="navbar-brand">
+                        <img src="../assets/images/GRUPPODSE_DIGISOFT.png">
+                    </a>
+                </div>
+                <div class="hide-scroll" data-flex>
+                    <nav class="scroll nav-light">
+                        <ul class="nav" ui-nav ng-controller="HomeController">
+                            <li class="nav-header hidden-folded">
+                                <small class="text-muted">Main</small>
+                            </li>
+                            <li>
+                                <a ui-sref="base.home">
+                                    <span class="nav-icon">
+                                        <i class="material-icons md-24"></i>
+                                    </span>
+                                    <span class="nav-text">Home</span>
+                                </a>
+                            </li>
+                            <li ng-if="isSuperuser()">
+                                <a ui-sref="base.licenses-view">
+                                    <span class="nav-icon">
+                                        <i class="fa fa-database"></i>
+                                    </span>
+                                    <span class="nav-text">Licenses</span>
+                                </a>
+                            </li>
+                            <li ng-if="isSuperuser() || isStaff()">
+                                <a ui-sref="base.user-view">
+                                    <span class="nav-icon">
+                                        <i class="material-icons md-24"></i>
+                                    </span>
+                                    <span class="nav-text">Users</span>
+                                </a>
+                            </li>
+                        </ul>
+                        </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div ng-controller="HomeController">
+                    <button type="submit" class="btn primary btn-block p-x-md" ng-click="logout()">Logout</button>
+                </div>
+                <div class="b-t" ng-controller="UserController">
+                    <div class="nav-fold">
+                        <span class="clear hidden-folded p-x">
+                            <span class="block _500">{{userName}}</span>
+                            <small class="block text-muted"><i
+                                    class="fa fa-circle text-success m-r-sm"></i>online</small>
+                        </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div id="content" class="app-content box-shadow-z0" role="main" ng-controller="InboxController">
+            <div class="app-header white box-shadow">
+                <div class="navbar navbar-toggleable-sm flex-row align-items-center">
+                    <a data-toggle="modal" data-target="#aside" class="hidden-lg-up mr-3">
+                        <i class="material-icons">&#xe5d2;</i>
+                    </a>
+                    <div class="mb-0 h5 no-wrap" ng-bind="$state.current.data.title" id="pageTitle"></div>
+                    <div class="collapse navbar-collapse" id="collapse">
+                    </div>
+                    <ul class="nav navbar-nav ml-auto flex-row">
+                        <li class="nav-item dropdown pos-stc-xs">
+                            <a class="nav-link mr-2" href data-toggle="dropdown" ng-if="!isSuperuser()">
+                                <i class="material-icons">&#xe7f5;</i>
+                                <span class="label label-sm up warn">{{ totalUnreadCount }}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-scale pull-right">
+                                <div class="panel bg-white">
+                                    <div class="panel-heading b-light bg-light">
+                                        <button class="btn info dropdown">You have <span>{{ totalUnreadCount }}</span>
+                                            notifications</button>
+                                    </div>
+                                    <div class="list-group">
+                                        <a class="list-group-item" ng-repeat="project in projects"
+                                            ng-if="project.unreadMessagesCount > 0"
+                                            ui-sref="base.chat({projectId: project.id})"
+                                            ng-click="markMessagesAsRead(project.id)">
+                                            <span class="clear block m-b-none">
+                                                {{project.name}} ({{project.unreadMessagesCount}})
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div> -->
+            <div ui-view class="app-body" id="view">
+                <div style="min-height: 200px"></div>
+                <div id="root"></div>
+            </div>
+        </div>
+        <div id="switcher">
+            <div class="switcher box-color dark-white text-color" id="sw-theme">
+                <a href ui-toggle-class="active" target="#sw-theme" class="box-color dark-white text-color sw-btn">
+                    <i class="fa fa-gear"></i>
+                </a>
+                <div class="box-header">
+                    <h2>Theme Switcher</h2>
+                </div>
+                <div class="box-divider"></div>
+                <div class="box-body">
+                    <p class="hidden-md-down">
+                        <label class="md-check m-y-xs" data-target="folded">
+                            <input type="checkbox">
+                            <i class="green"></i>
+                            <span class="hidden-folded">Folded Aside</span>
+                        </label>
+                        <label class="md-check m-y-xs" data-target="boxed">
+                            <input type="checkbox">
+                            <i class="green"></i>
+                            <span class="hidden-folded">Boxed Layout</span>
+                        </label>
+                    </p>
+                    <p>Themes:</p>
+                    <div data-target="bg" class="row no-gutter text-u-c text-center _600 clearfix">
+                        <label class="p-a col-sm-6 light pointer m-0">
+                            <input type="radio" name="theme" value="" hidden>
+                            Light
+                        </label>
+                        <label class="p-a col-sm-6 grey pointer m-0">
+                            <input type="radio" name="theme" value="grey" hidden>
+                            Grey
+                        </label>
+                        <label class="p-a col-sm-6 dark pointer m-0">
+                            <input type="radio" name="theme" value="dark" hidden>
+                            Dark
+                        </label>
+                        <label class="p-a col-sm-6 black pointer m-0">
+                            <input type="radio" name="theme" value="black" hidden>
+                            Black
+                        </label>
+                    </div>
+                </div>
+            </div>
+</body>

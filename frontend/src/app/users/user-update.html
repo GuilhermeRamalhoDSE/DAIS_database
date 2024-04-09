@@ -1,0 +1,52 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="UserUpdateController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Update User</h2>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="updateUser()">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" class="form-control" ng-model="formUser.first_name"
+                                placeholder="First Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" class="form-control" ng-model="formUser.last_name"
+                                placeholder="Last Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" ng-model="formUser.email" placeholder="Email"
+                                required>
+                        </div>
+                        <!-- <div class="input-group">
+                            <label>Password</label>
+                            <input type="{{showPassword ? 'text' : 'password'}}" class="form-control" ng-model="formUser.password" placeholder="Password" required>
+                            <span class="input-group-btn">
+                                <button class="btn white" type="button" ng-click="togglePasswordVisibility()">
+                                <i ng-class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                                </button>
+                            </span>
+                        </div>                         -->
+                        <div class="form-group">
+                            <label>Admin</label>
+                            <input type="checkbox" ng-model="formUser.is_staff">
+                        </div>
+                        <div class="form-group"  ng-if="isSuperuser">
+                            <label>License ID</label>
+                            <input type="number" class="form-control" ng-model="formUser.license_id" ng-readonly="!isSuperuser" placeholder="License ID" required>
+                        </div>                        
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
