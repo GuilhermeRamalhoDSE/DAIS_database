@@ -50,6 +50,7 @@
               <th data-hide="phone">
                 End Date
               </th>
+              <th>Avatar</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -66,6 +67,16 @@
               </td>
               <td>{{ license.start_date | date:'dd/MM/yyyy' }}</td>
               <td>{{ license.end_date | date:'dd/MM/yyyy' }}</td>
+              <td>
+                <div ng-repeat="avatar in avatars">
+                    <label>
+                        <input type="checkbox" 
+                               ng-checked="isAvatarAssignedToLicense(license, avatar.id)"
+                               ng-click="toggleAvatarAssignment(license, avatar.id)">
+                        {{ avatar.name }}
+                    </label>
+                </div>
+            </td>
               <td>
                 <button class="btn btn-default btn-xs" ng-click="editLicense(license.id)">Edit</button>
                 <button class="btn btn-danger btn-xs" ng-click="deleteLicense(license.id)">Delete</button>

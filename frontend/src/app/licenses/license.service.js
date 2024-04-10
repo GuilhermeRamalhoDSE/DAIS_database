@@ -25,5 +25,13 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.delete(`${baseUrl}${id}`);
     };
 
+    service.addAvatarToLicense = function(licenseId, avatarId) {
+        return $http.post(`${baseUrl}${licenseId}/add-avatar/`, { avatar_id: avatarId });
+    };
+
+    service.removeAvatarFromLicense = function(licenseId, avatarId) {
+        return $http.post(`${baseUrl}${licenseId}/remove-avatar/`, { avatar_id: avatarId });
+    };
+
     return service;
 }]);

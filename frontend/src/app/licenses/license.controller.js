@@ -1,6 +1,6 @@
-angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', '$state', function($scope, LicenseService, $state) {
+angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', '$state', function($scope, LicenseService, AvatarService, $state) {
     $scope.licenses = [];
-    $scope.isEditing = false;
+    $scope.avatars = [];
  
     $scope.newLicense = {
         name: "",
@@ -10,7 +10,8 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         license_code: "",
         active: true,
         start_date: "",
-        end_date: ""
+        end_date: "",
+        avatars_ids: []
     };
 
     $scope.getAllLicenses = function() {
@@ -21,8 +22,16 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         });
     };
 
+    $scope.loadAvatars = function() {
+        AvatarService.getAvatars().then(function(response) {
+            $scope.avatars = response.data;
+        }).catch(function(error) {
+            alert('Error fetching avatars:', error);
+        });
+    };
+
     $scope.goToCreateLicense = function() {
-            $state.go('base.licenses-new');
+        $state.go('base.licenses-new');
     };
 
     $scope.createLicense = function() {
@@ -46,13 +55,15 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
                 license_code: "",
                 active: true,
                 start_date: "",
-                end_date: ""
+                end_date: "",
+                avatars_ids: []
             };
             $state.go('base.licenses-view'); 
         }).catch(function(error) {
             alert('Error creating license:', error);
         });
     };
+
     $scope.cancelCreate = function() {
         $state.go('base.licenses-view');
     };
@@ -60,6 +71,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
     $scope.editLicense = function(licenseId) {
         $state.go('base.licenses-update', { licenseId: licenseId }); 
     };
+
     $scope.goBack = function() {
         $state.go('base.home');
     }; 
@@ -75,5 +87,32 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         }
     };
 
+    $scope.toggleAvatarAssignment = function(license, avatarId) {
+        const isAssigned = $scope.isAvatarAssignedToLicense(license, avatarId);
+        if (isAssigned) {
+            LicenseService.removeAvatarFromLicense(license.id, avatarId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error removing avatar from license:', error);
+                });
+        } else {
+            LicenseService.addAvatarToLicense(license.id, avatarId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error adding avatar to license:', error);
+                });
+        }
+    };
+    
+    $scope.isAvatarAssignedToLicense = function(licenseId, avatarId) {
+        const license = $scope.licenses.find(license => license.id === licenseId);
+        return license && license.avatars_ids.includes(avatarId);
+    };
+    
     $scope.getAllLicenses(); 
+    $scope.loadAvatars();
 }]);
