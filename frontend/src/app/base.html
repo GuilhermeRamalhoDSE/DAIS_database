@@ -46,6 +46,14 @@
                                 <span class="nav-text">Clients</span>
                             </a>
                         </li>
+                        <li ng-if="isOnlyStaff()">
+                            <a ui-sref="base.avatar-view">
+                                <span class="nav-icon">
+                                    <i class="material-icons md-24"></i>
+                                </span>
+                                <span class="nav-text">Avatar</span>
+                            </a>
+                        </li>
                         </ul>
                         </li>
                         </ul>

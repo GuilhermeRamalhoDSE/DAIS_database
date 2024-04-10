@@ -133,4 +133,34 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
+    $stateProvider
+    .state('base.avatar-new', {
+        url: '/avatar/new',
+        templateUrl: 'app/avatar/avatar-new.html',
+        controller: 'AvatarController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.avatar-view', {
+        url: '/avatar/list',
+        templateUrl: 'app/avatar/avatar-view.html',
+        controller: 'AvatarController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.avatar-update', {
+        url: '/avatar/update/:avatarId/:avatarName',
+        templateUrl: 'app/avatar/avatar-update.html',
+        controller: 'AvatarUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
 }]);
