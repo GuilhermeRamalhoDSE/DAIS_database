@@ -2,6 +2,7 @@ angular.module('frontend').controller('UserUpdateController', ['$scope', '$state
     $scope.formUser = {};
     $scope.isEditing = true;
     $scope.isSuperuser = AuthService.isSuperuser();
+    $scope.licenses = [];
 
     $scope.loadUser = function() {
         const userId = $state.params.userId;
@@ -13,6 +14,19 @@ angular.module('frontend').controller('UserUpdateController', ['$scope', '$state
             }
         }).catch(function(error) {
             console.error('Error fetching user:', error);
+        });
+    };
+
+    $scope.getAllLicenses = function() {
+        UserService.getAllLicenses().then(function(response) {
+            $scope.licenses = response.data.map(function(license) {
+                return {
+                    id: license.id,
+                    name: license.name
+                };
+            });
+        }).catch(function(error) {
+            console.error('Error fetching licenses:', error);
         });
     };
     
@@ -47,4 +61,5 @@ angular.module('frontend').controller('UserUpdateController', ['$scope', '$state
     };
 
     $scope.loadUser(); 
+    $scope.getAllLicenses();
 }]);
