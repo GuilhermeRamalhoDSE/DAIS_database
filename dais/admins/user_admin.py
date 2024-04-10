@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 
 class UserAdmin(BaseUserAdmin):
     model = User
-    list_display = ('email', 'first_name', 'last_name', 'license')
+    list_display = ('id','email', 'first_name', 'last_name', 'license')
     list_filter = ('is_staff', 'is_active', 'license')  
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
