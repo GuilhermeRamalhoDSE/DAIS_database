@@ -22,10 +22,6 @@
                             <label>Voice</label>
                             <input type="text" class="form-control" ng-model="formAvatar.voice" placeholder="Avatar Voice">
                         </div>
-                        <div class="form-group" ng-if="isSuperuser">
-                            <label>License ID</label>
-                            <input type="text" class="form-control" ng-model="formAvatar.license_id" ng-disabled="!isSuperuser">
-                        </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
                     </form>

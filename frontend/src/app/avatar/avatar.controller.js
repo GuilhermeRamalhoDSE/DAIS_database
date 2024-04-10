@@ -5,15 +5,7 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'A
     $scope.newAvatar = {
         name: "",
         file: null,
-        voice: "", 
-        license_id: AuthService.getLicenseId()
-    };
-
-    $scope.initForm = function() {
-        if (!$scope.isSuperuser) {
-            var userLicenseId = AuthService.getLicenseId();
-            $scope.newAvatar.license_id = userLicenseId;
-        }
+        voice: "" 
     };
 
     $scope.loadAvatars = function() {
@@ -32,32 +24,30 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'A
         var avatarData = new FormData();
         var avatarIn = JSON.stringify({
             name: $scope.newAvatar.name,
-            license_id: $scope.newAvatar.license_id,
             voice: $scope.newAvatar.voice,
             file: $scope.newAvatar.file ? $scope.newAvatar.file.name : null
         });
-
+    
         avatarData.append('avatar_in', avatarIn);
-
+    
         if ($scope.newAvatar.file) {
             avatarData.append('file', $scope.newAvatar.file);
         }
-
+    
         AvatarService.createAvatar(avatarData).then(function(response) {
             alert('Avatar created successfully!');
             $scope.loadAvatars();
-            $scope.resetForm();
             $state.go('base.avatar-view');
         }).catch(function(error) {
             alert('Error creating avatar:', error);
         });
-    };
+    };    
 
     $scope.resetForm = function() {
-        $scope.newAvatar = { name: "", file: null, voice: "", license_id: AuthService.getLicenseId() }; 
+        $scope.newAvatar = { name: "", file: null, voice: "" }; 
         $scope.isEditing = false;
         $scope.initForm();
-    };
+    };    
 
     $scope.cancelCreate = function() {
         $state.go('base.avatar-view');
@@ -102,5 +92,4 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'A
     };      
 
     $scope.loadAvatars();
-    $scope.initForm();
 }]);
