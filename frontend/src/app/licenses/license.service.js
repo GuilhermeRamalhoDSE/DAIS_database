@@ -11,7 +11,7 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.get(baseUrl, {
             params: { license_id: licenseId } 
         });
-    };
+    };  
     
     service.create = function(licenseData) {
         return $http.post(baseUrl, licenseData);

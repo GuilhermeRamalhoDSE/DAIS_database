@@ -22,7 +22,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
     };
 
     $scope.goToCreateLicense = function() {
-            $state.go('base.licenses');
+            $state.go('base.licenses-new');
     };
 
     $scope.createLicense = function() {
@@ -48,13 +48,13 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
                 start_date: "",
                 end_date: ""
             };
-            $state.go('base.list_licenses'); 
+            $state.go('base.licenses-view'); 
         }).catch(function(error) {
             alert('Error creating license:', error);
         });
     };
     $scope.cancelCreate = function() {
-        $state.go('base.list_licenses');
+        $state.go('base.licenses-view');
     };
 
     $scope.editLicense = function(licenseId) {

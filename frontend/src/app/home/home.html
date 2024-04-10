@@ -1,6 +1,6 @@
 <div ng-controller="HomeController">
 
-    <div ng-include="'app/licenses/licenses-view.html' " ng-if="isSuperuser()"></div>
+    <div ng-include="'app/licenses/license-view.html' " ng-if="isSuperuser()"></div>
     <div ng-include="'app/users/user-view.html'" ng-if="isSuperuser() || isStaff()"></div>
- 
+
 </div>

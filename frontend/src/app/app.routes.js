@@ -66,7 +66,7 @@ angular.module('frontend')
     $stateProvider
     .state('base.licenses-view', {
         url: '/licenses',
-        templateUrl: 'app/licenses/licenses-view.html',
+        templateUrl: 'app/licenses/license-view.html',
         controller: 'LicenseController',
         data: {
             requireLogin: true, 

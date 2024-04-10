@@ -1,7 +1,7 @@
 angular.module('frontend').factory('UserService', ['$http', function($http) {
     var service = {};
 
-    var baseUrl = 'http://127.0.0.1:8000/1:8000/api/users/';
+    var baseUrl = 'http://127.0.0.1:8000/api/users/';
 
     service.getAllUsers = function() {
         return $http.get(baseUrl);
@@ -23,7 +23,7 @@ angular.module('frontend').factory('UserService', ['$http', function($http) {
         return $http.get(baseUrl, { params: { user_id: userId } });
     };
     service.getAllLicenses = function() {
-        return $http.get('http://127.0.0.1:8000/1:8000/api/licenses/');
+        return $http.get('http://127.0.0.1:8000/api/licenses/');
     };   
     
     return service;

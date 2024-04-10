@@ -7,18 +7,25 @@ angular.module('frontend').controller('LicenseUpdateController', ['$scope', 'Lic
         
         LicenseService.getById(licenseId).then(function(response) {
             if (response.data && response.data.length > 0) {
-                $scope.formLicense = response.data[0];
+                var licenseData = response.data[0];
+                
+                if (licenseData.start_date) {
+                    licenseData.start_date = new Date(licenseData.start_date);
+                }
+                if (licenseData.end_date) {
+                    licenseData.end_date = new Date(licenseData.end_date);
+                }
+                
+                $scope.formLicense = licenseData;
             } else {
                 console.error('License not found');
                 alert('License not found.');
-                $state.go('base.list_licenses'); 
+                $state.go('base.licenses-view'); 
             }
         }).catch(function(error) {
             console.error('Error fetching license data:', error);
             alert('Error fetching license data.');
         });
-        
-        
     };
 
     $scope.updateLicense = function() {
@@ -34,14 +41,14 @@ angular.module('frontend').controller('LicenseUpdateController', ['$scope', 'Lic
     
         LicenseService.update(licenseDataToUpdate.id, licenseDataToUpdate).then(function(response) {
             alert('License updated successfully');
-            $state.go('base.list_licenses'); 
+            $state.go('base.licenses-view'); 
         }).catch(function(error) {
             console.error('Error updating license:', error);
             alert('Error updating license.');
         });
     };
     $scope.cancelUpdate = function() {
-        $state.go('base.list_licenses');
+        $state.go('base.licenses-view');
     };
     
     
