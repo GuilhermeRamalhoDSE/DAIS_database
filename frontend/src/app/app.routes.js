@@ -223,4 +223,34 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
+    $stateProvider
+    .state('base.totem-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/totem/new',
+        templateUrl: 'app/totem/totem-new.html',
+        controller: 'TotemController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.totem-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/totems',
+        templateUrl: 'app/totem/totem-view.html',
+        controller: 'TotemController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.totem-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/totem/:totemId',
+        templateUrl: 'app/totem/client-update.html',
+        controller: 'TotemUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
 }]);

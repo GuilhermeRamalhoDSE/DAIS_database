@@ -25,6 +25,8 @@ class TotemOut(Schema):
     license_id: int
     client_id: int
     group_id: int
+    client_name: str  
+    group_name: str  
     installation_date: date
     active: bool
     screens: int
