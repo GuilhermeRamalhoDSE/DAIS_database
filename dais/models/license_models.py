@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from dais.models.avatar_models import Avatar
+from dais.models.voice_models import Voice
 
 class License(models.Model):
     name = models.CharField(max_length=255, verbose_name=_("Nome"))
@@ -12,6 +13,7 @@ class License(models.Model):
     start_date = models.DateField(verbose_name=_("Data Inizio"))
     end_date = models.DateField(verbose_name=_("Data Scadenza"))
     avatars = models.ManyToManyField(Avatar, verbose_name=_("Avatares"), blank=True)
+    voices = models.ManyToManyField(Voice, verbose_name=_("Voci"), blank=True)
 
     class Meta:
         verbose_name = _("Gestione Licenza")

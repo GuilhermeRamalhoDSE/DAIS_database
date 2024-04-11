@@ -3,7 +3,8 @@ from typing import List
 from django.shortcuts import get_object_or_404
 from dais.models.license_models import License
 from dais.models.avatar_models import Avatar
-from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarSchema, AvatarIdSchema
+from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarIdSchema, VoiceIdSchema
+from dais.models.voice_models import Voice  
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 
 
@@ -32,6 +33,25 @@ def remove_avatar_from_license(request, license_id: int, payload: AvatarIdSchema
     
     if license.avatars.filter(id=avatar.id).exists():
         license.avatars.remove(avatar)
+    
+    return LicenseSchema.from_orm(license)
+
+@license_router.post("/{license_id}/add-voice/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def add_voice_to_license(request, license_id: int, payload: VoiceIdSchema):
+    license = get_object_or_404(License, id=license_id)
+    voice = get_object_or_404(Voice, id=payload.voice_id)
+    
+    license.voices.add(voice)
+    
+    return LicenseSchema.from_orm(license)
+
+@license_router.post("/{license_id}/remove-voice/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def remove_voice_from_license(request, license_id: int, payload: VoiceIdSchema):
+    license = get_object_or_404(License, id=license_id)
+    voice = get_object_or_404(Voice, id=payload.voice_id)
+    
+    if license.voices.filter(id=voice.id).exists():
+        license.voices.remove(voice)
     
     return LicenseSchema.from_orm(license)
 

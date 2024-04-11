@@ -1,4 +1,4 @@
-angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', '$state', function($scope, LicenseService, AvatarService, $state) {
+angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', '$state', function($scope, LicenseService, AvatarService, VoiceService, $state) {
     $scope.licenses = [];
     $scope.avatars = [];
  
@@ -27,6 +27,14 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
             $scope.avatars = response.data;
         }).catch(function(error) {
             alert('Error fetching avatars:', error);
+        });
+    };
+
+    $scope.loadVoices = function() {
+        VoiceService.getAll().then(function(response) {
+            $scope.voices = response.data;
+        }).catch(function(error) {
+            alert('Error fetching voices:', error);
         });
     };
 
@@ -112,6 +120,32 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         return license.avatars.some(avatar => avatar.id === avatarId);
     };    
     
+    $scope.toggleVoiceAssignment = function(license, voiceId) {
+        const isAssigned = $scope.isVoiceAssignedToLicense(license, voiceId);
+        if (isAssigned) {
+            LicenseService.removeVoiceFromLicense(license.id, voiceId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error removing voice from license:', error);
+                });
+        } else {
+            LicenseService.addVoiceToLicense(license.id, voiceId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error adding voice to license:', error);
+                });
+        }
+    };
+    
+    $scope.isVoiceAssignedToLicense = function(license, voiceId) {
+        return license.voices && license.voices.some(voice => voice.id === voiceId);
+    };    
+
     $scope.getAllLicenses(); 
     $scope.loadAvatars();
+    $scope.loadVoices();
 }]);

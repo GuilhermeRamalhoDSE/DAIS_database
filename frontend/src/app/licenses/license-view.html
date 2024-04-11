@@ -51,6 +51,7 @@
                 End Date
               </th>
               <th>Avatar</th>
+              <th>Voices</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -76,7 +77,17 @@
                         {{ avatar.name }}
                     </label>
                 </div>
-            </td>
+              </td>
+              <td>
+                <div ng-repeat="voice in voices">
+                    <label>
+                        <input type="checkbox" 
+                              ng-checked="isVoiceAssignedToLicense(license, voice.id)"
+                              ng-click="toggleVoiceAssignment(license, voice.id)">
+                        {{ voice.name }}
+                    </label>
+                </div>
+              </td>          
               <td>
                 <button class="btn btn-default btn-xs" ng-click="editLicense(license.id)">Edit</button>
                 <button class="btn btn-danger btn-xs" ng-click="deleteLicense(license.id)">Delete</button>

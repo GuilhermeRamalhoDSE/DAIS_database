@@ -6,10 +6,10 @@ from django.utils.html import format_html
 class LicenseAdmin(admin.ModelAdmin):
     list_display = (
         'name', 'email', 'address', 'tel', 'license_code', 'active',
-        'start_date', 'end_date', 'list_avatars'
+        'start_date', 'end_date', 'list_avatars', 'list_voices' 
     )
     list_filter = ('active', 'start_date', 'end_date')
-    search_fields = ('name', 'email', 'license_code', 'avatars__name')
+    search_fields = ('name', 'email', 'license_code', 'avatars__name', 'voices__name') 
     ordering = ('-start_date',)
 
     def has_view_permission(self, request, obj=None):
@@ -25,9 +25,10 @@ class LicenseAdmin(admin.ModelAdmin):
         return request.user.is_superuser
 
     def list_avatars(self, obj):
-        """
-        This method creates a comma-separated list of avatars linked to the license.
-        If needed, it can be adjusted to link directly to the avatar change pages.
-        """
         return ", ".join([avatar.name for avatar in obj.avatars.all()])
-    list_avatars.short_description = "Avatares"
+    list_avatars.short_description = "Avatar"
+
+    def list_voices(self, obj):
+        return ", ".join([voice.name for voice in obj.voices.all()])
+    list_voices.short_description = "Voices"
+

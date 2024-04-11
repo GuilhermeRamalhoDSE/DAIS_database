@@ -33,5 +33,13 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.post(`${baseUrl}${licenseId}/remove-avatar/`, { avatar_id: avatarId });
     };
 
+    service.addVoiceToLicense = function(licenseId, voiceId) {
+        return $http.post(`${baseUrl}${licenseId}/add-voice/`, { voice_id: voiceId });
+    };
+
+    service.removeVoiceFromLicense = function(licenseId, voiceId) {
+        return $http.post(`${baseUrl}${licenseId}/remove-voice/`, { voice_id: voiceId });
+    };
+
     return service;
 }]);

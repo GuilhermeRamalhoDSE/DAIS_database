@@ -3,9 +3,13 @@ from typing import Optional
 from pydantic import BaseModel, validator
 from typing import List, Optional
 from .avatar_schema import AvatarSchema
+from .voice_schema import VoiceOut
 
 class AvatarIdSchema(BaseModel):
     avatar_id: int
+
+class VoiceIdSchema(BaseModel):
+    voice_id: int
 
 class LicenseBaseSchema(BaseModel):
     name: str
@@ -17,6 +21,7 @@ class LicenseBaseSchema(BaseModel):
     start_date: date
     end_date: date
     avatars_id: List[int] = [] 
+    voices_id: List[int] = []
 
 class LicenseCreateSchema(LicenseBaseSchema):
     pass
@@ -31,16 +36,24 @@ class LicenseUpdateSchema(BaseModel):
     start_date: Optional[date] = None
     end_date: Optional[date] = None
     avatar_ids: Optional[List[int]] = None
+    voice_ids: Optional[List[int]] = None
 
 class LicenseSchema(LicenseBaseSchema):
     id: int
     avatars: List[AvatarSchema]
+    voices: List[VoiceOut]
 
     @validator('avatars', pre=True, each_item=False)
     def prepare_avatars(cls, value):
         if value is None:
             return []
         return [AvatarSchema(id=avatar.id, name=avatar.name, file_path=avatar.file, last_update_date=avatar.last_update_date) for avatar in value.all()]
+    
+    @validator('voices', pre=True, each_item=False)
+    def prepare_voices(cls, value):
+        if value is None:
+            return []
+        return [VoiceOut(id=voice.id, name=voice.name) for voice in value.all()]
 
     class Config:
         from_attributes = True
