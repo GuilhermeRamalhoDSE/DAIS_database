@@ -11,7 +11,7 @@ def request_password_reset(request, email: str):
     user = User.objects.filter(email=email).first()
     if user:
         token = PasswordResetToken.objects.create(user=user)
-        reset_link = f"https://prototypingdse.it/#/reset-password/{token.token}"
+        reset_link = f"http://127.0.0.1:8080/reset-password/{token.token}"
         send_mail(
             'Password Reset',
             f'Use the link to reset your password: {reset_link}',
