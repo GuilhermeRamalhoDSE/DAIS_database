@@ -5,7 +5,6 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'A
     $scope.newAvatar = {
         name: "",
         file: null,
-        voice: "" 
     };
 
     $scope.loadAvatars = function() {

@@ -3,8 +3,8 @@ from dais.models.avatar_models import Avatar
 
 @admin.register(Avatar)
 class AvatarAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'voice', 'last_update_date', 'file')
-    search_fields = ('name', 'voice')
+    list_display = ('id', 'name', 'last_update_date', 'file')
+    search_fields = ('name',)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

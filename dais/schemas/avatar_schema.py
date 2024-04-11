@@ -5,7 +5,6 @@ from django.db.models.fields.files import FieldFile
 
 class AvatarBaseSchema(BaseModel):
     name: str
-    voice: str
     file_path: Optional[str] = Field(None, alias='file')
 
 class AvatarCreateSchema(AvatarBaseSchema):
@@ -13,13 +12,11 @@ class AvatarCreateSchema(AvatarBaseSchema):
 
 class AvatarUpdateSchema(BaseModel):
     name: Optional[str] = None
-    voice: Optional[str] = None
     file_path: Optional[str] = Field(None, alias='file')
 
 class AvatarSchema(BaseModel):
     id: int
     name: str
-    voice: str
     file_path: Optional[str] = Field(None, alias='file')
     last_update_date: datetime
 

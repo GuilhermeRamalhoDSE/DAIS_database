@@ -11,7 +11,9 @@ license_router = Router(tags=['Licenses'])
 
 @license_router.post("/", response={201: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_license(request, payload: LicenseCreateSchema):
-    license_obj = License.objects.create(**payload.dict())
+    license_data = payload.dict(exclude={'avatars_id'})
+    license_obj = License.objects.create(**license_data)
+    
     return LicenseSchema.from_orm(license_obj)
 
 @license_router.post("/{license_id}/add-avatar/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])

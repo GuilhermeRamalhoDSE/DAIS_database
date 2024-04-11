@@ -29,7 +29,6 @@ angular.module('frontend').controller('AvatarUpdateController', ['$scope', '$sta
         
         const payload = {
             name: $scope.formAvatar.name,
-            voice: $scope.formAvatar.voice,
         };
         
         avatarDataToUpdate.append('payload', JSON.stringify(payload));

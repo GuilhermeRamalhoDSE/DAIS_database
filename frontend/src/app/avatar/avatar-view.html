@@ -36,9 +36,6 @@
                 File
               </th>
               <th data-hide="phone">
-                Voice
-              </th>
-              <th data-hide="phone">
                 Last Update
               </th>
               <th>Actions</th>
@@ -51,7 +48,6 @@
               <td>
                 <button class="btn btn-primary btn-xs" ng-click="downloadAvatarFile(avatar.id)">Download File</button>
               </td>
-              <td>{{ avatar.voice }}</td>
               <td>{{ avatar.last_update_date | date:'dd/MM/yyyy HH:mm' }}</td>
               <td>
                 <button class="btn btn-default btn-xs" ng-click="editAvatar(avatar.id)">Edit</button>

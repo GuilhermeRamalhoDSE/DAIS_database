@@ -21,7 +21,6 @@ def create_avatar(request: HttpRequest, avatar_in: AvatarCreateSchema, file: Upl
     avatar = Avatar.objects.create(
         name=avatar_in.name, 
         file=file,
-        voice=avatar_in.voice  
     )
     
     return 201, avatar

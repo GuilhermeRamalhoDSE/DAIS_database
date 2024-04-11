@@ -40,7 +40,7 @@ class LicenseSchema(LicenseBaseSchema):
     def prepare_avatars(cls, value):
         if value is None:
             return []
-        return [AvatarSchema(id=avatar.id, name=avatar.name, voice=avatar.voice, file_path=avatar.file, last_update_date=avatar.last_update_date) for avatar in value.all()]
+        return [AvatarSchema(id=avatar.id, name=avatar.name, file_path=avatar.file, last_update_date=avatar.last_update_date) for avatar in value.all()]
 
     class Config:
         from_attributes = True
