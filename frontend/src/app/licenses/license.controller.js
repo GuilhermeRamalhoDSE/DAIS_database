@@ -108,10 +108,9 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         }
     };
     
-    $scope.isAvatarAssignedToLicense = function(licenseId, avatarId) {
-        const license = $scope.licenses.find(license => license.id === licenseId);
-        return license && license.avatars_ids.includes(avatarId);
-    };
+    $scope.isAvatarAssignedToLicense = function(license, avatarId) {
+        return license.avatars.some(avatar => avatar.id === avatarId);
+    };    
     
     $scope.getAllLicenses(); 
     $scope.loadAvatars();
