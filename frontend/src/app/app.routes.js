@@ -193,4 +193,34 @@ angular.module('frontend')
             requiredPermissions: ['superuser'] 
         }
     })
+    $stateProvider
+    .state('base.group-new', {
+        url: '/group/new',
+        templateUrl: 'app/group/group-new.html',
+        controller: 'GroupController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.group-view', {
+        url: '/groups',
+        templateUrl: 'app/group/group-view.html',
+        controller: 'GroupController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.group-update', {
+        url: '/group/update/:groupId/:groupName',
+        templateUrl: 'app/group/group-update.html',
+        controller: 'GroupUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
 }]);
