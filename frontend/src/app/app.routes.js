@@ -163,4 +163,34 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
+    $stateProvider
+    .state('base.voice-new', {
+        url: '/voice/new',
+        templateUrl: 'app/voice/voice-new.html',
+        controller: 'VoiceController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.voice-view', {
+        url: '/voices',
+        templateUrl: 'app/voice/voice-view.html',
+        controller: 'VoiceController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.voice-update', {
+        url: '/voice/update/:voiceId/:voiceName',
+        templateUrl: 'app/voice/voice-update.html',
+        controller: 'VoiceUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
 }]);
