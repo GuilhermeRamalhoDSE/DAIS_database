@@ -2,15 +2,34 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
     $scope.groupList = [];
     $scope.isSuperuser = AuthService.isSuperuser();
 
+    let clientId = parseInt($stateParams.clientId || sessionStorage.getItem('lastclientId'), 10);
+    if (isNaN(clientId)) {
+        console.error('Invalid clientId');
+        return;
+    }
+    sessionStorage.setItem('lastclientId', clientId.toString());
+
+    let clientName = $stateParams.clientName || sessionStorage.getItem('lastclientName');
+    if (clientName) {
+        sessionStorage.setItem('lastclientName', clientName);
+    } else {
+        clientName = sessionStorage.getItem('lastclientName');
+    }
+    $scope.clientName = clientName;
+
     $scope.newGroup = {
         name: "",
         typology: "",
         comments: "",
-        license_id: AuthService.getLicenseId()
+        client_id: clientId, 
     };
 
     $scope.loadGroups = function() {
-        GroupService.getAll().then(function(response) {
+        if (!clientId) {
+            console.error('Client ID is missing');
+            return;
+        }
+        GroupService.getAll(clientId).then(function(response) {
             $scope.groupList = response.data;
         }).catch(function(error) {
             console.error('Error fetching groups:', error);
@@ -18,21 +37,21 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
     };
 
     $scope.goToCreateGroup = function() {
-        $state.go('base.group-new'); 
+        $state.go('base.group-new', { clientId: clientId, clientName: clientName }); 
     };
 
     $scope.createGroup = function() {
         GroupService.create($scope.newGroup).then(function(response) {
             alert('Group created successfully!');
             $scope.loadGroups();
-            $state.go('base.group-view'); 
+            $state.go('base.group-view', { clientId: clientId, clientName: clientName }); 
         }).catch(function(error) {
             alert('Error creating group:', error.data);
         });
     };
 
-    $scope.editGroup = function(groupId) {
-        $state.go('base.group-update', { groupId: groupId }); 
+    $scope.editGroup = function(groupId, groupName) {
+        $state.go('base.group-update', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName }); 
     };
 
     $scope.deleteGroup = function(groupId) {
@@ -47,12 +66,12 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
         }
     };
 
-    $scope.detailGroup = function(groupId) {
-        $state.go('base.group-detail', { groupId: groupId }); 
+    $scope.goToTotem = function(groupId, groupName) {
+        $state.go('base.totem-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName }); 
     };
 
     $scope.cancelCreate = function() {
-        $state.go('base.group-view'); 
+        $state.go('base.group-view', { clientId: clientId, clientName: clientName }); 
     };
 
     $scope.resetForm = function() {
@@ -60,6 +79,7 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
             name: "",
             typology: "",
             comments: "",
+            client_id: clientId
         };
     };
 

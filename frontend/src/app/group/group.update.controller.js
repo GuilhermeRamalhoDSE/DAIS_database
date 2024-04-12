@@ -2,22 +2,25 @@ angular.module('frontend').controller('GroupUpdateController', ['$scope', 'Group
     $scope.group = {};
     $scope.isSuperuser = AuthService.isSuperuser();
 
-    // Opções para o campo 'typology'
+    var clientId = $stateParams.clientId;
+    var clientName = $stateParams.clientName;
+
     $scope.typologyOptions = [
         {value: 'Artificial Intelligence', label: 'Intelligenza artificiale'},
         {value: 'Digital Signage', label: 'Digital Signage'}
     ];
 
     $scope.loadGroupData = function() {
-        const groupId = $stateParams.groupId; // Supondo que o ID do grupo é passado como um parâmetro de estado
+        const groupId = $stateParams.groupId; 
         
         GroupService.getById(groupId).then(function(response) {
             if (response.data) {
                 $scope.group = response.data;
+                $scope.clientId = response.data.client_id;
             } else {
                 console.error('Group not found');
                 alert('Group not found.');
-                $state.go('base.group-view'); // Ajuste para o estado de visualização adequado
+                $state.go('base.group-view'); 
             }
         }).catch(function(error) {
             console.error('Error fetching group data:', error);
@@ -31,16 +34,11 @@ angular.module('frontend').controller('GroupUpdateController', ['$scope', 'Group
                 name: $scope.group.name,
                 typology: $scope.group.typology,
                 comments: $scope.group.comments
-                // Adicione outros campos conforme necessário
+               
             };
-            // Se o usuário é superusuário, permite alterar o license_id; senão, ignora essa propriedade no payload
-            if ($scope.isSuperuser) {
-                payload.license_id = $scope.group.license_id;
-            }
-            
             GroupService.update($scope.group.id, payload).then(function(response) {
                 alert('Group updated successfully!');
-                $state.go('base.group-view'); // Ajuste conforme o estado de visualização do grupo
+                $state.go('base.group-view', { clientId: clientId, clientName: clientName });  
             }).catch(function(error) {
                 console.error('Error updating group:', error);
                 alert('Error updating group.');
@@ -49,7 +47,7 @@ angular.module('frontend').controller('GroupUpdateController', ['$scope', 'Group
     };
 
     $scope.cancelUpdate = function() {
-        $state.go('base.group-view'); // Ajuste conforme necessário
+        $state.go('base.group-view', { clientId: clientId, clientName: clientName }); 
     };
 
     $scope.loadGroupData();

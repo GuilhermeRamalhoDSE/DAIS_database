@@ -195,7 +195,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.group-new', {
-        url: '/group/new',
+        url: '/:clientId/:clientName/group/new',
         templateUrl: 'app/group/group-new.html',
         controller: 'GroupController',
         data: {
@@ -205,7 +205,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.group-view', {
-        url: '/groups',
+        url: '/:clientId/:clientName/groups',
         templateUrl: 'app/group/group-view.html',
         controller: 'GroupController',
         data: {
@@ -215,7 +215,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.group-update', {
-        url: '/group/update/:groupId/:groupName',
+        url: '/:clientId/:clientName/group/update/:groupId/:groupName',
         templateUrl: 'app/group/group-update.html',
         controller: 'GroupUpdateController',
         data: {

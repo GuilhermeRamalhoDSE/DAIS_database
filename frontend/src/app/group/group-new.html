@@ -11,8 +11,7 @@
                     <form ng-submit="createGroup()" enctype="multipart/form-data">
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" ng-model="newGroup.name" placeholder="Group Name"
-                                required>
+                            <input type="text" class="form-control" ng-model="newGroup.name" placeholder="Group Name" required>
                         </div>
                         <div class="form-group">
                             <label>Typology</label>
@@ -23,12 +22,11 @@
                         </div>
                         <div class="form-group">
                             <label>Comments</label>
-                            <textarea class="form-control" ng-model="newGroup.comments"
-                                placeholder="Comments"></textarea>
+                            <textarea class="form-control" ng-model="newGroup.comments" placeholder="Comments"></textarea>
                         </div>
-                        <div class="form-group" ng-show="isSuperuser">
-                            <label for="license_id">License ID</label>
-                            <input type="number" id="license_id" class="form-control" ng-model="newGroup.license_id" placeholder="License ID" readonly="!isSuperuser()">
+                        <div class="form-group">
+                            <label>Client</label>
+                            <input type="text" class="form-control" ng-model="clientName" placeholder="Client Name" readonly>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>

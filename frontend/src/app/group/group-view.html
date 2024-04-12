@@ -2,7 +2,7 @@
 <div class="padding" ng-controller="GroupController">
     <div class="box">
         <div class="box-header">
-            <h2>Groups</h2>
+            <h2>Groups Details - {{ clientName }}</h2>
             <small>Details of registered groups</small>
         </div>
         <div class="p-a white lt box-shadow">
@@ -49,11 +49,13 @@
                         <td>{{ group.total_totems }}</td>
                         <td>{{ group.comments }}</td>
                         <td>
-                            <button class="btn btn-default btn-xs" ng-click="editGroup(group.id)">Edit</button>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="editGroup(group.id, group.name)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteGroup(group.id)">Delete</button>
                         </td>
                         <td>
-                            <button class="btn btn-default btn-xs" ng-click="detailGroup(group.id)">Totem</button>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="goToTotem(group.id, group.name)">Totem</button>
                         </td>
                     </tr>
                 </tbody>

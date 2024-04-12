@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from dais.models.license_models import License
+# Supondo que Client esteja no mesmo módulo que License
+from dais.models.client_models import Client
 
 class Group(models.Model):
     TYPOLOGY_CHOICES = [
@@ -8,7 +9,7 @@ class Group(models.Model):
         ('Digital Signage', _('Digital Signage')),
     ]
 
-    license = models.ForeignKey(License, on_delete=models.CASCADE, verbose_name=_("Licenza"))
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, verbose_name=_("Cliente"))
     name = models.CharField(max_length=255, verbose_name=_("Nome"))
     typology = models.CharField(max_length=24, choices=TYPOLOGY_CHOICES, verbose_name=_("Tipologia"))
     comments = models.TextField(blank=True, null=True, verbose_name=_("Commenti"))

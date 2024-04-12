@@ -11,8 +11,7 @@
                     <form ng-submit="updateGroup()" enctype="multipart/form-data">
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" ng-model="group.name" placeholder="Group Name"
-                                required>
+                            <input type="text" class="form-control" ng-model="group.name" placeholder="Group Name" required>
                         </div>
                         <div class="form-group">
                             <label>Typology</label>
@@ -24,14 +23,12 @@
                         </div>
                         <div class="form-group">
                             <label>Comments</label>
-                            <textarea class="form-control" ng-model="newGroup.comments"
-                                placeholder="Comments"></textarea>
+                            <textarea class="form-control" ng-model="group.comments" placeholder="Comments"></textarea>
                         </div>
-                        <div class="form-group" ng-if="isSuperuser">
-                            <label>License ID</label>
-                            <input type="number" class="form-control" ng-model="group.license_id"
-                                placeholder="License ID" required>
-                        </div>
+                        <!-- <div class="form-group">
+                            <label>Client Name</label>
+                            <input type="text" class="form-control" ng-model="clientName" placeholder="Client Name" readonly>
+                        </div> -->
                         <button type="submit" class="btn btn-primary">Update</button>
                         <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
                     </form>

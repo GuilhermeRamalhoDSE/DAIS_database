@@ -39,8 +39,8 @@ angular.module('frontend').controller('ClientController', ['$scope', 'ClientServ
         $state.go('base.home');
     };
 
-    $scope.viewTotem = function(clientId) {
-        $state.go('base.project-view', { clientId: clientId });
+    $scope.viewGroups = function(clientId, clientName) {
+        $state.go('base.group-view', { clientId: clientId, clientName: clientName });
     };
    
     $scope.deleteClient = function(clientId) {
