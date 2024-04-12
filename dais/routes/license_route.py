@@ -3,8 +3,9 @@ from typing import List
 from django.shortcuts import get_object_or_404
 from dais.models.license_models import License
 from dais.models.avatar_models import Avatar
-from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarIdSchema, VoiceIdSchema
-from dais.models.voice_models import Voice  
+from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarIdSchema, VoiceIdSchema, LanguageIdSchema
+from dais.models.voice_models import Voice 
+from dais.models.language_models import Language 
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 
 
@@ -12,7 +13,7 @@ license_router = Router(tags=['Licenses'])
 
 @license_router.post("/", response={201: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_license(request, payload: LicenseCreateSchema):
-    license_data = payload.dict(exclude={'avatars_id', 'voices_id'})
+    license_data = payload.dict(exclude={'avatars_id', 'voices_id', 'languages_id'})
     license_obj = License.objects.create(**license_data)
     
     return LicenseSchema.from_orm(license_obj)
@@ -52,6 +53,25 @@ def remove_voice_from_license(request, license_id: int, payload: VoiceIdSchema):
     
     if license.voices.filter(id=voice.id).exists():
         license.voices.remove(voice)
+    
+    return LicenseSchema.from_orm(license)
+
+@license_router.post("/{license_id}/add-language/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def add_language_to_license(request, license_id: int, payload: LanguageIdSchema):
+    license = get_object_or_404(License, id=license_id)
+    language = get_object_or_404(Language, id=payload.language_id)
+    
+    license.languages.add(language)
+    
+    return LicenseSchema.from_orm(license)
+
+@license_router.post("/{license_id}/remove-language/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def remove_language_from_license(request, license_id: int, payload: LanguageIdSchema):
+    license = get_object_or_404(License, id=license_id)
+    language = get_object_or_404(Language, id=payload.language_id)
+    
+    if license.languages.filter(id=language.id).exists():
+        license.languages.remove(language)
     
     return LicenseSchema.from_orm(license)
 

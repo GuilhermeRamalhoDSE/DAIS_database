@@ -41,5 +41,13 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.post(`${baseUrl}${licenseId}/remove-voice/`, { voice_id: voiceId });
     };
 
+    service.addLanguageToLicense = function(licenseId, languageId) {
+        return $http.post(`${baseUrl}${licenseId}/add-language/`, { language_id: languageId });
+    };
+
+    service.removeLanguageFromLicense = function(licenseId, languageId) {
+        return $http.post(`${baseUrl}${licenseId}/remove-language/`, { language_id: languageId });
+    };
+
     return service;
 }]);

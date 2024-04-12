@@ -1,109 +1,116 @@
 <!-- ############ PAGE START-->
 <div class="padding" ng-controller="LicenseController">
-    <div class="box">
-      <div class="box-header">
-        <h2>License Details</h2>
-        <small>Details of registered licenses</small>
-      </div>
-      <div class="p-a white lt box-shadow">
-        <div class="row">
-          <div class="col-sm-6">
-            Search: <input id="filter" type="text" class="form-control input-sm w-auto inline m-r"
-              ng-model="searchText" />
-          </div>
-          <div class="col-sm-6">
-            <button class="btn btn-fw primary" ng-click="goToCreateLicense()">
-              <i class="fa fa-fw fa-plus text-muted"></i>
-              <span>New License</span>
-            </button>
-            <a>
-              <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
-            </a>
-          </div>
+  <div class="box">
+    <div class="box-header">
+      <h2>License Details</h2>
+      <small>Details of registered licenses</small>
+    </div>
+    <div class="p-a white lt box-shadow">
+      <div class="row">
+        <div class="col-sm-6">
+          Search: <input id="filter" type="text" class="form-control input-sm w-auto inline m-r"
+            ng-model="searchText" />
+        </div>
+        <div class="col-sm-6">
+          <button class="btn btn-fw primary" ng-click="goToCreateLicense()">
+            <i class="fa fa-fw fa-plus text-muted"></i>
+            <span>New License</span>
+          </button>
+          <a>
+            <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
+          </a>
         </div>
       </div>
-      <div>
-        <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
-          <thead>
-            <tr>
-              <th data-toggle="true">
-                License ID
-              </th>
-              <th data-toggle="true">
-                Company Name
-              </th>
-              <th>
-                Email
-              </th>
-              <th data-hide="phone,tablet">
-                Telephone
-              </th>
-              <th data-hide="phone,tablet">
-                License Code
-              </th>
-              <th data-hide="phone">
-                Active Status
-              </th>
-              <th data-hide="phone">
-                Start Date
-              </th>
-              <th data-hide="phone">
-                End Date
-              </th>
-              <th>Avatar</th>
-              <th>Voices</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="license in licenses | filter:searchText">
-              <td>{{ license.id }}</td>
-              <td>{{ license.name }}</td>
-              <td>{{ license.email }}</td>
-              <td>{{ license.tel }}</td>
-              <td>{{ license.license_code }}</td>
-              <td>
-                <i class="fa fa-check text-success" ng-show="license.active"></i>
-                <i class="fa fa-times text-danger" ng-show="!license.active"></i>
-              </td>
-              <td>{{ license.start_date | date:'dd/MM/yyyy' }}</td>
-              <td>{{ license.end_date | date:'dd/MM/yyyy' }}</td>
-              <td>
-                <div ng-repeat="avatar in avatars">
-                    <label>
-                        <input type="checkbox" 
-                               ng-checked="isAvatarAssignedToLicense(license, avatar.id)"
-                               ng-click="toggleAvatarAssignment(license, avatar.id)">
-                        {{ avatar.name }}
-                    </label>
-                </div>
-              </td>
-              <td>
-                <div ng-repeat="voice in voices">
-                    <label>
-                        <input type="checkbox" 
-                              ng-checked="isVoiceAssignedToLicense(license, voice.id)"
-                              ng-click="toggleVoiceAssignment(license, voice.id)">
-                        {{ voice.name }}
-                    </label>
-                </div>
-              </td>          
-              <td>
-                <button class="btn btn-default btn-xs" ng-click="editLicense(license.id)">Edit</button>
-                <button class="btn btn-danger btn-xs" ng-click="deleteLicense(license.id)">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot class="hide-if-no-paging">
-            <tr>
-              <td colspan="7" class="text-center">
-                <ul class="pagination"></ul>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+    </div>
+    <div>
+      <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
+        <thead>
+          <tr>
+            <th data-toggle="true">
+              License ID
+            </th>
+            <th data-toggle="true">
+              Company Name
+            </th>
+            <th>
+              Email
+            </th>
+            <th data-hide="phone,tablet">
+              Telephone
+            </th>
+            <th data-hide="phone,tablet">
+              License Code
+            </th>
+            <th data-hide="phone">
+              Active Status
+            </th>
+            <th data-hide="phone">
+              Start Date
+            </th>
+            <th data-hide="phone">
+              End Date
+            </th>
+            <th>Avatar</th>
+            <th>Voices</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="license in licenses | filter:searchText">
+            <td>{{ license.id }}</td>
+            <td>{{ license.name }}</td>
+            <td>{{ license.email }}</td>
+            <td>{{ license.tel }}</td>
+            <td>{{ license.license_code }}</td>
+            <td>
+              <i class="fa fa-check text-success" ng-show="license.active"></i>
+              <i class="fa fa-times text-danger" ng-show="!license.active"></i>
+            </td>
+            <td>{{ license.start_date | date:'dd/MM/yyyy' }}</td>
+            <td>{{ license.end_date | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <div ng-repeat="avatar in avatars">
+                <label>
+                  <input type="checkbox" ng-checked="isAvatarAssignedToLicense(license, avatar.id)"
+                    ng-click="toggleAvatarAssignment(license, avatar.id)">
+                  {{ avatar.name }}
+                </label>
+              </div>
+            </td>
+            <td>
+              <div ng-repeat="voice in voices">
+                <label>
+                  <input type="checkbox" ng-checked="isVoiceAssignedToLicense(license, voice.id)"
+                    ng-click="toggleVoiceAssignment(license, voice.id)">
+                  {{ voice.name }}
+                </label>
+              </div>
+            </td>
+            <td>
+              <div ng-repeat="language in languages">
+                <label>
+                  <input type="checkbox" ng-checked="isLanguageAssignedToLicense(license, language.id)"
+                    ng-click="toggleLanguageAssignment(license, language.id)">
+                  {{ language.name }}
+                </label>
+              </div>
+            </td>
+            <td>
+              <button class="btn btn-default btn-xs" ng-click="editLicense(license.id)">Edit</button>
+              <button class="btn btn-danger btn-xs" ng-click="deleteLicense(license.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot class="hide-if-no-paging">
+          <tr>
+            <td colspan="7" class="text-center">
+              <ul class="pagination"></ul>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
   </div>
-  
-  <!-- ############ PAGE END-->
+</div>
+
+<!-- ############ PAGE END-->

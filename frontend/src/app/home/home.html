@@ -1,8 +1,9 @@
 <div ng-controller="HomeController">
 
     <div ng-include="'app/licenses/license-view.html' " ng-if="isSuperuser()"></div>
+    <div ng-include="'app/users/user-view.html'" ng-if="isSuperuser() || isStaff()"></div>
     <div ng-include="'app/avatar/avatar-view.html' " ng-if="isSuperuser()"></div>
     <div ng-include="'app/voice/voice-view.html' " ng-if="isSuperuser()"></div>
-    <div ng-include="'app/users/user-view.html'" ng-if="isSuperuser() || isStaff()"></div>
+    <div ng-include="'app/language/language-view.html' " ng-if="isSuperuser()"></div>
     <div ng-include="'app/client/client-view.html'" ng-if="isOnlyStaff()"></div>
 </div>

@@ -4,6 +4,7 @@ from pydantic import BaseModel, validator
 from typing import List, Optional
 from .avatar_schema import AvatarSchema
 from .voice_schema import VoiceOut
+from .language_schema import LanguageOut
 
 class AvatarIdSchema(BaseModel):
     avatar_id: int
@@ -11,6 +12,9 @@ class AvatarIdSchema(BaseModel):
 class VoiceIdSchema(BaseModel):
     voice_id: int
 
+class LanguageIdSchema(BaseModel):
+    language_id: int
+    
 class LicenseBaseSchema(BaseModel):
     name: str
     email: str
@@ -22,6 +26,7 @@ class LicenseBaseSchema(BaseModel):
     end_date: date
     avatars_id: List[int] = [] 
     voices_id: List[int] = []
+    languages_id: List[int] = []
 
 class LicenseCreateSchema(LicenseBaseSchema):
     pass
@@ -37,11 +42,13 @@ class LicenseUpdateSchema(BaseModel):
     end_date: Optional[date] = None
     avatar_ids: Optional[List[int]] = None
     voice_ids: Optional[List[int]] = None
+    language_ids: Optional[List[int]] = None
 
 class LicenseSchema(LicenseBaseSchema):
     id: int
     avatars: List[AvatarSchema]
     voices: List[VoiceOut]
+    languages: List[LanguageOut]
 
     @validator('avatars', pre=True, each_item=False)
     def prepare_avatars(cls, value):
@@ -54,6 +61,12 @@ class LicenseSchema(LicenseBaseSchema):
         if value is None:
             return []
         return [VoiceOut(id=voice.id, name=voice.name) for voice in value.all()]
+    
+    @validator('languages', pre=True, each_item=False)
+    def prepare_languages(cls, value):
+        if value is None:
+            return []
+        return [LanguageOut(id=language.id, name=language.name) for language in value.all()]
 
     class Config:
         from_attributes = True

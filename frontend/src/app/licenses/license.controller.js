@@ -1,6 +1,8 @@
-angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', '$state', function($scope, LicenseService, AvatarService, VoiceService, $state) {
+angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', '$state', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, $state) {
     $scope.licenses = [];
     $scope.avatars = [];
+    $scope.voices = [];
+    $scope.languages = [];
  
     $scope.newLicense = {
         name: "",
@@ -11,7 +13,9 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         active: true,
         start_date: "",
         end_date: "",
-        avatars_ids: []
+        avatars_ids: [],
+        voices_ids: [],
+        languages_ids: [],
     };
 
     $scope.getAllLicenses = function() {
@@ -35,6 +39,14 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
             $scope.voices = response.data;
         }).catch(function(error) {
             alert('Error fetching voices:', error);
+        });
+    };
+
+    $scope.loadLanguages = function() {
+        LanguageService.getAll().then(function(response) {
+            $scope.languages = response.data;
+        }).catch(function(error) {
+            alert('Error fetching languages:', error);
         });
     };
 
@@ -64,7 +76,9 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
                 active: true,
                 start_date: "",
                 end_date: "",
-                avatars_ids: []
+                avatars_ids: [],
+                voices_ids: [],
+                languages_ids: [],
             };
             $state.go('base.licenses-view'); 
         }).catch(function(error) {
@@ -143,9 +157,35 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
     
     $scope.isVoiceAssignedToLicense = function(license, voiceId) {
         return license.voices && license.voices.some(voice => voice.id === voiceId);
-    };    
+    };   
+    
+    $scope.toggleLanguageAssignment = function(license, languageId) {
+        const isAssigned = license.languages && license.languages.some(language => language.id === languageId);
+        if (isAssigned) {
+            LicenseService.removeLanguageFromLicense(license.id, languageId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error removing language from license:', error);
+                });
+        } else {
+            LicenseService.addLanguageToLicense(license.id, languageId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error adding language to license:', error);
+                });
+        }
+    };
+
+    $scope.isLanguageAssignedToLicense = function(license, languageId) {
+        return license.languages && license.languages.some(language => language.id === languageId);
+    };
 
     $scope.getAllLicenses(); 
     $scope.loadAvatars();
     $scope.loadVoices();
+    $scope.loadLanguages();
 }]);
