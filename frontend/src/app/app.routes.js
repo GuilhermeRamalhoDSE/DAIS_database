@@ -246,7 +246,7 @@ angular.module('frontend')
     $stateProvider
     .state('base.totem-update', {
         url: '/:clientId/:clientName/:groupId/:groupName/totem/:totemId',
-        templateUrl: 'app/totem/client-update.html',
+        templateUrl: 'app/totem/totem-update.html',
         controller: 'TotemUpdateController',
         data: {
             requireLogin: true, 

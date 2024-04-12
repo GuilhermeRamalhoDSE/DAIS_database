@@ -1,0 +1,43 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="TotemUpdateController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Updating {{ totemData.name }}</h2>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="updateTotem()">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" ng-model="totemData.name" placeholder="Totem Name"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label>Installation Date</label>
+                            <input type="date" class="form-control" ng-model="totemData.installation_date"
+                                placeholder="Installation Date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Active</label>
+                            <input type="checkbox" ng-model="totemData.active">
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Screens</label>
+                            <input type="number" class="form-control" ng-model="totemData.screens" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Comments</label>
+                            <textarea class="form-control" ng-model="totemData.comments"
+                                placeholder="Add any comments here..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

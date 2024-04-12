@@ -1,14 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from .license_models import License
-from .client_models import Client
 from .group_models import Group
 
 
 class Totem(models.Model):
-    license = models.ForeignKey(License, on_delete=models.CASCADE, verbose_name=_("Licenza"))
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name=_("Cliente"))  
     group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name=_("Gruppo"))
+    name = models.CharField(max_length=255, null=True, verbose_name=_("nome"))
     installation_date = models.DateField(verbose_name=_("Data di installazione"))
     active = models.BooleanField(default=True, verbose_name=_("Attivo"))
     screens = models.IntegerField(verbose_name=_("Schermi"))
@@ -19,4 +16,4 @@ class Totem(models.Model):
         verbose_name_plural = _("Totems")
 
     def __str__(self):
-        return f"Totem {self.id} - {self.group.name}"
+        return self.name

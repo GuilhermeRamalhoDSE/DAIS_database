@@ -3,17 +3,15 @@ from typing import Optional
 from datetime import date
 
 class TotemCreate(Schema):
-    license_id: int
-    client_id: int
     group_id: int
+    name: str
     installation_date: date
     active: bool
     screens: int
     comments: Optional[str] = None
 
 class TotemUpdate(Schema):
-    license_id: Optional[int] = None
-    client_id: Optional[int] = None
+    name: Optional[str] = None
     group_id: Optional[int] = None
     installation_date: Optional[date] = None
     active: Optional[bool] = None
@@ -22,11 +20,8 @@ class TotemUpdate(Schema):
 
 class TotemOut(Schema):
     id: int
-    license_id: int
-    client_id: int
     group_id: int
-    client_name: str  
-    group_name: str  
+    name: str
     installation_date: date
     active: bool
     screens: int
