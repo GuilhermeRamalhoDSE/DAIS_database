@@ -194,6 +194,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.language-new', {
+        url: '/language/new',
+        templateUrl: 'app/language/language-new.html',
+        controller: 'LanguageController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.language-view', {
+        url: '/languages',
+        templateUrl: 'app/language/language-view.html',
+        controller: 'LanguageController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.language-update', {
+        url: '/language/update/:languageId/:languageName',
+        templateUrl: 'app/language/language-update.html',
+        controller: 'LanguageUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
     .state('base.group-new', {
         url: '/:clientId/:clientName/group/new',
         templateUrl: 'app/group/group-new.html',

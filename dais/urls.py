@@ -7,6 +7,7 @@ from .routes.user_route import user_router
 from .routes.client_route import client_router
 from .routes.avatar_route import avatar_router
 from .routes.voice_route import voice_router
+from .routes.language_route import language_router
 from .routes.group_route import group_router
 from .routes.totem_route import totem_router
 
@@ -20,6 +21,7 @@ api.add_router("/users", user_router)
 api.add_router("/clients", client_router)
 api.add_router("/avatar", avatar_router)
 api.add_router("/voices", voice_router)
+api.add_router("/languages", language_router)
 api.add_router("/groups", group_router)
 api.add_router("/totem", totem_router)
 

@@ -3,5 +3,6 @@ from dais.admins.user_admin import UserAdmin, BaseUserAdmin
 from dais.admins.client_admin import ClientAdmin
 from dais.admins.avatar_admin import AvatarAdmin
 from dais.admins.voice_admin import VoiceAdmin
+from dais.admins.language_admin import LanguageAdmin
 from dais.admins.group_admin import GroupAdmin
 from dais.admins.totem_admin import TotemAdmin

@@ -1,0 +1,24 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="LanguageController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Language</h2>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="createLanguage()" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Language Name</label>
+                            <input type="text" class="form-control" ng-model="newLanguage.name" placeholder="Language Name" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
