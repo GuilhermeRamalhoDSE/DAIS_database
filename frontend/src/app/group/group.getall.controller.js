@@ -1,7 +1,6 @@
 angular.module('frontend').controller('GroupGetAllController', ['$scope', '$state', 'GroupService', 'AuthService', function($scope, $state, GroupService, AuthService) {
     $scope.groupList = [];
 
-    // Carregar todos os grupos baseando-se no ID da licença.
     $scope.loadAllGroups = function() {
         var licenseId = AuthService.getLicenseId(); 
         if (!licenseId) {
