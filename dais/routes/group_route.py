@@ -18,25 +18,25 @@ def create_group(request, payload: GroupCreate):
     group = Group.objects.create(**payload.dict())
     return 201, group
 
-@group_router.get("/", response=List[GroupOut])
-def read_groups(request, client_id: Optional[int] = None):
+@group_router.get("/", response=List[GroupOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def read_groups(request, client_id: Optional[int] = None, license_id: Optional[int] = None):
     if not check_user_permission(request):
         raise HttpError(403, "You do not have permission to view these groups.")
 
     user_info = get_user_info_from_token(request)
-    license_id = user_info.get('license_id')
+    user_license_id = user_info.get('license_id')
 
     if client_id:
-
-        if license_id is not None:
-            client = get_object_or_404(Client, id=client_id, license_id=license_id)
+        client = get_object_or_404(Client, id=client_id)
+        if license_id:
+            groups = Group.objects.filter(client=client, client__license_id=license_id)
         else:
-            client = get_object_or_404(Client, id=client_id)
-
-        groups = Group.objects.filter(client=client)
+            groups = Group.objects.filter(client=client, client__license_id=user_license_id)
+    elif license_id:
+        groups = Group.objects.filter(client__license_id=license_id)
     else:
-        raise HttpError(400, "Client ID is required.")
-    
+        groups = Group.objects.filter(client__license_id=user_license_id)
+
     return groups
 
 @group_router.get("/{group_id}", response=GroupOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])

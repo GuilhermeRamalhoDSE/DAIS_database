@@ -244,6 +244,16 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.group-view-all', {
+        url: '/groups',
+        templateUrl: 'app/group/group-view-all.html',
+        controller: 'GroupGetAllController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.group-update', {
         url: '/:clientId/:clientName/group/update/:groupId/:groupName',
         templateUrl: 'app/group/group-update.html',
