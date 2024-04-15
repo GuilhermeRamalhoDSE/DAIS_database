@@ -6,4 +6,5 @@
     <div ng-include="'app/voice/voice-view.html' " ng-if="isSuperuser()"></div>
     <div ng-include="'app/language/language-view.html' " ng-if="isSuperuser()"></div>
     <div ng-include="'app/client/client-view.html'" ng-if="isOnlyStaff()"></div>
+    <div ng-include="'app/group/group-view-all.html'" ng-if="isOnlyStaff()"></div>
 </div>
