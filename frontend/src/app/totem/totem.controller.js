@@ -99,6 +99,10 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
         $state.go('base.group-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
     };
 
+    $scope.goToLogs = function(totemId, totemName) {
+        $state.go('base.logs-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, totemId: totemId, totemName: totemName });
+    };
+
     $scope.deleteTotem = function(totemId) {
         if (!totemId) {
             return;

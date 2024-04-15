@@ -283,4 +283,24 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
+    $stateProvider
+    .state('base.logs-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:totemId/:totemName/logs/new',
+        templateUrl: 'app/logs/logs-new.html',
+        controller: 'LogsController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.logs-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:totemId/:totemName/logs',
+        templateUrl: 'app/logs/logs-view.html',
+        controller: 'LogsController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
 }]);

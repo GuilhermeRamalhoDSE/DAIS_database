@@ -64,6 +64,10 @@
                             <button class="btn btn-default btn-xs" ng-click="editTotem(totem.id)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteTotem(totem.id)">Delete</button>
                         </td>
+                        <td>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="goToLogs(totem.id, totem.name)">Logs</button>
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot class="hide-if-no-paging">
