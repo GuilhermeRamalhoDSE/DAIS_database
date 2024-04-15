@@ -303,4 +303,34 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
+    $stateProvider
+    .state('base.periodds-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/periodds/new',
+        templateUrl: 'app/periodDS/periodds-new.html',
+        controller: 'PeriodDSController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.periodds-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/periodds',
+        templateUrl: 'app/periodDS/periodds-view.html',
+        controller: 'PeriodDSController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.periodds-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/periodds/updade/:perioddsId',
+        templateUrl: 'app/periodDS/periodds-update.html',
+        controller: 'PeriodDSUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
 }]);

@@ -32,7 +32,7 @@ class GroupOut(Schema):
 
     @staticmethod
     def resolve_client_name(obj):
-        return obj.client.name  
+        return obj.client.name if hasattr(obj, 'client') and obj.client else "Unknown Client"
 
     @staticmethod
     def resolve_total_totems(obj):

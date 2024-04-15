@@ -1,6 +1,6 @@
 from django.contrib import admin
 from dais.models.license_models import License
-from django.utils.html import format_html
+
 
 @admin.register(License)
 class LicenseAdmin(admin.ModelAdmin):

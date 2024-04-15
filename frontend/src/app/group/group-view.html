@@ -16,6 +16,7 @@
                         <i class="fa fa-fw fa-plus text-muted"></i>
                         <span>New Group</span>
                     </button>
+                    <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
                 </div>
             </div>
         </div>
@@ -25,6 +26,9 @@
                     <tr>
                         <th data-toggle="true" ng-if="isSuperuser">
                             Group ID
+                        </th>
+                        <th>
+                            Client
                         </th>
                         <th>
                             Name
@@ -44,6 +48,7 @@
                 <tbody>
                     <tr ng-repeat="group in groupList | filter:searchText">
                         <td ng-if="isSuperuser">{{ group.id }}</td>
+                        <td>{{ clientName }}</td>
                         <td>{{ group.name }}</td>
                         <td>{{ group.typology }}</td>
                         <td>{{ group.total_totems }}</td>
@@ -52,6 +57,10 @@
                             <button class="btn btn-default btn-xs"
                                 ng-click="editGroup(group.id, group.name)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteGroup(group.id)">Delete</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="detailGroup(group.id, group.name, group.typology)">Details</button>
                         </td>
                         <td>
                             <button class="btn btn-default btn-xs"

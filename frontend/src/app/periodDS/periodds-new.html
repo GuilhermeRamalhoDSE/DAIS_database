@@ -1,0 +1,35 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="PeriodDSController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Period for {{ groupName }}</h2>
+                </div>
+                <div class="box-body">
+                    <form ng-submit="createPeriod()" novalidate>
+                        <div class="form-group">
+                            <label for="groupName">Group Name</label>
+                            <input type="text" class="form-control" id="groupName" ng-model="groupName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="start_date">Start Date</label>
+                            <input type="date" class="form-control" ng-model="newPeriod.start_date" id="start_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_date">End Date</label>
+                            <input type="date" class="form-control" ng-model="newPeriod.end_date" id="end_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="active">Active</label>
+                            <input type="checkbox" ng-model="newPeriod.active" id="active" checked>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="button" class="btn btn-secondary" ng-click="goBack()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

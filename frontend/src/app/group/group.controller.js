@@ -66,6 +66,20 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
         }
     };
 
+    $scope.detailGroup = function(groupId, groupName, typology) {
+        if (typology === 'Digital Signage') {
+            $state.go('base.periodds-view', { clientId: clientId, clientName: clientName,groupId: groupId, groupName: groupName });
+        } else if (typology === 'Artificial Intelligence') {
+            $state.go('base.periodia-view', { clientId: clientId, clientName: clientName,groupId: groupId, groupName: groupName });
+        } else {
+            alert('Unknown typology');
+        }
+    };   
+    
+    $scope.goBack = function() {
+        $state.go('base.client-view', { clientId: clientId, clientName: clientName });
+    };
+
     $scope.goToTotem = function(groupId, groupName) {
         $state.go('base.totem-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName }); 
     };
