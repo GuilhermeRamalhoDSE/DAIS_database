@@ -333,4 +333,36 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
+    $stateProvider
+    .state('base.periodia-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/periodia/new',
+        templateUrl: 'app/periodIA/periodia-new.html',
+        controller: 'PeriodIAController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+
+$stateProvider
+    .state('base.periodia-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/periodia',
+        templateUrl: 'app/periodIA/periodia-view.html',
+        controller: 'PeriodIAController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+
+$stateProvider
+    .state('base.periodia-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/periodia/update/:periodiaId',
+        templateUrl: 'app/periodIA/periodia-update.html',
+        controller: 'PeriodIAUpdateController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
 }]);

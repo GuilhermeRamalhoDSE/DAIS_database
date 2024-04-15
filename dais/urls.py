@@ -12,6 +12,7 @@ from .routes.group_route import group_router
 from .routes.totem_route import totem_router
 from .routes.logs_route import log_router
 from .routes.periodds_route import periodds_router
+from .routes.periodia_route import periodia_router
 
 
 api = NinjaAPI()
@@ -28,6 +29,7 @@ api.add_router("/groups", group_router)
 api.add_router("/totem", totem_router)
 api.add_router("/logs", log_router)
 api.add_router("/periodds", periodds_router)
+api.add_router("/periodia", periodia_router)
 
 urlpatterns = [
     path("api/", api.urls),
