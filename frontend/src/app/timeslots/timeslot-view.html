@@ -1,0 +1,57 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="TimeSlotController">
+    <div class="box">
+        <div class="box-header">
+            <h2>Time Slots for {{ groupName }}</h2>
+            <small>View and manage time slots associated with the period</small>
+        </div>
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <div class="col-sm-6">
+                    Search: <input id="filter" type="text" class="form-control input-sm w-auto inline m-r"
+                        ng-model="searchText" />
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-fw primary" ng-click="goToCreateTimeslot()">
+                        <i class="fa fa-fw fa-plus text-muted"></i>
+                        <span>New Time Slot</span>
+                    </button>
+                    <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
+                <thead>
+                    <tr>
+                        <th data-hide="phone,tablet">
+                            Start Time
+                        </th>
+                        <th data-hide="phone,tablet">
+                            End Time
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="timeslot in timeslots | filter:searchText">
+                        <td>{{ timeslot.start_time | date:'shortTime' }}</td>
+                        <td>{{ timeslot.end_time | date:'shortTime' }}</td>
+                        <td>
+                            <button class="btn btn-default btn-xs" ng-click="editTimeslot(timeslot.id)">Edit</button>
+                            <button class="btn btn-danger btn-xs" ng-click="deleteTimeslot(timeslot.id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="hide-if-no-paging">
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <ul class="pagination"></ul>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

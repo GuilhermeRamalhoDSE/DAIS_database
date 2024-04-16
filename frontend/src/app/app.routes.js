@@ -344,6 +344,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.timeslot-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/timeslot/new',
+        templateUrl: 'app/timeslots/timeslot-new.html',
+        controller: 'TimeSlotController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.timeslot-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/timeslots',
+        templateUrl: 'app/timeslots/timeslot-view.html',
+        controller: 'TimeSlotController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.timeslot-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/timeslot/update/:timeslotId',
+        templateUrl: 'app/timeslots/timeslot-update.html',
+        controller: 'TimeSlotUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.periodia-new', {
         url: '/:clientId/:clientName/:groupId/:groupName/periodia/new',
         templateUrl: 'app/periodIA/periodia-new.html',

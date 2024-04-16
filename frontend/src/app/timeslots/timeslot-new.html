@@ -1,0 +1,27 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="TimeSlotController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Time Slot for {{ groupName }}</h2>
+                </div>
+                <div class="box-body">
+                    <form ng-submit="createTimeslot()" novalidate>
+                        <div class="form-group">
+                            <label for="start_time">Start Time</label>
+                            <input type="time" class="form-control" ng-model="newTimeslot.start_time" id="start_time" step="60" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_time">End Time</label>
+                            <input type="time" class="form-control" ng-model="newTimeslot.end_time" id="end_time" step="60" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

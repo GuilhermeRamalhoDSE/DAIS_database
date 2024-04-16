@@ -50,6 +50,10 @@
                             <button class="btn btn-default btn-xs" ng-click="editPeriod(period.id)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deletePeriod(period.id)">Delete</button>
                         </td>
+                        <td>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="goToTimeSlot(period.id)">Time Slots</button>
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot class="hide-if-no-paging">

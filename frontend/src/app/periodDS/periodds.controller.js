@@ -72,8 +72,16 @@ angular.module('frontend').controller('PeriodDSController', ['$scope', 'PeriodDS
         $state.go('base.periodds-update', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, perioddsId: periodId });
     };
 
-    $scope.goBack = function() {
+    $scope.cancelCreate = function() {
         $state.go('base.group-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
+    };
+
+    $scope.goBack = function() {
+        $state.go('base.client-view', { clientId: clientId, clientName: clientName });
+    };
+
+    $scope.goToTimeSlot = function(periodId) {
+        $state.go('base.timeslot-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, perioddsId: periodId });
     };
 
     $scope.resetForm = function() {
