@@ -374,6 +374,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.contribution-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/contribution/new',
+        templateUrl: 'app/contributions/contribution-new.html',
+        controller: 'ContributionController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.contribution-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/contributions',
+        templateUrl: 'app/contributions/contribution-view.html',
+        controller: 'ContributionController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.contribution-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/contribution/update/:contributionId',
+        templateUrl: 'app/contribution/contribution-update.html',
+        controller: 'ContributionUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.periodia-new', {
         url: '/:clientId/:clientName/:groupId/:groupName/periodia/new',
         templateUrl: 'app/periodIA/periodia-new.html',
