@@ -1,12 +1,13 @@
 from ninja import Schema
 from typing import Optional
+from dais.schemas.timeslot_schema import TimeSlotOut
 
 class ContributionIn(Schema):
     time_slot_id: Optional[int] = None
 
 class ContributionOut(Schema):
     id: int
-    time_slot_id: int
+    time_slot: TimeSlotOut
     detail_count: int
 
     @staticmethod

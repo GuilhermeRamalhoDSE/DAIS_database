@@ -46,4 +46,15 @@ angular.module('frontend').directive('fileModel', ['$parse', function ($parse) {
         }
     };
 }]);
-
+angular.module('frontend').filter('formatTime', function() {
+    return function(input) {
+        if (!input) return ''; 
+        var parts = input.split(':'); 
+        if (parts.length >= 2) {
+            var hours = parts[0];
+            var minutes = parts[1];
+            return hours + ':' + minutes; 
+        }
+        return input; 
+    };
+});

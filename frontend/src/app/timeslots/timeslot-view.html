@@ -35,11 +35,15 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="timeslot in timeslots | filter:searchText">
-                        <td>{{ timeslot.start_time | date:'shortTime' }}</td>
-                        <td>{{ timeslot.end_time | date:'shortTime' }}</td>
+                        <td>{{ timeslot.start_time | formatTime }}</td>
+                        <td>{{ timeslot.end_time | formatTime }}</td>
                         <td>
                             <button class="btn btn-default btn-xs" ng-click="editTimeslot(timeslot.id)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteTimeslot(timeslot.id)">Delete</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="goToContribution(timeslot.id)">Contributions</button>
                         </td>
                     </tr>
                 </tbody>

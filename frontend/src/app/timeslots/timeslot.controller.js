@@ -85,6 +85,17 @@ function($scope, TimeslotService, $state, $stateParams) {
         });
     };
 
+    $scope.goToContribution = function(timeslotId) {
+        $state.go('base.contribution-view', {
+            clientId: $scope.clientId,
+            clientName: $scope.clientName,
+            groupId: $scope.groupId,
+            groupName: $scope.groupName,
+            perioddsId: $scope.perioddsId,
+            timeslotId: timeslotId
+        });
+    };
+
     $scope.cancelCreate = function() {
         $state.go('base.timeslot-view', {
             clientId: $scope.clientId,

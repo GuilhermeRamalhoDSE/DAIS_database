@@ -77,7 +77,7 @@ angular.module('frontend').controller('PeriodDSController', ['$scope', 'PeriodDS
     };
 
     $scope.goBack = function() {
-        $state.go('base.client-view', { clientId: clientId, clientName: clientName });
+        $state.go('base.group-view', { clientId: clientId, clientName: clientName,groupId: groupId, groupName: groupName });
     };
 
     $scope.goToTimeSlot = function(periodId) {
