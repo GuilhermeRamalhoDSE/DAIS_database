@@ -32,6 +32,21 @@ def read_contributions(request, time_slot_id: Optional[int] = None):
 
     return contributions
 
+
+@contribution_router.post("/{contribution_id}/set-random/", auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def set_random(request, contribution_id: int):
+    contribution = get_object_or_404(Contribution, id=contribution_id)
+    contribution.is_random = True
+    contribution.save()
+    return {"message": "Contribution set to random order."}
+
+@contribution_router.post("/{contribution_id}/unset-random/", auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def unset_random(request, contribution_id: int):
+    contribution = get_object_or_404(Contribution, id=contribution_id)
+    contribution.is_random = False
+    contribution.save()
+    return {"message": "Contribution set to sequential order."}
+
 @contribution_router.put("/{contribution_id}", response=ContributionOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_contribution(request, contribution_id: int, payload: ContributionIn):
     contribution = get_object_or_404(Contribution, id=contribution_id)

@@ -4,11 +4,9 @@ from dais.models.detail_models import Detail
 @admin.register(Detail)
 class DetailAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'contribution', 'file', 'order'
-    )
-    search_fields = ('id','contribution__id',) 
-    list_filter = ('order', 'contribution')
+        'name', 'id', 'contribution', 'file')
+    search_fields = ('id','name',) 
+    list_filter = ('name', 'contribution')
     fields = (
-        'contribution', 'file', 'order'
-    )
+        'contribution', 'name', 'file')
     readonly_fields = ()

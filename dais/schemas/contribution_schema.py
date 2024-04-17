@@ -9,6 +9,7 @@ class ContributionOut(Schema):
     id: int
     time_slot: TimeSlotOut
     detail_count: int
+    is_random: bool
 
     @staticmethod
     def resolve_time_slot_id(obj):

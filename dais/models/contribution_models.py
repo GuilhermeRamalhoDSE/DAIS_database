@@ -4,6 +4,7 @@ from dais.models.timeslot_models import TimeSlot
 
 class Contribution(models.Model):
     time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE, verbose_name=_("ID Orario"))
+    is_random = models.BooleanField(default=False, verbose_name=_("Ordine casuale"),blank=True)
     
     def __str__(self):
         return f"{self.time_slot} - {self.detail_count} dettagli"

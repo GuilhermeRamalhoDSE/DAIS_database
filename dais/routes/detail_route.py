@@ -35,7 +35,7 @@ def create_detail(request: HttpRequest, detail_in: DetailCreateSchema, file: Upl
     return 201, detail_schema
 
 @detail_router.get("/", response=List[DetailSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def read_details(request, contribution_id: Optional[int] = None, order: Optional[str] = Query(None)):
+def read_details(request, contribution_id: Optional[int] = None):
     if not check_user_permission(request):
         raise HttpError(403, "You do not have permission to view these details.")
     
@@ -46,19 +46,37 @@ def read_details(request, contribution_id: Optional[int] = None, order: Optional
         raise HttpError(400, "Contribution ID is required.")
     
     if license_id is not None:
-        contribution = get_object_or_404(Contribution.objects.select_related('time_slot__period__group__client__license'), id=contribution_id,time_slot__period__group__client__license__id=license_id)
+        contribution = get_object_or_404(
+            Contribution.objects.select_related('time_slot__period__group__client__license'), 
+            id=contribution_id,
+            time_slot__period__group__client__license__id=license_id
+        )
     else:
         contribution = get_object_or_404(Contribution, id=contribution_id)
     
     details_query = Detail.objects.filter(contribution=contribution)
 
-    if order == 'R':
+    if contribution.is_random:
         details = list(details_query)
         random.shuffle(details)
     else:
         details = details_query.order_by('id')
     
     return [DetailSchema.from_orm(detail) for detail in details]
+
+@detail_router.get("/{detail_id}", response=DetailSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def read_detail_by_id(request, detail_id: int):
+    user_info = get_user_info_from_token(request)
+    user_license_id = str(user_info.get('license_id'))
+    is_superuser = user_info.get('is_superuser', False)
+
+    detail = get_object_or_404(Detail, id=detail_id)
+    detail_license_id = str(detail.contribution.time_slot.period.group.client.license_id)
+
+    if is_superuser or detail_license_id == user_license_id:
+        return DetailSchema.from_orm(detail)
+    else:
+        raise HttpError(403, "You do not have permission to view this detail.")
 
 @detail_router.get("/download/{detail_id}", auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def download_detail_file(request, detail_id: int):

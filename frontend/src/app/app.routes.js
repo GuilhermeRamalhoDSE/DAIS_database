@@ -404,6 +404,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.detail-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/:contributionId/detail/new',
+        templateUrl: 'app/detail/detail-new.html',
+        controller: 'DetailController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.detail-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/:contributionId/details',
+        templateUrl: 'app/detail/detail-view.html',
+        controller: 'DetailController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.detail-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/:contributionId/detail/update/:detailId',
+        templateUrl: 'app/detail/detail-update.html',
+        controller: 'DetailUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.periodia-new', {
         url: '/:clientId/:clientName/:groupId/:groupName/periodia/new',
         templateUrl: 'app/periodIA/periodia-new.html',

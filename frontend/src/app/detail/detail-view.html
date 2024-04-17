@@ -1,9 +1,9 @@
 <!-- ############ PAGE START-->
-<div class="padding" ng-controller="ContributionController">
+<div class="padding" ng-controller="DetailController">
     <div class="box">
         <div class="box-header">
-            <h2>Contributions</h2>
-            <small>Details of contributions</small>
+            <h2>Details</h2>
+            <small>Details</small>
         </div>
         <div class="p-a white lt box-shadow">
             <div class="row">
@@ -12,9 +12,9 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="goToCreateContribution()">
+                    <button class="btn btn-fw primary" ng-click="goToCreateDetail()">
                         <i class="fa fa-fw fa-plus text-muted"></i>
-                        <span>New Contribution</span>
+                        <span>New Detail</span>
                     </button>
                     <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
                 </div>
@@ -24,32 +24,31 @@
             <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
                 <thead>
                     <tr>
-                        <th>Time Slot</th>
-                        <th data-hide="phone,tablet">Detail Count</th>
-                        <th>Random</th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            File
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="contribution in contributionList | filter:searchText">
-                        <td>{{ contribution.time_slot.start_time | formatTime }} - {{ contribution.time_slot.end_time |
-                            formatTime }}</td>
-                        <td>{{ contribution.detail_count }}</td>
+                    <tr ng-repeat="detail in detailList | filter:searchText">
+                        <td>{{ detail.name }}</td>
                         <td>
-                            <input type="checkbox" ng-checked="contribution.is_random"  ng-click="toggleRandomOrder(contribution)">
-
+                            <button class="btn btn-primary btn-xs"
+                                ng-click="downloadComponentFile(component.id)">Download</button>
                         </td>
                         <td>
-                            <button class="btn btn-danger btn-xs"
-                                ng-click="deleteContribution(contribution.id)">Delete</button>
-                            <button class="btn btn-default btn-xs"
-                                ng-click="detailContribution(contribution.id)">Details</button>
+                            <button class="btn btn-default btn-xs" ng-click="editDetail(detail.id)">Edit</button>
+                            <button class="btn btn-danger btn-xs" ng-click="deleteDetail(detail.id)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
                 <tfoot class="hide-if-no-paging">
                     <tr>
-                        <td colspan="4" class="text-center">
+                        <td colspan="5" class="text-center">
                             <ul class="pagination"></ul>
                         </td>
                     </tr>

@@ -22,5 +22,14 @@ angular.module('frontend').factory('ContributionService', ['$http', function($ht
         return $http.delete(baseUrl + contributionId);
     };
 
+    service.setRandomOrder = function(contributionId) {
+        return $http.post(`${baseUrl}${contributionId}/set-random/`);
+    };
+
+    service.unsetRandomOrder = function(contributionId) {
+        return $http.post(`${baseUrl}${contributionId}/unset-random/`);
+    };
+
+
     return service;
 }]);

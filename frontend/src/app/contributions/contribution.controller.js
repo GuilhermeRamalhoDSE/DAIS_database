@@ -111,7 +111,7 @@ angular.module('frontend').controller('ContributionController', ['$scope', '$fil
     };
 
     $scope.detailContribution = function(contributionId) {
-        $state.go('base.contribution-detail', { 
+        $state.go('base.detail-view', { 
             clientId: $scope.clientId,
             clientName: $scope.clientName,
             groupId: $scope.groupId,
@@ -154,6 +154,28 @@ angular.module('frontend').controller('ContributionController', ['$scope', '$fil
         };
     };
 
+    $scope.toggleRandomOrder = function(contribution) {
+        if (contribution.is_random) {
+            ContributionService.unsetRandomOrder(contribution.id)
+                .then(function(response) {
+                    contribution.is_random = false;
+                    $scope.loadContributions();
+                })
+                .catch(function(error) {
+                    console.error('Error setting contribution to sequential order:', error);
+                });
+        } else {
+            ContributionService.setRandomOrder(contribution.id)
+                .then(function(response) {
+                    contribution.is_random = true;
+                    $scope.loadContributions();  
+                })
+                .catch(function(error) {
+                    console.error('Error setting contribution to random order:', error);
+                });
+        }
+    };
+    
     $scope.loadContributions();
     $scope.loadTimeSlotDetails();
 }]);

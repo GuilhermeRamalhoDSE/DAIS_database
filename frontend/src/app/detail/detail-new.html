@@ -1,0 +1,30 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="DetailController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Detail for: {{ clientName }}/{{ groupName }}</h2>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="createDetail()" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" ng-model="newDetail.name"
+                                placeholder="Detail Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>File</label>
+                            <input type="file" file-model="file" class="form-control"
+                                placeholder="Upload File" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

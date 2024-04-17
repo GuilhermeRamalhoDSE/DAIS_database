@@ -4,22 +4,21 @@ from typing import Optional
 from django.db.models.fields.files import FieldFile
 
 class DetailBaseSchema(BaseModel):
-    order: str
+    name: str
 
 class DetailCreateSchema(DetailBaseSchema):
     contribution_id: int
 
 class DetailUpdateSchema(BaseModel):
-    order: Optional[str] = None
+    name: Optional[str] = None
     file_path: Optional[str] = Field(None, alias='file')
 
 class DetailSchema(BaseModel):
     id: int
     contribution_id: int
-    order: str
+    name: str
     file_path: Optional[str] = Field(None, alias='file')
-    creation_date: Optional[datetime] = None
-    last_modified_date: Optional[datetime] = None
+    created_at: Optional[datetime] = None
 
     @validator('file_path', pre=True, always=True)
     def convert_file_to_url(cls, v):

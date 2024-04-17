@@ -7,8 +7,8 @@ def detail_directory_path(instance, filename):
 
 class Detail(models.Model):
     contribution = models.ForeignKey('Contribution', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, verbose_name=_("Nome"), blank=True)
     file = models.FileField(upload_to=detail_directory_path)
-    order = models.CharField(max_length=1, choices=[('R', _('Random')), ('N', _('Number'))], verbose_name=_("tipo di ordine"))
     created_at = models.DateTimeField(verbose_name=_("data di creazione"), default=now, blank=True)
 
     class Meta:
