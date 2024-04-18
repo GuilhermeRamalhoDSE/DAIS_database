@@ -443,8 +443,7 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff']
         }
     });
-
-$stateProvider
+    $stateProvider
     .state('base.periodia-view', {
         url: '/:clientId/:clientName/:groupId/:groupName/periodia',
         templateUrl: 'app/periodIA/periodia-view.html',
@@ -455,11 +454,43 @@ $stateProvider
         }
     });
 
-$stateProvider
+    $stateProvider
     .state('base.periodia-update', {
         url: '/:clientId/:clientName/:groupId/:groupName/periodia/update/:periodiaId',
         templateUrl: 'app/periodIA/periodia-update.html',
         controller: 'PeriodIAUpdateController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+    $stateProvider
+    .state('base.layer-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/layers/new',
+        templateUrl: 'app/layer/layer-new.html',
+        controller: 'LayerController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+
+    $stateProvider
+    .state('base.layer-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/layers',
+        templateUrl: 'app/layers/layer-view.html',
+        controller: 'LayerController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+
+    $stateProvider
+    .state('base.layer-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/update/:layerId',
+        templateUrl: 'app/layer/layer-update.html',
+        controller: 'LayerUpdateController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']

@@ -58,13 +58,14 @@ def get_layers_by_period(request, period_id: int):
     layers = Layer.objects.filter(period=periodia)
     return [LayerOut.from_orm(layer) for layer in layers]
 
-@layer_router.get("/{layer_id}", response={200: LayerOut, 404: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+@layer_router.get("/layer/{layer_id}", response={200: LayerOut, 404: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def get_layer_by_id(request, layer_id: int):
     layer = get_object_or_404(Layer, id=layer_id)
-    if not has_permission(request, layer.period.group.client.license):
+    periodia = get_object_or_404(PeriodIA, id=layer.period_id)
+    if not has_permission(request, periodia):
         raise HttpError(403, "You do not have permission to view this layer.")
 
-    return layer
+    return LayerOut.from_orm(layer)
 
 @layer_router.put("/update/{layer_id}", response={200: LayerOut, 404: None, 403: None, 400: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_layer(request, layer_id: int, payload: LayerUpdate):

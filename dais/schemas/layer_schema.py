@@ -23,12 +23,12 @@ class LayerOut(Schema):
     id: int
     period: PeriodIAOut
     layer_number: int
-    parent: Optional[int] = None
+    parent: Optional[int] = None 
     avatar: AvatarSchema
     name: str
     last_update_date: datetime
     trigger: str
-    children: List[int] = []
+    children: List[int] = []  
 
     @classmethod
     def from_orm(cls, obj):
@@ -36,12 +36,12 @@ class LayerOut(Schema):
             id=obj.id,
             period=obj.period,
             layer_number=obj.layer_number,
-            parent=obj.parent.id if obj.parent else None,
+            parent=obj.parent.layer_number if obj.parent else None,  
             avatar=obj.avatar,
             name=obj.name,
             last_update_date=obj.last_update_date,
             trigger=obj.trigger,
-            children=[child.id for child in obj.children.all()]
+            children=[child.layer_number for child in obj.children.all()]  
         )
 
 LayerOut.update_forward_refs()

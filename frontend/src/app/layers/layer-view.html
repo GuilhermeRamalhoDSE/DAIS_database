@@ -1,9 +1,9 @@
 <!-- ############ PAGE START-->
-<div class="padding" ng-controller="PeriodIAController">
+<div class="padding" ng-controller="LayerController">
     <div class="box">
         <div class="box-header">
-            <h2>Periods for {{ groupName }}</h2>
-            <small>View and manage periods associated with the group</small>
+            <h2>Layers for {{ periodName }}</h2>
+            <small>View and manage layers associated with the period</small>
         </div>
         <div class="p-a white lt box-shadow">
             <div class="row">
@@ -12,9 +12,9 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="goToCreatePeriod()">
+                    <button class="btn btn-fw primary" ng-click="createLayer()">
                         <i class="fa fa-fw fa-plus text-muted"></i>
-                        <span>New Period</span>
+                        <span>New Layer</span>
                     </button>
                     <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
                 </div>
@@ -24,34 +24,31 @@
             <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
                 <thead>
                     <tr>
-                        <th data-hide="phone,tablet">
-                            Start Date
-                        </th>
-                        <th data-hide="phone,tablet">
-                            End Date
+                        <th>
+                            Layer Number
                         </th>
                         <th>
-                            Last Update
+                            Parent
                         </th>
-                        <th>Active</th>
+                        <th>
+                            Name
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="period in periodList | filter:searchText">
-                        <td>{{ period.start_date | date:'mediumDate' }}</td>
-                        <td>{{ period.end_date | date:'mediumDate' }}</td>
-                        <td>{{ period.last_update | date:'mediumDate' }}</td>
+                    <tr ng-repeat="layer in layerList | filter:searchText">
+                        <td>{{ layer.layer_number }}</td>
+                        <td>{{ layer.parent }}</td>
+                        <td>{{ layer.name }}</td>
                         <td>
-                            <i class="fa fa-check text-success" ng-show="period.active"></i>
-                            <i class="fa fa-times text-danger" ng-show="!period.active"></i>
+                            <button class="btn btn-default btn-xs" ng-click="editLayer(layer.id)">Edit</button>
+                            <button class="btn btn-danger btn-xs" ng-click="deleteLayer(layer.id)">Delete</button>
                         </td>
                         <td>
-                            <button class="btn btn-default btn-xs" ng-click="editPeriod(period.id)">Edit</button>
-                            <button class="btn btn-danger btn-xs" ng-click="deletePeriod(period.id)">Delete</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-default btn-xs" ng-click="goToLayers(period.id)">Layers</button>
+                            <button class="btn btn-success btn-xs"
+                                ng-click="goToCreat(layer.layer_number)">New
+                                Children</button>
                         </td>
                     </tr>
                 </tbody>

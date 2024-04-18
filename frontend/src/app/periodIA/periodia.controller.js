@@ -71,6 +71,9 @@ angular.module('frontend').controller('PeriodIAController', ['$scope', 'PeriodIA
     $scope.editPeriod = function(periodId) {
         $state.go('base.periodia-update', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodId });
     };
+    $scope.goToLayers = function(periodId) {
+        $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodId });
+    };
 
     $scope.goBack = function() {
         $state.go('base.group-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
