@@ -1,5 +1,6 @@
-angular.module('frontend').controller('TotemUpdateController', ['$scope', 'TotemService', '$state', '$stateParams', 'AuthService', function($scope, TotemService, $state, $stateParams, AuthService) {
+angular.module('frontend').controller('TotemUpdateController', ['$scope', 'TotemService', '$state', '$stateParams', 'AuthService', 'GroupService', function($scope, TotemService, $state, $stateParams, AuthService, GroupService) {
     $scope.isSuperuser = AuthService.isSuperuser();
+    $scope.license_id = AuthService.getLicenseId()
     
     var clientId = $stateParams.clientId;
     var clientName = $stateParams.clientName;
@@ -7,6 +8,7 @@ angular.module('frontend').controller('TotemUpdateController', ['$scope', 'Totem
     var groupName = $stateParams.groupName;
     var totemId = $stateParams.totemId;
     $scope.totemData = {};
+    $scope.groups = [];
 
     $scope.loadTotemDetails = function() {
         if (!totemId) {
@@ -36,6 +38,14 @@ angular.module('frontend').controller('TotemUpdateController', ['$scope', 'Totem
         });
     };
 
+    $scope.loadGroups = function(license_id) {
+        GroupService.getAllByLicense().then(function(response) {
+            $scope.groups = response.data;
+        }).catch(function(error) {
+            console.error('Error loading groups:', error);
+        });
+    };
+
     $scope.updateTotem = function() {
         var totemDataToUpdate = angular.copy($scope.totemData);
         
@@ -59,4 +69,5 @@ angular.module('frontend').controller('TotemUpdateController', ['$scope', 'Totem
     };
 
     $scope.loadTotemDetails();
+    $scope.loadGroups();
 }]);
