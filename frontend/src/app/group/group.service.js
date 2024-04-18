@@ -14,6 +14,10 @@ angular.module('frontend').factory('GroupService', ['$http', function($http) {
         return $http.get(baseUrl, { params: { license_id: licenseId }});
     };
 
+    service.getAllByClient = function(clientId) {
+        return $http.get(baseUrl, { params: { client_id: clientId }});
+    };
+
     service.create = function(groupData) {
 
         return $http.post(baseUrl, groupData);
