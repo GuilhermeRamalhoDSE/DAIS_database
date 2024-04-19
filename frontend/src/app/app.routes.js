@@ -467,7 +467,17 @@ angular.module('frontend')
     $stateProvider
     .state('base.layer-new', {
         url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/layers/new',
-        templateUrl: 'app/layer/layer-new.html',
+        templateUrl: 'app/layers/layer-new.html',
+        controller: 'LayerController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+    $stateProvider
+    .state('base.layer-new-children', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/layers/new/:layerNumber',
+        templateUrl: 'app/layers/layer-new-children.html',
         controller: 'LayerController',
         data: {
             requireLogin: true,
@@ -489,7 +499,7 @@ angular.module('frontend')
     $stateProvider
     .state('base.layer-update', {
         url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/update/:layerId',
-        templateUrl: 'app/layer/layer-update.html',
+        templateUrl: 'app/layers/layer-update.html',
         controller: 'LayerUpdateController',
         data: {
             requireLogin: true,

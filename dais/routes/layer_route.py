@@ -7,6 +7,7 @@ from dais.schemas.layer_schema import LayerCreate, LayerUpdate, LayerOut
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
 from ninja.errors import HttpError
+from django.db.models import F
 
 
 layer_router = Router(tags=["Layer"])
@@ -55,7 +56,9 @@ def get_layers_by_period(request, period_id: int):
     if not has_permission(request, periodia):
         raise HttpError(403, "You do not have permission to view layers for this period.")
     
-    layers = Layer.objects.filter(period=periodia)
+    layers = Layer.objects.filter(period=periodia).order_by(
+        F('parent_id').asc(nulls_first=True), 'layer_number'
+    )
     return [LayerOut.from_orm(layer) for layer in layers]
 
 @layer_router.get("/layer/{layer_id}", response={200: LayerOut, 404: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])

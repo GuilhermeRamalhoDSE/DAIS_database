@@ -49,5 +49,9 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.post(`${baseUrl}${licenseId}/remove-language/`, { language_id: languageId });
     };
 
+    service.getAvatarsByLicense = function(licenseId) {
+        return $http.get(baseUrl + licenseId + '/avatars/');
+    };
+    
     return service;
 }]);

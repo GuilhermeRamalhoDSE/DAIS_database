@@ -1,28 +1,33 @@
 <!-- ############ PAGE START-->
-<div class="padding" ng-controller="LayerController">
+<div class="padding" ng-controller="NewChildrenLayerController">
     <div class="row">
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
-                    <h2>Create Layer</h2>
-                    <small>View and manage layers associated with the period</small>
+                    <h2>Create Child Layer</h2>
+                    <small>Create a new child layer under the selected parent layer.</small>
                 </div>
                 <div class="box-divider m-0"></div>
                 <div class="box-body">
-                    <form ng-submit="createLayer()" novalidate>
+                    <form ng-submit="createNewChildren()" novalidate>
+                     
+                        <div class="form-group">
+                            <label for="parent_layer_number">Parent</label>
+                            <input type="text" class="form-control" id="parent_layer_number" ng-model="newLayerChildren.parent_layer_number" readonly>
+                        </div>
                         <div class="form-group">
                             <label for="avatar_id">Select Avatar</label>
-                            <select id="avatar_id" class="form-control" ng-model="newLayer.avatar_id" ng-options="avatar.id as avatar.name for avatar in avatars" required>
+                            <select id="avatar_id" class="form-control" ng-model="newLayerChildren.avatar_id" ng-options="avatar.id as avatar.name for avatar in avatars" required>
                                 <option value="">--Choose an Avatar--</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="name">Layer Name</label>
-                            <input type="text" class="form-control" id="name" ng-model="newLayer.name" required>
+                            <input type="text" class="form-control" id="name" ng-model="newLayerChildren.name" required>
                         </div>
                         <div class="form-group">
                             <label for="trigger">Trigger</label>
-                            <input type="text" class="form-control" id="trigger" ng-model="newLayer.trigger">
+                            <input type="text" class="form-control" id="trigger" ng-model="newLayerChildren.trigger">
                         </div>
                         <button type="submit" class="btn btn-primary">Create</button>
                         <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>

@@ -1,13 +1,16 @@
-angular.module('frontend').controller('LayerController', ['$scope', 'LayerService', 'AuthService', '$state', '$stateParams', function($scope, LayerService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('LayerController', ['$scope', 'LayerService', 'LicenseService', 'AuthService', '$state', '$stateParams', function($scope, LayerService, LicenseService, AuthService, $state, $stateParams) {
     $scope.layers = [];
+    $scope.avatars = [];
     $scope.isSuperuser = AuthService.isSuperuser();
+    $scope.licenseId = AuthService.getLicenseId();
 
-    // Extrair parâmetros da URL
+
     let periodiaId = parseInt($stateParams.periodiaId, 10);
     let clientId = parseInt($stateParams.clientId, 10);
     let groupId = parseInt($stateParams.groupId, 10);
     let groupName = $stateParams.groupName;
     let clientName = $stateParams.clientName;
+    
 
     if (isNaN(periodiaId) || isNaN(clientId) || isNaN(groupId)) {
         alert('Invalid or missing IDs');
@@ -17,7 +20,6 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
 
     $scope.newLayer = {
         period_id: periodiaId,
-        parent_layer_number: null,
         avatar_id: null,
         name: "",
         trigger: ""
@@ -30,9 +32,25 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
             console.error('Error loading layers:', error);
         });
     };
+    
+    $scope.loadAvatars = function() {
+        if ($scope.licenseId) {
+            LicenseService.getAvatarsByLicense($scope.licenseId).then(function(response) {
+                $scope.avatars = response.data;
+            }).catch(function(error) {
+                console.error('Error loading avatars:', error);
+            });
+        } else {
+            console.error('License ID is undefined');
+        }
+    };       
 
     $scope.goToCreateLayer = function() {
         $state.go('base.layer-new', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+    };
+
+    $scope.goToNewChildren = function(layerNumber) {
+        $state.go('base.layer-new-children', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId,  layerNumber: layerNumber});
     };
 
     $scope.createLayer = function() {
@@ -54,6 +72,23 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
         $state.go('base.periodia-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
     };
 
+    $scope.cancelCreate = function() {
+        $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+    };
+
+    $scope.deleteLayer = function(layerId) {
+        if (confirm('Are you sure you want to delete this layer?')) {
+            LayerService.deleteLayer(layerId).then(function(response) {
+                alert('Layer deleted successfully!');
+                $scope.loadLayers(); 
+            }).catch(function(error) {
+                console.error('Error deleting layer:', error);
+                alert('Failed to delete layer: ' + error.data.message);
+            });
+        }
+    };
+    
+
     $scope.resetForm = function() {
         $scope.newLayer = {
             period_id: periodiaId,
@@ -65,4 +100,5 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
     };
 
     $scope.loadLayers();
+    $scope.loadAvatars();
 }]);

@@ -12,7 +12,7 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="createLayer()">
+                    <button class="btn btn-fw primary" ng-click="goToCreateLayer()">
                         <i class="fa fa-fw fa-plus text-muted"></i>
                         <span>New Layer</span>
                     </button>
@@ -47,7 +47,7 @@
                         </td>
                         <td>
                             <button class="btn btn-success btn-xs"
-                                ng-click="goToCreat(layer.layer_number)">New
+                                ng-click="goToNewChildren(layer.layer_number)">New
                                 Children</button>
                         </td>
                     </tr>
