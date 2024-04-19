@@ -42,7 +42,6 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
         group_id: groupId,
         installation_date: "",
         active: true,
-        screens: 0,
         comments: ""
     };
 
@@ -124,7 +123,6 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
             group_id: groupId,
             installation_date: "",
             active: true,
-            screens: 0,
             comments: ""
         };
     };

@@ -7,7 +7,6 @@ class TotemCreate(Schema):
     name: str
     installation_date: date
     active: bool
-    screens: int
     comments: Optional[str] = None
 
 class TotemUpdate(Schema):
@@ -15,7 +14,6 @@ class TotemUpdate(Schema):
     group_id: Optional[int] = None
     installation_date: Optional[date] = None
     active: Optional[bool] = None
-    screens: Optional[int] = None
     comments: Optional[str] = None
 
 class TotemOut(Schema):
@@ -24,5 +22,9 @@ class TotemOut(Schema):
     name: str
     installation_date: date
     active: bool
-    screens: int
+    screens_count: int 
     comments: Optional[str] = None
+
+    @staticmethod
+    def resolve_screens_count(obj):
+        return obj.screens_count
