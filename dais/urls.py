@@ -17,6 +17,7 @@ from .routes.timeslots_route import timeslot_router
 from .routes.contribution_route import contribution_router
 from .routes.detail_route import detail_router
 from .routes.layer_route import layer_router
+from .routes.screen_route import screen_router
 
 
 api = NinjaAPI()
@@ -31,6 +32,7 @@ api.add_router("/voices", voice_router)
 api.add_router("/languages", language_router)
 api.add_router("/groups", group_router)
 api.add_router("/totem", totem_router)
+api.add_router("/screens", screen_router)
 api.add_router("/logs", log_router)
 api.add_router("/periodds", periodds_router)
 api.add_router("/timeslot", timeslot_router)

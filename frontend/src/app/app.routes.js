@@ -294,6 +294,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.screen-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:totemId/:totemName/screen/new',
+        templateUrl: 'app/screens/screen-new.html',
+        controller: 'ScreenController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.screen-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:totemId/:totemName/screens',
+        templateUrl: 'app/screens/screen-view.html',
+        controller: 'ScreenController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.screen-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:totemId/:totemName/screen/update/:screenId',
+        templateUrl: 'app/screens/screen-update.html',
+        controller: 'ScreenUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.logs-new', {
         url: '/:clientId/:clientName/:groupId/:groupName/:totemId/:totemName/logs/new',
         templateUrl: 'app/logs/logs-new.html',

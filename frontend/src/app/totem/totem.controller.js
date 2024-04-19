@@ -102,6 +102,10 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
         $state.go('base.logs-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, totemId: totemId, totemName: totemName });
     };
 
+    $scope.goToScreens = function(totemId, totemName) {
+        $state.go('base.screen-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, totemId: totemId, totemName: totemName });
+    };
+
     $scope.deleteTotem = function(totemId) {
         if (!totemId) {
             return;

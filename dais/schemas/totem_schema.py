@@ -22,9 +22,9 @@ class TotemOut(Schema):
     name: str
     installation_date: date
     active: bool
-    screens_count: int 
+    screen_count: int 
     comments: Optional[str] = None
 
     @staticmethod
-    def resolve_screens_count(obj):
-        return obj.screens_count
+    def resolve_screen_count(obj):
+        return obj.screen_count

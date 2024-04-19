@@ -6,6 +6,7 @@ from dais.admins.voice_admin import VoiceAdmin
 from dais.admins.language_admin import LanguageAdmin
 from dais.admins.group_admin import GroupAdmin
 from dais.admins.totem_admin import TotemAdmin
+from dais.admins.screen_admin import ScreenAdmin
 from dais.admins.logs_admin import LogAdmin
 from dais.admins.periodds_admin import PeriodDSAdmin
 from dais.admins.periodia_admin import PeriodIAAdmin

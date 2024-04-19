@@ -9,13 +9,15 @@ class Totem(models.Model):
     active = models.BooleanField(default=True, verbose_name=_("Attivo"))
     comments = models.TextField(blank=True, null=True, verbose_name=_("Commenti"))
 
-    class Meta:
-        verbose_name = _("Totem")
-        verbose_name_plural = _("Totems")
-
     def __str__(self):
         return self.name
 
     @property
-    def screens_count(self):
+    def screen_count(self):
         return self.screen_set.count()
+    
+    class Meta:
+        verbose_name = _("Totem")
+        verbose_name_plural = _("Totems")
+
+    
