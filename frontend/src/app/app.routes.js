@@ -536,4 +536,36 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff']
         }
     });
+    $stateProvider
+    .state('base.contributionia-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerNumber/:layerName/contributionIA/new',
+        templateUrl: 'app/contributionsIA/contributionia-new.html',
+        controller: 'ContributioniaController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+
+    $stateProvider
+    .state('base.contributionia-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerNumber/:layerName/contributionsIA',
+        templateUrl: 'app/contributionsIA/contributionia-view.html',
+        controller: 'ContributioniaController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+
+    $stateProvider
+    .state('base.contributionia-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerNumber/:layerName/contributionIA/update/:contributioniaId',
+        templateUrl: 'app/contributionsIA/contributionia-update.html',
+        controller: 'ContributioniaUpdateController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
 }]);
