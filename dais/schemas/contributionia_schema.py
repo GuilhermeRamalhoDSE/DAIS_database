@@ -1,0 +1,56 @@
+from datetime import datetime
+from pydantic import BaseModel, Field, validator
+from typing import Optional, List
+from django.db.models.fields.files import FieldFile
+
+class LanguageOut(BaseModel):
+    id: int
+    name: str
+
+class LayerOut(BaseModel):
+    id: int
+    name: str
+
+class ContributionIABaseSchema(BaseModel):
+    name: str
+    file_path: Optional[str] = Field(None, alias='file')
+    language_id: int
+    layer_id: int
+    type: str
+    trigger: str
+    detail: Optional[List[str]] = None
+
+class ContributionIACreateSchema(ContributionIABaseSchema):
+    pass
+
+class ContributionIAUpdateSchema(BaseModel):
+    name: Optional[str] = None
+    file_path: Optional[str] = Field(None, alias='file')
+    language_id: Optional[int] = None
+    layer_id: Optional[int] = None
+    type: Optional[str] = None
+    trigger: Optional[str] = None
+    detail: Optional[List[str]] = None
+
+class ContributionIASchema(BaseModel):
+    id: int
+    name: str
+    file_path: Optional[str] = Field(None, alias='file')
+    language: LanguageOut
+    layer: LayerOut
+    type: str
+    trigger: str
+    detail: Optional[List[str]] = None
+    last_update_date: datetime
+    created_at: datetime
+
+    @validator('file_path', pre=True, always=True)
+    def convert_file_to_url(cls, v):
+        if isinstance(v, FieldFile) and v.name:
+            return v.url
+        return v
+
+    class Config:
+        from_attributes = True
+
+
