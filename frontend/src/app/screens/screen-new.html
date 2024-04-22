@@ -1,0 +1,47 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="ScreenController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Screen</h2>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="createScreen()" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Totem Name</label>
+                            <input type="text" class="form-control" ng-model="totemName" placeholder="Totem Name" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Typology</label>
+                            <select class="form-control" ng-model="newScreen.typology" required>
+                                <option value="">Select Typology</option>
+                                <option value="HOLOFAN">Holo Fan</option>
+                                <option value="LEDWALL">LED Wall</option>
+                                <option value="SCREEN">Screen</option>
+                                <option value="TOUCH_SCREEN">Touch Screen</option>
+                                <option value="PROJECTION">Projection</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Logo Upload</label>
+                            <input type="file" class="form-control" file-model="logo" placeholder="Upload Logo">
+                        </div>
+                        <div class="form-group">
+                            <label>Background Upload</label>
+                            <input type="file" class="form-control" file-model="background" placeholder="Upload Background">
+                        </div>
+                        <div class="form-group">
+                            <label>Footer</label>
+                            <input type="text" class="form-control" ng-model="newScreen.footer" placeholder="Footer Text">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

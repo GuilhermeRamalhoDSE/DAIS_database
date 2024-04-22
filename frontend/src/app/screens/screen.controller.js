@@ -11,8 +11,9 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
     let totemId = parseInt($stateParams.totemId || sessionStorage.getItem('lasttotemId'), 10);
     sessionStorage.setItem('lasttotemId', totemId.toString());
 
-    let totemName = parseInt($stateParams.totemName || sessionStorage.getItem('lasttotemName'), 10);
-    sessionStorage.setItem('lasttotemName', totemName.toString());
+    let totemName = $stateParams.totemName || sessionStorage.getItem('lasttotemName');
+    sessionStorage.setItem('lasttotemName', totemName);
+    $scope.totemName = totemName;
 
     $scope.newScreen = {
         totem_id: totemId,
