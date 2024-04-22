@@ -560,7 +560,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.contributionia-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/contributionIA/update/:contributioniaId',
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/contributionIA/update/:contributioniaId/:contributioniaName',
         templateUrl: 'app/contributionsIA/contributionia-update.html',
         controller: 'ContributionIAUpdateController',
         data: {

@@ -43,6 +43,9 @@
                             Trigger
                         </th>
                         <th>
+                            Details
+                        </th>
+                        <th>
                             Last Update
                         </th>
                         <th>Actions</th>
@@ -52,14 +55,18 @@
                     <tr ng-repeat="contribution in contributionList | filter:searchText">
                         <td>{{ contribution.layer.name }}</td>
                         <td>{{ contribution.name }}</td>
-                        <td> <button class="btn btn-primary btn-xs" ng-click="downloadFile(contribution.id)">Download File</button></td>
+                        <td> <button class="btn btn-primary btn-xs" ng-click="downloadFile(contribution.id)">Download
+                                File</button></td>
                         <td>{{ contribution.language.name }}</td>
                         <td>{{ contribution.type }}</td>
                         <td>{{ contribution.trigger }}</td>
+                        <td>{{ contribution.detail }}</td>
                         <td>{{ contribution.last_update_date | date:'medium' }}</td>
                         <td>
-                            <button class="btn btn-default btn-xs" ng-click="editContribution(contribution.id)">Edit</button>
-                            <button class="btn btn-danger btn-xs" ng-click="deleteContribution(contribution.id)">Delete</button>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="editContributionIA(contribution.id, contribution.name)">Edit</button>
+                            <button class="btn btn-danger btn-xs"
+                                ng-click="deleteContribution(contribution.id)">Delete</button>
                         </td>
                     </tr>
                 </tbody>

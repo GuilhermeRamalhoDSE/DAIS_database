@@ -40,6 +40,10 @@
                                 <option value="">--Select Language--</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="detail">Detail</label>
+                            <textarea class="form-control" id="detail" ng-model="newContribution.detail"></textarea>
+                        </div>
                         <button type="button" class="btn btn-primary" ng-click="createContribution()">Create</button>
                         <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
                     </form>

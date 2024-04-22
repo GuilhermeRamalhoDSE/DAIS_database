@@ -6,6 +6,7 @@ angular.module('frontend').controller('ContributionIAController', ['$scope', 'Co
     $scope.clientName = $stateParams.clientName;
     $scope.groupId = $stateParams.groupId;
     $scope.groupName = $stateParams.groupName;
+    $scope.periodiaId = $stateParams.periodiaId;
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
     $scope.languages = [];
@@ -83,7 +84,7 @@ angular.module('frontend').controller('ContributionIAController', ['$scope', 'Co
         });
     };
 
-    $scope.editContributionIA = function(contributioniaId) {
+    $scope.editContributionIA = function(contributioniaId, contributioniaName) {
         $state.go('base.contributionia-update', { 
             clientId: $scope.clientId,
             clientName: $scope.clientName,
@@ -92,7 +93,9 @@ angular.module('frontend').controller('ContributionIAController', ['$scope', 'Co
             periodiaId: $scope.periodiaId, 
             layerId: layerId,
             layerName: layerName,
-            contributioniaId: contributioniaId  });
+            contributioniaId: contributioniaId,
+            contributioniaName: contributioniaName,
+            });
     };
 
     $scope.deleteContribution = function(contributionId) {
@@ -147,6 +150,7 @@ angular.module('frontend').controller('ContributionIAController', ['$scope', 'Co
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
+            periodiaId: $scope.periodiaId,
             layerId: layerId,
             layerName: layerName
         });
@@ -158,6 +162,7 @@ angular.module('frontend').controller('ContributionIAController', ['$scope', 'Co
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
+            periodiaId: $scope.periodiaId,
             layerId: layerId,
             layerName: layerName
         });

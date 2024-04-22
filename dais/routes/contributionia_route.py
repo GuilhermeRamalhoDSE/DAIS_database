@@ -48,12 +48,12 @@ def read_contributions(request, layer_id: Optional[int] = None):
     contributions = [ContributionIASchema.from_orm(contribution) for contribution in query]
     return contributions
 
-@contributionia_router.get("/{contribution_id}", response=ContributionIASchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def read_contribution_by_id(request, contribution_id: int):
+@contributionia_router.get("/{contributionia_id}", response=ContributionIASchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def read_contribution_by_id(request, contributionia_id: int):
     if not check_user_permission(request):
         raise HttpError(403, "You do not have permission to view this contribution.")
 
-    contribution = get_object_or_404(ContributionIA, id=contribution_id)
+    contribution = get_object_or_404(ContributionIA, id=contributionia_id)
     return ContributionIASchema.from_orm(contribution)
 
 @contributionia_router.get("/download/{contribution_id}", auth=[QueryTokenAuth(), HeaderTokenAuth()])
