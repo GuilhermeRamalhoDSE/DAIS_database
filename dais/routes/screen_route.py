@@ -64,8 +64,8 @@ def read_screen_by_id(request, screen_id: int):
     else:
         raise HttpError(403, "You do not have permission to view this screen.")
 
-@screen_router.get("/download/{screen_id}", auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def download_screen_file(request, screen_id: int):
+@screen_router.get("/download/logo/{screen_id}", auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def download_screen_logofile(request, screen_id: int):
     user_info = get_user_info_from_token(request)
     is_superuser = user_info.get('is_superuser', False)
     user_license_id = str(user_info.get('license_id'))
@@ -75,13 +75,38 @@ def download_screen_file(request, screen_id: int):
     screen_license_id = str(screen.totem.group.client.license_id)
 
     if is_superuser or screen_license_id == user_license_id:
-        file_path = getattr(screen).path if getattr(screen, None) else None
-        if file_path and os.path.exists(file_path):
-            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
+        if screen.logo and hasattr(screen.logo, 'path'):
+            logo_path = screen.logo.path
+            if os.path.exists(logo_path):
+                return FileResponse(open(logo_path, 'rb'), as_attachment=True, filename=os.path.basename(logo_path))
+            else:
+                raise Http404("Logo does not exist.")
         else:
-            raise Http404("File does not exist.")
+            raise Http404("No logo associated with this screen.")
     else:
-        raise Http404("You do not have permission to download this file.")
+        raise Http404("You do not have permission to download this logo.")
+    
+@screen_router.get("/download/background/{screen_id}", auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def download_screen_backgroundfile(request, screen_id: int):
+    user_info = get_user_info_from_token(request)
+    is_superuser = user_info.get('is_superuser', False)
+    user_license_id = str(user_info.get('license_id'))
+
+    screen = get_object_or_404(Screen, id=screen_id)
+    
+    screen_license_id = str(screen.totem.group.client.license_id)
+
+    if is_superuser or screen_license_id == user_license_id:
+        if screen.background and hasattr(screen.background, 'path'):
+            background_path = screen.background.path
+            if os.path.exists(background_path):
+                return FileResponse(open(background_path, 'rb'), as_attachment=True, filename=os.path.basename(background_path))
+            else:
+                raise Http404("Logo does not exist.")
+        else:
+            raise Http404("No background associated with this screen.")
+    else:
+        raise Http404("You do not have permission to download this background.")
 
 @screen_router.put("/{screen_id}", response=ScreenOutSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_screen(request, screen_id: int, screen_in: ScreenUpdateSchema, logo: UploadedFile = File(None), background: UploadedFile = File(None)):

@@ -95,9 +95,9 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
         }
     };
 
-    $scope.downloadFile = function(screenId) {
+    $scope.downloadLogoFile = function(screenId) {
         if (screenId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/screens/download/' + screenId;
+            var downloadUrl = 'http://127.0.0.1:8000/api/screens/download/logo/' + screenId;
     
             $http({
                 url: downloadUrl,
@@ -120,6 +120,31 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
         }
     };
     
+    $scope.downloadBackgroundFile = function(screenId) {
+        if (screenId) {
+            var downloadUrl = 'http://127.0.0.1:8000/api/screens/download/background/' + screenId;
+    
+            $http({
+                url: downloadUrl,
+                method: 'GET',
+                responseType: 'blob',
+            }).then(function(response) {
+                var blob = new Blob([response.data], { type: response.headers('Content-Type') });
+                var downloadLink = angular.element('<a></a>');
+                downloadLink.attr('href', window.URL.createObjectURL(blob));
+                downloadLink.attr('download', 'BackgroundFile-' + screenId); 
+    
+                document.body.appendChild(downloadLink[0]);
+                downloadLink[0].click();
+                document.body.removeChild(downloadLink[0]);
+            }).catch(function(error) {
+                console.error('Error downloading logo:', error);
+            });
+        } else {
+            alert('Invalid Screen ID');
+        }
+    };
+
     $scope.cancelCreate = function() {
         $state.go('base.screen-view', { 
             clientId: $scope.clientId,
