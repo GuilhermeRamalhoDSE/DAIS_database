@@ -1,0 +1,43 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="ScreenUpdateController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Updating Screen in Totem: {{ totemName }}</h2>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="updateScreen()">
+                        <div class="form-group">
+                            <label>Typology</label>
+                            <select class="form-control" ng-model="screenData.typology" required>
+                                <option value="">Select Typology</option>
+                                <option value="HOLOFAN">Holo Fan</option>
+                                <option value="LEDWALL">LED Wall</option>
+                                <option value="SCREEN">Screen</option>
+                                <option value="TOUCH_SCREEN">Touch Screen</option>
+                                <option value="PROJECTION">Projection</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Footer Text</label>
+                            <input type="text" class="form-control" ng-model="screenData.footer" placeholder="Footer Text">
+                        </div>
+                        <div class="form-group">
+                            <label>Logo</label>
+                            <input type="file" file-model="logo" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Background</label>
+                            <input type="file" file-model="background" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
