@@ -10,6 +10,7 @@ from .routes.voice_route import voice_router
 from .routes.language_route import language_router
 from .routes.group_route import group_router
 from .routes.totem_route import totem_router
+from .routes.screen_route import screen_router
 from .routes.logs_route import log_router
 from .routes.periodds_route import periodds_router
 from .routes.periodia_route import periodia_router
@@ -17,7 +18,7 @@ from .routes.timeslots_route import timeslot_router
 from .routes.contribution_route import contribution_router
 from .routes.detail_route import detail_router
 from .routes.layer_route import layer_router
-from .routes.screen_route import screen_router
+from .routes.contributionia_route import contributionia_router
 
 
 api = NinjaAPI()
@@ -36,10 +37,11 @@ api.add_router("/screens", screen_router)
 api.add_router("/logs", log_router)
 api.add_router("/periodds", periodds_router)
 api.add_router("/timeslot", timeslot_router)
-api.add_router("/contributions", contribution_router)
+api.add_router("/contributionsDS", contribution_router)
 api.add_router("/details", detail_router)
 api.add_router("/periodia", periodia_router)
 api.add_router("/layers", layer_router)
+api.add_router("/contributionsIA", contributionia_router)
 
 urlpatterns = [
     path("api/", api.urls),
