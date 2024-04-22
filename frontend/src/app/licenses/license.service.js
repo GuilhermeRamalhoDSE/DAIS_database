@@ -52,6 +52,10 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
     service.getAvatarsByLicense = function(licenseId) {
         return $http.get(baseUrl + licenseId + '/avatars/');
     };
-    
+
+    service.getLanguagesByLicense = function(licenseId) {
+        return $http.get(baseUrl + licenseId + '/languages/');
+    };
+
     return service;
 }]);

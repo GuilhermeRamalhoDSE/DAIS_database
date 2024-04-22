@@ -1,0 +1,51 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="ContributionIAController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Contribution</h2>
+                    <small>Add a new contribution to the selected layer</small>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form novalidate>
+                        <div class="form-group">
+                            <label for="layerName">Layer Name</label>
+                            <input type="text" class="form-control" id="layerName" ng-model="layerName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" ng-model="newContribution.name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <select id="type" class="form-control" ng-model="newContribution.type" required>
+                                <option value="VIDEO">Video</option>
+                                <option value="IMAGE">Image</option>
+                                <option value="3D">3D</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="file">File Upload</label>
+                            <input type="file" class="form-control" file-model="file" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="trigger">Trigger</label>
+                            <input type="text" class="form-control" id="trigger" ng-model="newContribution.trigger">
+                        </div>
+                        <div class="form-group">
+                            <label for="language_id">Language</label>
+                            <select id="language_id" class="form-control" ng-model="newContribution.language_id" ng-options="language.id as language.name for language in languages" required>
+                                <option value="">--Select Language--</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" ng-click="createContribution()">Create</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

@@ -538,9 +538,9 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.contributionia-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerNumber/:layerName/contributionIA/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/contributionIA/new',
         templateUrl: 'app/contributionsIA/contributionia-new.html',
-        controller: 'ContributioniaController',
+        controller: 'ContributionIAController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']
@@ -549,9 +549,9 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.contributionia-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerNumber/:layerName/contributionsIA',
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/contributionsIA',
         templateUrl: 'app/contributionsIA/contributionia-view.html',
-        controller: 'ContributioniaController',
+        controller: 'ContributionIAController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']
@@ -560,9 +560,9 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.contributionia-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerNumber/:layerName/contributionIA/update/:contributioniaId',
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/contributionIA/update/:contributioniaId',
         templateUrl: 'app/contributionsIA/contributionia-update.html',
-        controller: 'ContributioniaUpdateController',
+        controller: 'ContributionIAUpdateController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']

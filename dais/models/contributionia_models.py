@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from dais.models.language_models import Language
 from dais.models.layer_models import Layer
+from django.utils.timezone import now
 
 def contribuitionia_directory_path(instance, filename):
     return 'contributionIA_{0}/{1}/{2}'.format(instance.id, instance.created_at.strftime('%Y/%m/%d'), filename)
@@ -20,7 +21,7 @@ class ContributionIA(models.Model):
     trigger = models.CharField(max_length=255, verbose_name=_("trigger"))
     last_update_date = models.DateTimeField(auto_now=True, verbose_name=_("data dell'ultima aggiornazione"), null=True, blank=True)
     detail = models.TextField(verbose_name=_("dettaglio"), null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("data di creazione"))
+    created_at = models.DateTimeField(default=now, verbose_name=_("Data di creazione"))
 
     def __str__(self):
         return self.name

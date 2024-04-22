@@ -76,6 +76,18 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
         $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
     };
 
+    $scope.goToContribution = function(layerId, layerName) {
+        $state.go('base.contributionia-view', {
+            clientId: clientId, 
+            clientName: clientName, 
+            groupId: groupId, 
+            groupName: groupName, 
+            periodiaId: periodiaId,
+            layerName: layerName,
+            layerId: layerId
+        });
+    };
+
     $scope.deleteLayer = function(layerId) {
         if (confirm('Are you sure you want to delete this layer?')) {
             LayerService.deleteLayer(layerId).then(function(response) {

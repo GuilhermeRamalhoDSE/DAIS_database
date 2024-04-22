@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from dais.models.license_models import License
 from dais.models.avatar_models import Avatar
 from dais.schemas.avatar_schema import AvatarSchema
+from dais.schemas.language_schema import LanguageOut
 from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarIdSchema, VoiceIdSchema, LanguageIdSchema
 from dais.models.voice_models import Voice 
 from dais.models.language_models import Language 
@@ -92,6 +93,12 @@ def get_avatars_by_license(request, license_id: int):
     license = get_object_or_404(License, id=license_id)
     avatars = license.avatars.all()
     return [AvatarSchema.from_orm(avatar) for avatar in avatars]
+
+@license_router.get("/{license_id}/languages/", response=List[LanguageOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_language_by_license(request, license_id: int):
+    license = get_object_or_404(License, id=license_id)
+    languages = license.languages.all()
+    return [LanguageOut.from_orm(language) for language in languages]
 
 @license_router.put("/{license_id}", response=LicenseSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_license(request, license_id: int, payload: LicenseUpdateSchema):

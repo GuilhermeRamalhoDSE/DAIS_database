@@ -7,9 +7,15 @@ class LanguageOut(BaseModel):
     id: int
     name: str
 
+    class Config:
+        from_attributes = True
+
 class LayerOut(BaseModel):
     id: int
     name: str
+
+    class Config:
+        from_attributes = True
 
 class ContributionIABaseSchema(BaseModel):
     name: str
