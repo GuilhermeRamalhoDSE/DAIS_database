@@ -60,6 +60,7 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
         if (response.data) {
             $scope.formationData = response.data;
             $scope.formationData.language_id = response.data.language.id; 
+            $scope.formationData.voice_id = response.data.voice.id; 
             } else {
                 console.error('formation not found');
                 alert('formation not found.');
@@ -85,8 +86,8 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
             formData.append('file', $scope.file);
         }
 
-        formData.append('data', JSON.stringify($scope.formationData));
-        FormationService.update($scope.formationiaId, formData).then(function(response) {
+        formData.append('formation_in', JSON.stringify($scope.formationData));
+        FormationService.update($scope.formationId, formData).then(function(response) {
             alert('formation updated successfully!');
             $state.go('base.formation-view', { 
                         clientId: $scope.clientId,
@@ -116,4 +117,5 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
 
     $scope.loadFormationDetails();
     $scope.loadLanguages();
+    $scope.loadVoices();
 }]);
