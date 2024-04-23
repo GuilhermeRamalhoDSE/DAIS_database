@@ -16,13 +16,18 @@
                         </div>
                         <div class="form-group">
                             <label for="language">Language</label>
-                            <select id="language" class="form-control" ng-model="contributionData.language_id" ng-options="language.id as language.name for language in languages" required>
+                            <select id="language" class="form-control" ng-model="contributionData.language_id"
+                                ng-options="language.id as language.name for language in languages" required>
                                 <option value="">--Choose a Language--</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="type">Type</label>
-                            <input type="text" class="form-control" id="type" ng-model="contributionData.type">
+                            <select id="type" class="form-control" ng-model="contributionData.type" required>
+                                <option value="VIDEO">Video</option>
+                                <option value="IMAGE">Image</option>
+                                <option value="3D">3D</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="trigger">Trigger</label>
