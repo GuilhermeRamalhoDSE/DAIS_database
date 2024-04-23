@@ -44,7 +44,6 @@ angular.module('frontend').controller('ContributionIAUpdateController', ['$scope
              return;
         }
     ContributionIAService.getById($scope.contributioniaId).then(function(response) {
-        console.log($scope.contributioniaId)
         if (response.data) {
             $scope.contributionData = response.data;
             $scope.contributionData.language_id = response.data.language.id; 
@@ -73,9 +72,8 @@ angular.module('frontend').controller('ContributionIAUpdateController', ['$scope
             formData.append('file', $scope.file);
         }
 
-        formData.append('contribution_in', JSON.stringify($scope.contributionData));
-
-        ContributionIAService.update($scope.contributionIAId, formData).then(function(response) {
+        formData.append('data', JSON.stringify($scope.contributionData));
+        ContributionIAService.update($scope.contributioniaId, formData).then(function(response) {
             alert('Contribution updated successfully!');
             $state.go('base.contributionia-view', { 
                         clientId: $scope.clientId,

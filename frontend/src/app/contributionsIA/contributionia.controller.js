@@ -23,6 +23,7 @@ angular.module('frontend').controller('ContributionIAController', ['$scope', 'Co
         name: '',
         type: '',
         trigger: '',
+        detail: '',
         language_id: null
     };
 
@@ -121,7 +122,7 @@ angular.module('frontend').controller('ContributionIAController', ['$scope', 'Co
 
     $scope.downloadFile = function(contributionId) {
         if (contributionId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/contributionsia/download/' + contributionId;
+            var downloadUrl = 'http://127.0.0.1:8000/api/contributionsIA/download/' + contributionId;
     
             $http({
                 url: downloadUrl,

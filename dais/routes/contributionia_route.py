@@ -5,6 +5,7 @@ from ninja.errors import HttpError
 from dais.schemas.contributionia_schema import ContributionIACreateSchema, ContributionIAUpdateSchema, ContributionIASchema, LanguageOut, LayerOut
 from dais.models.contributionia_models import ContributionIA
 from dais.models.layer_models import Layer
+from dais.models.periodia_models import PeriodIA
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token, check_user_permission
 from django.http import Http404, FileResponse
@@ -68,24 +69,39 @@ def download_contribution_file(request, contribution_id: int):
     else:
         raise Http404("No file associated with this contribution.")
 
-@contributionia_router.put("/{contribution_id}", response=ContributionIASchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def update_contribution(request, contribution_id: int, data: ContributionIAUpdateSchema, file: UploadedFile = File(None)):
-    contribution = get_object_or_404(ContributionIA, id=contribution_id)
+@contributionia_router.put("/{contributionia_id}", response=ContributionIASchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def update_contribution(request, contributionia_id: int, data: ContributionIAUpdateSchema, file: UploadedFile = File(None)):
+    user_info = get_user_info_from_token(request)
+    contribution = get_object_or_404(ContributionIA, id=contributionia_id)
+    layer = get_object_or_404(Layer, id=contribution.layer_id)
+    period = get_object_or_404(PeriodIA, id=layer.period_id)
 
+    if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
+       raise Http404("You do not have permission to update this contribution.")
+     
     for attribute, value in data.dict(exclude_none=True).items():
         setattr(contribution, attribute, value)
 
-    if file:
-        if contribution.file and default_storage.exists(contribution.file.name):
+    if file and contribution.file:
+        if default_storage.exists(contribution.file.name):
             default_storage.delete(contribution.file.name)
+
+    if file:
         contribution.file = file
 
     contribution.save()
-    return ContributionIASchema.from_orm(contribution)
+    return contribution
 
-@contributionia_router.delete("/{contribution_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def delete_contribution(request, contribution_id: int):
-    contribution = get_object_or_404(ContributionIA, id=contribution_id)
+@contributionia_router.delete("/{contributionia_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def delete_contribution(request, contributionia_id: int):
+    user_info = get_user_info_from_token(request)
+    contribution = get_object_or_404(ContributionIA, id=contributionia_id)
+    layer = get_object_or_404(Layer, id=contribution.layer_id)
+    period = get_object_or_404(PeriodIA, id=layer.period_id)
+
+    if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
+       raise Http404("You do not have permission to delete this contribution.")
+    
     if contribution.file:
         file_path = contribution.file.path
         if os.path.exists(file_path):

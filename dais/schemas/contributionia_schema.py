@@ -24,7 +24,7 @@ class ContributionIABaseSchema(BaseModel):
     layer_id: int
     type: str
     trigger: str
-    detail: Optional[List[str]] = None
+    detail: Optional[str] = None
 
 class ContributionIACreateSchema(ContributionIABaseSchema):
     pass
@@ -36,7 +36,7 @@ class ContributionIAUpdateSchema(BaseModel):
     layer_id: Optional[int] = None
     type: Optional[str] = None
     trigger: Optional[str] = None
-    detail: Optional[List[str]] = None
+    detail: Optional[str] = None
 
 class ContributionIASchema(BaseModel):
     id: int
@@ -46,7 +46,7 @@ class ContributionIASchema(BaseModel):
     layer: LayerOut
     type: str
     trigger: str
-    detail: Optional[List[str]] = None
+    detail: Optional[str] = None
     last_update_date: datetime
     created_at: datetime
 
