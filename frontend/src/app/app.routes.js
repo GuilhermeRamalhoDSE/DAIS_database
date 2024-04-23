@@ -568,4 +568,36 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff']
         }
     });
+    $stateProvider
+    .state('base.formation-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/formation/new',
+        templateUrl: 'app/formations/formation-new.html',
+        controller: 'FormationController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+
+    $stateProvider
+    .state('base.formation-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/formations',
+        templateUrl: 'app/formations/formation-view.html',
+        controller: 'FormationController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+
+    $stateProvider
+    .state('base.formation-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/formation/update/:formationId/:formationName',
+        templateUrl: 'app/formations/formation-update.html',
+        controller: 'FormationUpdateController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
 }]);
