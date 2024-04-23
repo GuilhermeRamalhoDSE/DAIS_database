@@ -1,13 +1,12 @@
 from ninja import Router, UploadedFile, File
 from django.shortcuts import get_object_or_404
 from typing import List, Optional
-from ninja.errors import HttpError
 from dais.schemas.formation_schema import FormationCreateSchema, FormationUpdateSchema, FormationSchema, LanguageOut, LayerOut, VoiceOut
 from dais.models.formation_models import Formation
 from dais.models.layer_models import Layer
 from dais.models.periodia_models import PeriodIA
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
-from dais.utils import get_user_info_from_token, check_user_permission
+from dais.utils import get_user_info_from_token
 from django.http import Http404, FileResponse
 import os
 from django.core.files.storage import default_storage
