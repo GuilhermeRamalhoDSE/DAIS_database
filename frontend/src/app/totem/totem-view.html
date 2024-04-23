@@ -58,9 +58,10 @@
                             <i class="fa fa-check text-success" ng-show="totem.active"></i>
                             <i class="fa fa-times text-danger" ng-show="!totem.active"></i>
                         </td>
-                        <td>{{ totem.screens_count }}</td>
+                        <td>{{ totem.screen_count }}</td>
                         <td>{{ totem.comments }}</td>
                         <td>
+                            <button class="btn btn-success btn-xs" ng-click="duplicateTotem(totem)">Duplicate</button>
                             <button class="btn btn-default btn-xs" ng-click="editTotem(totem.id)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteTotem(totem.id)">Delete</button>
                         </td>

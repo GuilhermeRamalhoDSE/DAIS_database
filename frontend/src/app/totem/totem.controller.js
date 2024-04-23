@@ -75,7 +75,6 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
             totemData.installation_date = moment(totemData.installation_date, "DD/MM/YYYY").format('YYYY-MM-DD');
         }
 
-    
         TotemService.createTotem(totemData).then(function(response) {
             alert('Totem created successfully!');
             $scope.loadTotems();
@@ -120,6 +119,24 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
             });
         }
     };
+
+    $scope.duplicateTotem = function(totem) {
+        var totemData = angular.copy(totem);
+        delete totemData.id; 
+
+        if (totemData.installation_date) {
+            totemData.installation_date = moment(totemData.installation_date).format('YYYY-MM-DD');
+        }
+    
+        TotemService.createTotem(totemData).then(function(response) {
+            alert('Totem duplicated successfully!');
+            $scope.loadTotems();
+        }).catch(function(error) {
+            console.error('Error duplicating totem:', error);
+            alert('Error duplicating totem: Check console for details.');
+        });
+    };
+    
 
     $scope.resetForm = function() {
         $scope.newTotem = {
