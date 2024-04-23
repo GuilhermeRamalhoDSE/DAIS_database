@@ -1,0 +1,49 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="FormationController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Formation</h2>
+                    <small>Add a new formation to the selected layer</small>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form novalidate>
+                        <div class="form-group">
+                            <label for="layerName">Layer Name</label>
+                            <input type="text" class="form-control" id="layerName" ng-model="layerName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" ng-model="newFormation.name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="file">File Upload</label>
+                            <input type="file" class="form-control" file-model="file" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="language_id">Language</label>
+                            <select id="language_id" class="form-control" ng-model="newFormation.language_id" ng-options="language.id as language.name for language in languages" required>
+                                <option value="">--Select Language--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="voice_id">Voice</label>
+                            <select id="voice_id" class="form-control" ng-model="newFormation.voice_id" ng-options="voice.id as voice.name for voice in voices" required>
+                                <option value="">--Select Voice--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trigger">Trigger</label>
+                            <input type="text" class="form-control" id="trigger" ng-model="newFormation.trigger">
+                        </div>
+                        <button type="button" class="btn btn-primary" ng-click="createFormation()">Create</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

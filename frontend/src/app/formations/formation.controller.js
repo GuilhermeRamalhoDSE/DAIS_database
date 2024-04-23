@@ -111,7 +111,7 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
         });
     };
 
-    $scope.deleteFormations = function(formationId) {
+    $scope.deleteFormation = function(formationId) {
         var isConfirmed = confirm('Are you sure you want to delete this formation?');
         if (isConfirmed) {
             FormationService.delete(formationId).then(function(response) {
