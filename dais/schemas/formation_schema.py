@@ -46,7 +46,7 @@ class FormationSchema(BaseModel):
     file_path: Optional[str] = Field(None, alias='file')
     layer: LayerOut
     voice: VoiceOut
-    languege: LanguageOut
+    language: LanguageOut
     trigger: str
     last_update_date: datetime
     created_at: datetime
