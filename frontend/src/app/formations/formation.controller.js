@@ -183,5 +183,5 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
     
     $scope.loadLanguages();
     $scope.loadVoices();
-    $scope.loadformations();
+    $scope.loadFormations();
 }])
