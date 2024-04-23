@@ -46,13 +46,14 @@
                             <button class="btn btn-danger btn-xs" ng-click="deleteLayer(layer.id)">Delete</button>
                         </td>
                         <td>
-                            <button class="btn btn-success btn-xs"
-                                ng-click="goToNewChildren(layer.layer_number)">New
+                            <button class="btn btn-success btn-xs" ng-click="goToNewChildren(layer.layer_number)">New
                                 Children</button>
                         </td>
                         <td>
                             <button class="btn btn-default btn-xs"
                                 ng-click="goToContribution(layer.id, layer.name)">Contributions</button>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="goToFormation(layer.id, layer.name)">Formations</button>
                         </td>
                     </tr>
                 </tbody>
