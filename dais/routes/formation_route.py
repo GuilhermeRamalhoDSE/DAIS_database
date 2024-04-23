@@ -16,8 +16,7 @@ formation_router = Router(tags=['Formations'])
 @formation_router.post('/', response={201: FormationSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_formation(request, formation_in: FormationCreateSchema, file: UploadedFile = File(...)):
     user_info = get_user_info_from_token(request)
-    formation = get_object_or_404(Formation, id=formation_in.id)
-    layer = get_object_or_404(Layer, id=formation.layer_id)
+    layer = get_object_or_404(Layer, id=formation_in.layer_id)
     period = get_object_or_404(PeriodIA, id=layer.period_id)
 
     if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
