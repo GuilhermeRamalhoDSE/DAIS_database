@@ -37,10 +37,6 @@ angular.module('frontend').controller('ContributionController', ['$scope', '$fil
     };
 
     $scope.loadContributions = function() {
-        if (!timeslotId) {
-            console.error('Time Slot ID is missing');
-            return;
-        }
         ContributionService.getAll(timeslotId).then(function(response) {
             $scope.contributionList = response.data;
         }).catch(function(error) {

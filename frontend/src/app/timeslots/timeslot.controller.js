@@ -1,11 +1,13 @@
 angular.module('frontend').controller('TimeSlotController', ['$scope', 'TimeslotService', '$state', '$stateParams',
 function($scope, TimeslotService, $state, $stateParams) {
     $scope.timeslots = [];
-    $scope.perioddsId = $stateParams.perioddsId;
     $scope.clientId = $stateParams.clientId;
     $scope.clientName = $stateParams.clientName;
     $scope.groupId = $stateParams.groupId;
     $scope.groupName = $stateParams.groupName;
+
+    let perioddsId = parseInt($stateParams.perioddsId || sessionStorage.getItem('lastPerioddsId'), 10);
+    sessionStorage.setItem('lastPerioddsId', perioddsId.toString());
 
     function formatTimeForInput(date) {
         var localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
@@ -15,12 +17,11 @@ function($scope, TimeslotService, $state, $stateParams) {
     $scope.newTimeslot = {
         start_time: new Date(),
         end_time: new Date(),
-        period_id: $scope.perioddsId
+        period_id: perioddsId
     };
 
     $scope.loadTimeslots = function() {
-        if (!$scope.perioddsId) return;
-        TimeslotService.getAllTimeslots($scope.perioddsId).then(function(response) {
+        TimeslotService.getAllTimeslots(perioddsId).then(function(response) {
             $scope.timeslots = response.data;
         }).catch(function(error) {
             console.error('Error loading timeslots:', error);
@@ -32,7 +33,7 @@ function($scope, TimeslotService, $state, $stateParams) {
         var endTime = moment($scope.newTimeslot.end_time).tz('Europe/Rome', true);
 
         var timeslotData = {
-            period_id: $scope.perioddsId,
+            period_id: perioddsId,
             start_time: startTime.format('HH:mm'),
             end_time: endTime.format('HH:mm')
         };
@@ -45,7 +46,7 @@ function($scope, TimeslotService, $state, $stateParams) {
                 clientName: $scope.clientName,
                 groupId: $scope.groupId,
                 groupName: $scope.groupName,
-                perioddsId: $scope.perioddsId
+                perioddsId: perioddsId
             });
         }).catch(function(error) {
             console.error('Error creating timeslot:', error);
@@ -59,7 +60,7 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            perioddsId: $scope.perioddsId,
+            perioddsId: perioddsId,
             timeslotId: timeslotId
         });
     };
@@ -76,12 +77,12 @@ function($scope, TimeslotService, $state, $stateParams) {
     };
 
     $scope.goBack = function() {
-        $state.go('base.group-view', {
+        $state.go('base.periodds-view', {
             clientId: $scope.clientId,
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            perioddsId: $scope.perioddsId
+            perioddsId: perioddsId
         });
     };
 
@@ -91,7 +92,7 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            perioddsId: $scope.perioddsId,
+            perioddsId: perioddsId,
             timeslotId: timeslotId
         });
     };
@@ -102,7 +103,7 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            perioddsId: $scope.perioddsId
+            perioddsId: perioddsId
         });
     };
 
@@ -112,7 +113,7 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            perioddsId: $scope.perioddsId
+            perioddsId: perioddsId
         });
     };
 
@@ -121,7 +122,7 @@ function($scope, TimeslotService, $state, $stateParams) {
         $scope.newTimeslot = {
             start_time: formatTimeForInput(now),
             end_time: formatTimeForInput(new Date(now.getTime() + 60 * 60000)), 
-            period_id: $scope.perioddsId
+            period_id: perioddsId
         };
     };
 

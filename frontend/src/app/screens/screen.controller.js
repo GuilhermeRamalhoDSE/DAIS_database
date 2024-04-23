@@ -157,7 +157,7 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
     };
 
     $scope.goBack = function() {
-        $state.go('base.contribution-view', { 
+        $state.go('base.totem-view', { 
             clientId: $scope.clientId,
             clientName: $scope.clientName,
             groupId: $scope.groupId,

@@ -1,9 +1,9 @@
 angular.module('frontend').factory('ContributionService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://127.0.0.1:8000/api/contributions/';
+    var baseUrl = 'http://127.0.0.1:8000/api/contributionsDS/';
 
-    service.getAll = function(timeSlotId) {
-        return $http.get(baseUrl, { params: { time_slot_id: timeSlotId } });
+    service.getAll = function(timeslotId) {
+        return $http.get(baseUrl, { params: { time_slot_id: timeslotId } });
     };
 
     service.getById = function(contributionId) {
