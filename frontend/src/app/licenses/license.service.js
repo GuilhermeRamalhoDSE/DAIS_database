@@ -57,5 +57,9 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.get(baseUrl + licenseId + '/languages/');
     };
 
+    service.getVoicesByLicense = function(licenseId) {
+        return $http.get(baseUrl + licenseId + '/voices/');
+    };
+
     return service;
 }]);
