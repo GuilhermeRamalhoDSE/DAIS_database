@@ -15,3 +15,4 @@ from dais.admins.contribution_admin import ContributionAdmin
 from dais.admins.detail_admin import DetailAdmin
 from dais.admins.layer_admin import LayerAdmin
 from dais.admins.contributionia_admin import ContributionIAAdmin
+from dais.admins.formation_admin import FormationAdmin
