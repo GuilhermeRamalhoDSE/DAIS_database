@@ -224,6 +224,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.module-new', {
+        url: '/module/new',
+        templateUrl: 'app/module/module-new.html',
+        controller: 'ModuleController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.module-view', {
+        url: '/modules',
+        templateUrl: 'app/module/module-view.html',
+        controller: 'ModuleController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.module-update', {
+        url: '/module/update/:moduleId/:moduleName',
+        templateUrl: 'app/module/module-update.html',
+        controller: 'ModuleUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
     .state('base.group-new', {
         url: '/:clientId/:clientName/group/new',
         templateUrl: 'app/group/group-new.html',
