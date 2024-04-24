@@ -42,7 +42,7 @@ def update_screen_type(request, screentype_id: int, screentype_in: ScreenTypeIn)
     screentype.save()
     return ScreenTypeOut.from_orm(screentype)
 
-@screentype_router.delete('/{screentype_id}', response={204, None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+@screentype_router.delete('/{screentype_id}', response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def delete_screen_type(request, screentype_id: int):
     if not check_super_user(request):
         raise HttpError(403, "Only superusers can delete screen types.")

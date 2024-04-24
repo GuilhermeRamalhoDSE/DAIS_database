@@ -5,6 +5,7 @@ from dais.admins.avatar_admin import AvatarAdmin
 from dais.admins.voice_admin import VoiceAdmin
 from dais.admins.language_admin import LanguageAdmin
 from dais.admins.module_admin import ModuleAdmin
+from dais.admins.screentype_admin import ScreenTypeAdmin
 from dais.admins.group_admin import GroupAdmin
 from dais.admins.totem_admin import TotemAdmin
 from dais.admins.screen_admin import ScreenAdmin
