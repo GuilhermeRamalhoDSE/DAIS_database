@@ -18,7 +18,7 @@ license_router = Router(tags=['Licenses'])
 
 @license_router.post("/", response={201: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_license(request, payload: LicenseCreateSchema):
-    license_data = payload.dict(exclude={'avatars_id', 'voices_id', 'languages_id', 'module_id'})
+    license_data = payload.dict(exclude={'avatars_id', 'voices_id', 'languages_id', 'modules_id'})
     license_obj = License.objects.create(**license_data)
     
     return LicenseSchema.from_orm(license_obj)
