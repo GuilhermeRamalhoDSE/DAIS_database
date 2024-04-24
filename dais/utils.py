@@ -41,3 +41,8 @@ def check_user_permission(request, user_id=None):
         return True 
 
     return False
+
+def check_super_user(request):
+    user_info = get_user_info_from_token(request)
+    is_superuser = user_info.get('is_superuser', False) in [True, 'True', 'true', 1, '1']
+    return is_superuser
