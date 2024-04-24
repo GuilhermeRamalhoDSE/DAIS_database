@@ -49,6 +49,34 @@ def duplicate_totem(request, totem_id: int):
 
     return 201, TotemOut.from_orm(new_totem)
 
+@totem_router.post("/{totem_id}/activate", response={200: TotemOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def active_totem(request, totem_id: int):
+    user_info = get_user_info_from_token(request)
+    totem = get_object_or_404(Totem, id=totem_id)
+    group = get_object_or_404(Group, id=totem.group_id)
+    client = get_object_or_404(Client, id=group.client_id)
+
+    if not user_info.get("is_superuser") and str(client.license_id) != str(user_info.get('license_id')):
+        raise Http404('You do not have permission to active this totem.')
+    
+    totem.active=True
+    totem.save()
+    return 200, totem
+
+@totem_router.post("/{totem_id}/deactivate", response={200: TotemOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def deactive_totem(request, totem_id: int):
+    user_info = get_user_info_from_token(request)
+    totem = get_object_or_404(Totem, id=totem_id)
+    group = get_object_or_404(Group, id=totem.group_id)
+    client = get_object_or_404(Client, id=group.client_id)
+
+    if not user_info.get("is_superuser") and str(client.license_id) != str(user_info.get('license_id')):
+        raise Http404('You do not have permission to deactive this totem.')
+    
+    totem.active=False
+    totem.save()
+    return 200, totem 
+
 @totem_router.get("/", response=List[TotemOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_totems(request, group_id: Optional[int] = None):
     if not check_user_permission(request):
@@ -65,11 +93,12 @@ def read_totems(request, group_id: Optional[int] = None):
     else:
         group = get_object_or_404(Group, id=group_id)
     
-    totems_query = Totem.objects.filter(group=group)
+    totems_query = Totem.objects.filter(group=group).order_by('id')
     
     totems = [TotemOut.from_orm(totem) for totem in totems_query]
     
     return totems
+
 
 @totem_router.get("/{totem_id}", response={200: TotemOut, 404: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def get_totem_by_id(request, totem_id: int):

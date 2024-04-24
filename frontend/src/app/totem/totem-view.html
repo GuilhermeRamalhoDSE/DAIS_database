@@ -55,8 +55,7 @@
                         <td>{{ clientName }}</td>
                         <td>{{ totem.installation_date }}</td>
                         <td>
-                            <i class="fa fa-check text-success" ng-show="totem.active"></i>
-                            <i class="fa fa-times text-danger" ng-show="!totem.active"></i>
+                            <input type="checkbox" ng-checked="totem.active" ng-click="toggleActive(totem)">
                         </td>
                         <td>{{ totem.screen_count }}</td>
                         <td>{{ totem.comments }}</td>

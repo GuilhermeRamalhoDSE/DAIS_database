@@ -129,6 +129,28 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
             alert('Error duplicating totem: Check console for details.');
         });
     };
+
+    $scope.toggleActive = function(totem) {
+        if (totem.active) {
+            TotemService.deactivate(totem.id)
+                .then(function() {
+                    totem.active = false;
+                    $scope.loadTotems(totem.group_id);
+                })
+                .catch(function(error) {
+                    console.error('Error deactivating totem:', error);
+                });
+        } else {
+            TotemService.activate(totem.id)
+                .then(function() {
+                    totem.active = true;
+                    $scope.loadTotems(totem.group_id);
+                })
+                .catch(function(error) {
+                    console.error('Error activating totem:', error);
+                });
+        }
+    };
     
     $scope.resetForm = function() {
         $scope.newTotem = { 

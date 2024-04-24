@@ -26,5 +26,13 @@ angular.module('frontend').factory('TotemService', ['$http', function($http) {
         return $http.delete(baseUrl + totemId);
     };
 
+    service.activate = function(totemId) {
+        return $http.post(baseUrl + totemId + '/activate');
+    };
+
+    service.deactivate = function(totemId) {
+        return $http.post(baseUrl + totemId + '/deactivate');
+    };
+
     return service;
 }]);
