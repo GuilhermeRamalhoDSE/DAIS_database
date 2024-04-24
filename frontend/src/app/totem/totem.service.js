@@ -13,7 +13,11 @@ angular.module('frontend').factory('TotemService', ['$http', function($http) {
     service.createTotem = function(totemData) {
         return $http.post(baseUrl, totemData);
     };
-
+    
+    service.duplicateTotem = function(totemId) {
+        return $http.post(baseUrl + 'duplicate/' + totemId);
+    };
+    
     service.updateTotem = function(totemId, totemData) {
         return $http.put(baseUrl + totemId, totemData);
     };

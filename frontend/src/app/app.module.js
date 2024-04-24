@@ -58,3 +58,12 @@ angular.module('frontend').filter('formatTime', function() {
         return input; 
     };
 });
+app.directive('initFootable', function($timeout) {
+    return {
+        link: function(scope, element) {
+            $timeout(function() {
+                $('.table').footable();
+            }, 0);
+        }
+    };
+});

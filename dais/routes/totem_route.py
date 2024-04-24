@@ -9,6 +9,7 @@ from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token, check_user_permission
 from django.http import Http404
 from ninja.errors import HttpError
+from dais.services import duplicate_totem_and_screens
 
 totem_router = Router(tags=["Totem"])
 
@@ -33,6 +34,20 @@ def create_totem(request, payload: TotemCreate):
     totem = Totem.objects.create(**payload.dict())
 
     return 201, totem
+
+@totem_router.post("/duplicate/{totem_id}", response={201: TotemOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def duplicate_totem(request, totem_id: int):
+    user_info = get_user_info_from_token(request)
+    totem = get_object_or_404(Totem, id=totem_id)
+    group = get_object_or_404(Group, id=totem.group_id)
+    client = get_object_or_404(Client, id=group.client_id)
+
+    if not user_info.get("is_superuser") and str(client.license_id) != str(user_info.get('license_id')):
+        raise Http404('You do not have permission to duplicate this totem.')
+    
+    new_totem = duplicate_totem_and_screens(totem_id)
+
+    return 201, TotemOut.from_orm(new_totem)
 
 @totem_router.get("/", response=List[TotemOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_totems(request, group_id: Optional[int] = None):
