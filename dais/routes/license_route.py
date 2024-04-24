@@ -7,10 +7,12 @@ from dais.schemas.avatar_schema import AvatarSchema
 from dais.schemas.language_schema import LanguageOut
 from dais.schemas.voice_schema import VoiceOut
 from dais.schemas.module_schema import ModuleOut
-from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarIdSchema, VoiceIdSchema, LanguageIdSchema, ModuleIdSchema
+from dais.schemas.screentype_schema import ScreenTypeOut
+from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarIdSchema, VoiceIdSchema, LanguageIdSchema, ModuleIdSchema, ScreenTypeIdSchema
 from dais.models.voice_models import Voice 
 from dais.models.language_models import Language 
 from dais.models.module_models import Module
+from dais.models.screentype_models import ScreenType
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 
 
@@ -18,7 +20,7 @@ license_router = Router(tags=['Licenses'])
 
 @license_router.post("/", response={201: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_license(request, payload: LicenseCreateSchema):
-    license_data = payload.dict(exclude={'avatars_id', 'voices_id', 'languages_id', 'modules_id'})
+    license_data = payload.dict(exclude={'avatars_id', 'voices_id', 'languages_id', 'modules_id', 'screentypes_id'})
     license_obj = License.objects.create(**license_data)
     
     return LicenseSchema.from_orm(license_obj)
@@ -81,7 +83,7 @@ def remove_language_from_license(request, license_id: int, payload: LanguageIdSc
     return LicenseSchema.from_orm(license)
 
 @license_router.post("/{license_id}/add-module/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def add_language_to_license(request, license_id: int, payload: ModuleIdSchema):
+def add_module_to_license(request, license_id: int, payload: ModuleIdSchema):
     license = get_object_or_404(License, id=license_id)
     module = get_object_or_404(Module, id=payload.module_id)
     
@@ -90,12 +92,31 @@ def add_language_to_license(request, license_id: int, payload: ModuleIdSchema):
     return LicenseSchema.from_orm(license)
 
 @license_router.post("/{license_id}/remove-module/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def remove_language_from_license(request, license_id: int, payload: ModuleIdSchema):
+def remove_module_from_license(request, license_id: int, payload: ModuleIdSchema):
     license = get_object_or_404(License, id=license_id)
     module = get_object_or_404(Module, id=payload.module_id)
     
-    if license.languages.filter(id=module.id).exists():
-        license.languages.remove(module)
+    if license.modules.filter(id=module.id).exists():
+        license.modules.remove(module)
+    
+    return LicenseSchema.from_orm(license)
+
+@license_router.post("/{license_id}/add-screentype/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def add_screentype_to_license(request, license_id: int, payload: ScreenTypeIdSchema):
+    license = get_object_or_404(License, id=license_id)
+    screentype = get_object_or_404(ScreenType, id=payload.screentype_id)
+    
+    license.screentypes.add(screentype)
+    
+    return LicenseSchema.from_orm(license)
+
+@license_router.post("/{license_id}/remove-screentype/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def remove_screentype_from_license(request, license_id: int, payload: ScreenTypeIdSchema):
+    license = get_object_or_404(License, id=license_id)
+    screentype = get_object_or_404(ScreenType, id=payload.screentype_id)
+    
+    if license.screentypes.filter(id=screentype.id).exists():
+        license.screentypes.remove(screentype)
     
     return LicenseSchema.from_orm(license)
 
@@ -129,10 +150,16 @@ def get_voice_by_license(request, license_id: int):
     return [VoiceOut.from_orm(voice) for voice in voices]
 
 @license_router.get("/{license_id}/modules/", response=List[ModuleOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def get_voice_by_license(request, license_id: int):
+def get_module_by_license(request, license_id: int):
     license = get_object_or_404(License, id=license_id)
     modules = license.modules.all()
     return [ModuleOut.from_orm(module) for module in modules]
+
+@license_router.get("/{license_id}/screentypes/", response=List[ScreenTypeOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_screentype_by_license(request, license_id: int):
+    license = get_object_or_404(License, id=license_id)
+    screentypes = license.screentypes.all()
+    return [ScreenTypeOut.from_orm(screentype) for screentype in screentypes]
 
 @license_router.put("/{license_id}", response=LicenseSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_license(request, license_id: int, payload: LicenseUpdateSchema):

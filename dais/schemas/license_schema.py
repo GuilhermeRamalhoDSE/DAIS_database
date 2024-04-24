@@ -6,6 +6,7 @@ from .avatar_schema import AvatarSchema
 from .voice_schema import VoiceOut
 from .language_schema import LanguageOut
 from .module_schema import ModuleOut
+from .screentype_schema import ScreenTypeOut
 
 class AvatarIdSchema(BaseModel):
     avatar_id: int
@@ -18,6 +19,9 @@ class LanguageIdSchema(BaseModel):
 
 class ModuleIdSchema(BaseModel):
     module_id: int
+
+class ScreenTypeIdSchema(BaseModel):
+    screentype_id: int
     
 class LicenseBaseSchema(BaseModel):
     name: str
@@ -32,6 +36,7 @@ class LicenseBaseSchema(BaseModel):
     voices_id: List[int] = []
     languages_id: List[int] = []
     modules_id: List[int] = []
+    screentypes_id: List[int] = []
 
 class LicenseCreateSchema(LicenseBaseSchema):
     pass
@@ -49,6 +54,7 @@ class LicenseUpdateSchema(BaseModel):
     voice_ids: Optional[List[int]] = None
     language_ids: Optional[List[int]] = None
     module_ids: Optional[List[int]] = None
+    screentype_ids: Optional[List[int]] = None
 
 class LicenseSchema(LicenseBaseSchema):
     id: int
@@ -56,6 +62,7 @@ class LicenseSchema(LicenseBaseSchema):
     voices: List[VoiceOut]
     languages: List[LanguageOut]
     modules: List[ModuleOut]
+    screentypes: List[ScreenTypeOut]
 
     @validator('avatars', pre=True, each_item=False)
     def prepare_avatars(cls, value):
@@ -80,6 +87,12 @@ class LicenseSchema(LicenseBaseSchema):
         if value is None:
             return []
         return [ModuleOut(id=module.id, name=module.name) for module in value.all()]
+    
+    @validator('screentypes', pre=True, each_item=False)
+    def prepare_screentypes(cls, value):
+        if value is None:
+            return []
+        return [ScreenTypeOut(id=screentype.id, name=screentype.name) for screentype in value.all()]
     
     class Config:
         from_attributes = True

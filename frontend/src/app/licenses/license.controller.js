@@ -1,9 +1,10 @@
-angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', '$state', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, $state) {
+angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', 'ScreenTypeService', '$state', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, ScreenTypeService, $state) {
     $scope.licenses = [];
     $scope.avatars = [];
     $scope.voices = [];
     $scope.languages = [];
     $scope.modules = [];
+    $scope.screentypes = [];
  
     $scope.newLicense = {
         name: "",
@@ -18,6 +19,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         voices_ids: [],
         languages_ids: [],
         modules_ids: [],
+        screentypes_ids: [],
     };
 
     $scope.getAllLicenses = function() {
@@ -57,6 +59,14 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
             $scope.modules = response.data;
         }).catch(function(error) {
             alert('Error fetching modules:', error);
+        });
+    };
+
+    $scope.loadScreenTypes = function() {
+        ScreenTypeService.getAll().then(function(response) {
+            $scope.screentypes = response.data;
+        }).catch(function(error) {
+            alert('Error fetching screen type:', error);
         });
     };
 
@@ -220,9 +230,35 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         return license.modules && license.modules.some(module => module.id === moduleId);
     };
 
+    $scope.toggleScreenTypeAssignment = function(license, screentypeId) {
+        const isAssigned = license.screentypes && license.screentypes.some(screentype => screentype.id === screentypeId);
+        if (isAssigned) {
+            LicenseService.removeScreenTypeFromLicense(license.id, screentypeId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error removing screen type from license:', error);
+                });
+        } else {
+            LicenseService.addScreenTypeToLicense(license.id, screentypeId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error adding screen type to license:', error);
+                });
+        }
+    };
+
+    $scope.isScreenTypeAssignedToLicense = function(license, screentypeId) {
+        return license.screentypes && license.screentypes.some(screentype => screentype.id === screentypeId);
+    };
+
     $scope.getAllLicenses(); 
     $scope.loadAvatars();
     $scope.loadVoices();
     $scope.loadLanguages();
     $scope.loadModules();
+    $scope.loadScreenTypes();
 }]);

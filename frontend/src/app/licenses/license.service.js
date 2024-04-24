@@ -57,6 +57,14 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.post(`${baseUrl}${licenseId}/remove-module/`, { module_id: moduleId });
     };
 
+    service.addScreenTypeToLicense = function(licenseId, screentypeId) {
+        return $http.post(`${baseUrl}${licenseId}/add-screentype/`, { screentype_id: screentypeId });
+    };
+
+    service.removeScreenTypeFromLicense = function(licenseId, screentypeId) {
+        return $http.post(`${baseUrl}${licenseId}/remove-screentype/`, { screentype_id: screentypeId });
+    };
+
     service.getAvatarsByLicense = function(licenseId) {
         return $http.get(baseUrl + licenseId + '/avatars/');
     };
@@ -71,6 +79,10 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
 
     service.getModulesByLicense = function(licenseId) {
         return $http.get(baseUrl + licenseId + '/modules/');
+    };
+
+    service.getScreenTypeByLicense = function(licenseId) {
+        return $http.get(baseUrl + licenseId + '/screentypes/');
     };
     
     return service;
