@@ -13,15 +13,15 @@ def create_module(request, module_in: ModuleIn):
         raise HttpError(403, "Only superusers can create modules.")
     
     module = Module.objects.create(**module_in.dict())
-    return 201, module
+    return 201, ModuleOut.from_orm(module)
 
 @module_router.get('/', response=list[ModuleOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_module(request):
     if not check_super_user(request):
         raise HttpError(403, "Only superusers can view modules.")
     
-    module = Module.objects.all()
-    return module
+    modules = Module.objects.all()
+    return [ModuleOut.from_orm(module) for module in modules]
 
 @module_router.get('/{module_id}', response={200: ModuleOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_module_by_id(request, module_id: int):
@@ -29,10 +29,10 @@ def read_module_by_id(request, module_id: int):
         raise HttpError(403, "Only superusers can view modules.")
     
     module = Module.objects.get(id=module_id)
-    return module
+    return ModuleOut.from_orm(module)
 
 @module_router.put('/{module_id}', response={200: ModuleOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def upadate_module(request, module_id: int, module_in: ModuleIn):
+def update_module(request, module_id: int, module_in: ModuleIn):
     if not check_super_user(request):
         raise HttpError(403, "Only superusers can update modules.")
 
@@ -40,7 +40,7 @@ def upadate_module(request, module_id: int, module_in: ModuleIn):
     for attr, value in module_in.dict().items():
         setattr(module, attr, value)
     module.save()
-    return module
+    return ModuleOut.from_orm(module)
 
 @module_router.delete('/{module_id}', response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def delete_module(request, module_id: int):
@@ -49,4 +49,4 @@ def delete_module(request, module_id: int):
 
     module = Module.objects.get(id=module_id)
     module.delete()
-    return 204, None   
+    return 204, None
