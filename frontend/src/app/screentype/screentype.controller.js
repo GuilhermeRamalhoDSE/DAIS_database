@@ -8,7 +8,7 @@ angular.module('frontend').controller('ScreenTypeController', ['$scope', 'Screen
         ScreenTypeService.getAll().then(function(response){
             $scope.screentypes = response.data;
         }, function(error) {
-            console.error('Error loading modules:', error);
+            console.error('Error loading screen type:', error);
         });
     };
 
@@ -21,7 +21,7 @@ angular.module('frontend').controller('ScreenTypeController', ['$scope', 'Screen
             alert('Screen Type created successfully!');
             $state.go('base.screentype-view'); 
         }).catch(function(error) {
-            console.error('Error creating module:', error);
+            console.error('Error creating screen type:', error);
         });
     };
 
@@ -41,7 +41,7 @@ angular.module('frontend').controller('ScreenTypeController', ['$scope', 'Screen
         if (confirm('Are you sure you want to delete this screen type?')) {
             ScreenTypeService.delete(screentypeId).then(function(response) {
                 alert('Screen Type deleted successfully!');
-                $scope.loadModules();
+                $scope.loadScreenTypes();
                 $state.go('base.screentype-view'); 
             }).catch(function(error) {
                 console.error('Error deleting screen type:', error);

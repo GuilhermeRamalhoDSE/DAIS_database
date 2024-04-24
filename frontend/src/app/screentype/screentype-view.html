@@ -1,0 +1,57 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="ScreenTypeController">
+    <div class="box">
+        <div class="box-header">
+            <h2>Screen Type Details</h2>
+            <small>Details of registered screen types</small>
+        </div>
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <div class="col-sm-6">
+                    Search: <input id="filter" type="text" class="form-control input-sm w-auto inline m-r"
+                        ng-model="searchText" />
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-fw primary" ng-click="goToNewScreenType()">
+                        <i class="fa fa-fw fa-plus text-muted"></i>
+                        <span>New Screen Type</span>
+                    </button>
+                    <a>
+                        <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
+                <thead>
+                    <tr>
+                        <th ng-if="isSuperuser()">ID</th>
+                        <th data-toggle="true">
+                            Name
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="screentype in screentypes | filter:searchText">
+                        <td ng-if="isSuperuser()">{{ screentype.id }}</td>
+                        <td>{{ screentype.name }}</td>
+                        <td>
+                            <button class="btn btn-default btn-xs" ng-click="editScreenType(screentype.id)">Edit</button>
+                            <button class="btn btn-danger btn-xs" ng-click="deleteScreenType(screentype.id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="hide-if-no-paging">
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <ul class="pagination"></ul>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
