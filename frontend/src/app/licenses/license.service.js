@@ -49,6 +49,14 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.post(`${baseUrl}${licenseId}/remove-language/`, { language_id: languageId });
     };
 
+    service.addModuleToLicense = function(licenseId, moduleId) {
+        return $http.post(`${baseUrl}${licenseId}/add-module/`, { module_id: moduleId });
+    };
+
+    service.removeModuleFromLicense = function(licenseId, moduleId) {
+        return $http.post(`${baseUrl}${licenseId}/remove-module/`, { module_id: moduleId });
+    };
+
     service.getAvatarsByLicense = function(licenseId) {
         return $http.get(baseUrl + licenseId + '/avatars/');
     };
@@ -61,5 +69,9 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.get(baseUrl + licenseId + '/voices/');
     };
 
+    service.getModulesByLicense = function(licenseId) {
+        return $http.get(baseUrl + licenseId + '/modules/');
+    };
+    
     return service;
 }]);

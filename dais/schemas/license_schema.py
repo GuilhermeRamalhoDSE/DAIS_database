@@ -5,6 +5,7 @@ from typing import List, Optional
 from .avatar_schema import AvatarSchema
 from .voice_schema import VoiceOut
 from .language_schema import LanguageOut
+from .module_schema import ModuleOut
 
 class AvatarIdSchema(BaseModel):
     avatar_id: int
@@ -14,6 +15,9 @@ class VoiceIdSchema(BaseModel):
 
 class LanguageIdSchema(BaseModel):
     language_id: int
+
+class ModuleIdSchema(BaseModel):
+    module_id: int
     
 class LicenseBaseSchema(BaseModel):
     name: str
@@ -27,6 +31,7 @@ class LicenseBaseSchema(BaseModel):
     avatars_id: List[int] = [] 
     voices_id: List[int] = []
     languages_id: List[int] = []
+    modules_id: List[int] = []
 
 class LicenseCreateSchema(LicenseBaseSchema):
     pass
@@ -43,12 +48,14 @@ class LicenseUpdateSchema(BaseModel):
     avatar_ids: Optional[List[int]] = None
     voice_ids: Optional[List[int]] = None
     language_ids: Optional[List[int]] = None
+    module_ids: Optional[List[int]] = None
 
 class LicenseSchema(LicenseBaseSchema):
     id: int
     avatars: List[AvatarSchema]
     voices: List[VoiceOut]
     languages: List[LanguageOut]
+    modules: List[ModuleOut]
 
     @validator('avatars', pre=True, each_item=False)
     def prepare_avatars(cls, value):
@@ -68,5 +75,11 @@ class LicenseSchema(LicenseBaseSchema):
             return []
         return [LanguageOut(id=language.id, name=language.name) for language in value.all()]
 
+    @validator('modules', pre=True, each_item=False)
+    def prepare_modules(cls, value):
+        if value is None:
+            return []
+        return [ModuleOut(id=module.id, name=module.name) for module in value.all()]
+    
     class Config:
         from_attributes = True

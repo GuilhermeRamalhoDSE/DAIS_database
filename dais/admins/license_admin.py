@@ -6,10 +6,10 @@ from dais.models.license_models import License
 class LicenseAdmin(admin.ModelAdmin):
     list_display = (
         'name', 'email', 'address', 'tel', 'license_code', 'active',
-        'start_date', 'end_date', 'list_avatars', 'list_voices', 'list_languages'  
+        'start_date', 'end_date', 'list_avatars', 'list_voices', 'list_languages', 'list_modules'  
     )
     list_filter = ('active', 'start_date', 'end_date')
-    search_fields = ('name', 'email', 'license_code', 'avatars__name', 'voices__name', 'languages__name') 
+    search_fields = ('name', 'email', 'license_code', 'avatars__name', 'voices__name', 'languages__name', 'modules__name') 
     ordering = ('-start_date',)
 
     def has_view_permission(self, request, obj=None):
@@ -35,3 +35,7 @@ class LicenseAdmin(admin.ModelAdmin):
     def list_languages(self, obj):
         return ", ".join([language.name for language in obj.languages.all()])
     list_languages.short_description = "Languages"
+
+    def list_modules(self, obj):
+        return ", ".join([module.name for module in obj.modules.all()])
+    list_modules.short_description = "Modules"

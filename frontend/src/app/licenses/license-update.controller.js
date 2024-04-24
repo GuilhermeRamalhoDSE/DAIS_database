@@ -51,7 +51,5 @@ angular.module('frontend').controller('LicenseUpdateController', ['$scope', 'Lic
         $state.go('base.licenses-view');
     };
     
-    
-
     $scope.loadLicenseData(); 
 }]);

@@ -1,8 +1,9 @@
-angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', '$state', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, $state) {
+angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', '$state', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, $state) {
     $scope.licenses = [];
     $scope.avatars = [];
     $scope.voices = [];
     $scope.languages = [];
+    $scope.modules = [];
  
     $scope.newLicense = {
         name: "",
@@ -16,6 +17,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         avatars_ids: [],
         voices_ids: [],
         languages_ids: [],
+        modules_ids: [],
     };
 
     $scope.getAllLicenses = function() {
@@ -50,6 +52,14 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         });
     };
 
+    $scope.loadModules = function() {
+        ModuleService.getAll().then(function(response) {
+            $scope.modules = response.data;
+        }).catch(function(error) {
+            alert('Error fetching modules:', error);
+        });
+    };
+
     $scope.goToCreateLicense = function() {
         $state.go('base.licenses-new');
     };
@@ -79,6 +89,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
                 avatars_ids: [],
                 voices_ids: [],
                 languages_ids: [],
+                modules_ids: [],
             };
             $state.go('base.licenses-view'); 
         }).catch(function(error) {
@@ -184,8 +195,34 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         return license.languages && license.languages.some(language => language.id === languageId);
     };
 
+    $scope.toggleModuleAssignment = function(license, moduleId) {
+        const isAssigned = license.modules && license.modules.some(module => module.id === moduleId);
+        if (isAssigned) {
+            LicenseService.removeModuleFromLicense(license.id, moduleId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error removing module from license:', error);
+                });
+        } else {
+            LicenseService.addModuleToLicense(license.id, moduleId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error adding module to license:', error);
+                });
+        }
+    };
+
+    $scope.isModuleAssignedToLicense = function(license, moduleId) {
+        return license.modules && license.modules.some(module => module.id === moduleId);
+    };
+
     $scope.getAllLicenses(); 
     $scope.loadAvatars();
     $scope.loadVoices();
     $scope.loadLanguages();
+    $scope.loadModules();
 }]);

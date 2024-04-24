@@ -52,6 +52,8 @@
             </th>
             <th>Avatar</th>
             <th>Voices</th>
+            <th>Languages</th>
+            <th>Modules</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -92,6 +94,15 @@
                   <input type="checkbox" ng-checked="isLanguageAssignedToLicense(license, language.id)"
                     ng-click="toggleLanguageAssignment(license, language.id)">
                   {{ language.name }}
+                </label>
+              </div>
+            </td>
+            <td>
+              <div ng-repeat="module in modules">
+                <label>
+                  <input type="checkbox" ng-checked="isModuleAssignedToLicense(license, module.id)"
+                    ng-click="toggleModuleAssignment(license, module.id)">
+                  {{ module.name }}
                 </label>
               </div>
             </td>
