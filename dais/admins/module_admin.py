@@ -1,13 +1,8 @@
-from django.db import models
-from django.utils.translation import gettext_lazy as _
+from django.contrib import admin
+from dais.models.module_models import Module
 
-class Module(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_("Nome"))
-                            
-    class Meta:
-        verbose_name = _('Modulo')
-        verbose_name_plural = _('Moduli')
+class ModuleAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    search_fields = ('name',)
 
-    def __str__(self):
-        return self.name
-        
+admin.site.register(Module, ModuleAdmin)
