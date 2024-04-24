@@ -1,25 +1,25 @@
 angular.module('frontend').factory('ScreenTypeService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://127.0.0.1:8000/api/scr/'
+    var baseUrl = 'http://127.0.0.1:8000/api/screentypes/'
 
-    service.create = function(moduleData) {
-        return $http.post(baseUrl, moduleData);
+    service.create = function(screentypeData) {
+        return $http.post(baseUrl, screentypeData);
     };
     
     service.getAll = function() {
         return $http.get(baseUrl);
     };
 
-    service.getById = function(moduleId) {
-        return $http.get(baseUrl + moduleId);
+    service.getById = function(screentypeId) {
+        return $http.get(baseUrl + screentypeId);
     };
 
-    service.update = function(moduleId, moduleData) {
-        return $http.put(baseUrl + moduleId, moduleData);
+    service.update = function(screentypeId, screentypeData) {
+        return $http.put(baseUrl + screentypeId, screentypeData);
     };
 
-    service.delete =  function(moduleId) {
-        return $http.delete(baseUrl + moduleId);
+    service.delete =  function(screentypeId) {
+        return $http.delete(baseUrl + screentypeId);
     };
 
     return service;
