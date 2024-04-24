@@ -20,7 +20,7 @@ def read_screen_types(request):
     if not check_super_user(request):
         raise HttpError(403, "Only superusers can view screen types.")
     
-    screentypes = ScreenType.objects.all()
+    screentypes = ScreenType.objects.all().order_by('id')
     return [ScreenTypeOut.from_orm(screentype) for screentype in screentypes]
 
 @screentype_router.get('/{screentype_id}', response={200: ScreenTypeOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
