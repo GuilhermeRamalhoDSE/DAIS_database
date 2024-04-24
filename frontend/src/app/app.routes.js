@@ -254,6 +254,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.screentype-new', {
+        url: '/screentype/new',
+        templateUrl: 'app/screentype/screentype-new.html',
+        controller: 'ScreenTypeController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.screentype-view', {
+        url: '/screentype',
+        templateUrl: 'app/screentype/screentype-view.html',
+        controller: 'ScreenTypeController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.screentype-update', {
+        url: '/screentype/update/:screentypeId/:screentypeName',
+        templateUrl: 'app/screentype/screentype-update.html',
+        controller: 'ScreenTypeUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
     .state('base.group-new', {
         url: '/:clientId/:clientName/group/new',
         templateUrl: 'app/group/group-new.html',

@@ -70,6 +70,14 @@
                                     <span class="nav-text">Modules</span>
                                 </a>
                             </li>
+                            <li ng-if="isSuperuser()">
+                                <a ui-sref="base.screentype-view">
+                                    <span class="nav-icon">
+                                        <i class="material-icons md-24"></i>
+                                    </span>
+                                    <span class="nav-text">Screen Types</span>
+                                </a>
+                            </li>
                             <li ng-if="isOnlyStaff()">
                                 <a ui-sref="base.client-view">
                                     <span class="nav-icon">
