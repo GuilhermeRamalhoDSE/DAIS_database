@@ -1,6 +1,6 @@
 angular.module('frontend').factory('PeriodIAService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://127.0.0.1:8000/api/periodia/'; 
+    var baseUrl = 'http://18.201.85.201/api/periodia/'; 
 
     service.createPeriodIA = function(periodIAData) {
         return $http.post(baseUrl, periodIAData);

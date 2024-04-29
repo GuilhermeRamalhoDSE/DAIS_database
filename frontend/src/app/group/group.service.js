@@ -1,6 +1,6 @@
 angular.module('frontend').factory('GroupService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://127.0.0.1:8000/api/groups/';
+    var baseUrl = 'http://18.201.85.201/api/groups/';
 
     service.getAll = function(clientId) {
         return $http.get(baseUrl, { params: { client_id: clientId }});

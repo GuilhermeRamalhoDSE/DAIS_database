@@ -69,7 +69,7 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'A
 
     $scope.downloadAvatarFile = function(avatarId) {
         if (avatarId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/avatar/download/' + avatarId;
+            var downloadUrl = 'http://18.201.85.201/api/avatar/download/' + avatarId;
             
             $http({
                 url: downloadUrl,

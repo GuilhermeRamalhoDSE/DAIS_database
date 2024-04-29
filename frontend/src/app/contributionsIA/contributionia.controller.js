@@ -122,7 +122,7 @@ angular.module('frontend').controller('ContributionIAController', ['$scope', 'Co
 
     $scope.downloadFile = function(contributionId) {
         if (contributionId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/contributionsIA/download/' + contributionId;
+            var downloadUrl = 'http://18.201.85.201/api/contributionsIA/download/' + contributionId;
     
             $http({
                 url: downloadUrl,

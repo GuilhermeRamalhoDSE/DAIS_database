@@ -1,5 +1,5 @@
 angular.module('frontend').factory('LanguageService', ['$http', function($http) {
-    const baseUrl = 'http://127.0.0.1:8000/api/languages/'; 
+    const baseUrl = 'http://18.201.85.201/api/languages/'; 
 
     return {
         create: function(languageData) {

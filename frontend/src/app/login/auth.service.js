@@ -2,7 +2,7 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
     var authService = {};
 
     authService.login = function(credentials) {
-        return $http.post('http://127.0.0.1:8000/api/login/', credentials).then(function(response) {
+        return $http.post('http://18.201.85.201/api/login/', credentials).then(function(response) {
             var storage = credentials.rememberMe ? $window.localStorage : $window.sessionStorage;
             
             storage.setItem('jwtToken', response.data.token);

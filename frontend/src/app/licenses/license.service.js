@@ -1,7 +1,7 @@
 angular.module('frontend').factory('LicenseService', ['$http', function($http) {
     var service = {};
 
-    var baseUrl = 'http://127.0.0.1:8000/api/licenses/';
+    var baseUrl = 'http://18.201.85.201/api/licenses/';
 
     service.getAll = function() {
         return $http.get(baseUrl);

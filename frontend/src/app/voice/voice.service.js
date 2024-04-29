@@ -1,5 +1,5 @@
 angular.module('frontend').factory('VoiceService', ['$http', function($http) {
-    const baseUrl = 'http://127.0.0.1:8000/api/voices/';
+    const baseUrl = 'http://18.201.85.201/api/voices/';
     return {
         create: function(voiceData) {
             return $http.post(baseUrl, voiceData);
