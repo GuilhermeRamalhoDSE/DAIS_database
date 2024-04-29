@@ -1,10 +1,11 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, validator
 from typing import Optional
 from datetime import datetime
+from dais.schemas.screentype_schema import ScreenTypeOut
 
 class ScreenBaseSchema(BaseModel):
     totem_id: int
-    typology: str
+    typology_id: int
     logo_path: Optional[str] = None 
     background_path: Optional[str] = None  
     footer: Optional[str] = None
@@ -14,7 +15,7 @@ class ScreenCreateSchema(ScreenBaseSchema):
 
 class ScreenUpdateSchema(BaseModel):
     totem_id: Optional[int] = None
-    typology: Optional[str] = None
+    typology_id: Optional[int] = None
     logo_path: Optional[str] = None  
     background_path: Optional[str] = None  
     footer: Optional[str] = None
@@ -22,7 +23,7 @@ class ScreenUpdateSchema(BaseModel):
 class ScreenOutSchema(BaseModel):
     id: int
     totem_id: int
-    typology: str
+    typology: ScreenTypeOut
     logo_path: Optional[str] = None  
     background_path: Optional[str] = None  
     footer: Optional[str] = None

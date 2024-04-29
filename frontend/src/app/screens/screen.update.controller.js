@@ -1,5 +1,6 @@
-angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'ScreenService', '$state', '$stateParams', 'AuthService', function($scope, ScreenService, $state, $stateParams, AuthService) {
+angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'ScreenService', '$state', '$stateParams', 'AuthService', 'LicenseService', function($scope, ScreenService, $state, $stateParams, AuthService, LicenseService) {
     $scope.isSuperuser = AuthService.isSuperuser();
+    $scope.licenseId = AuthService.getLicenseId();
     $scope.clientId = $stateParams.clientId;
     $scope.clientName = $stateParams.clientName;
     $scope.groupId = $stateParams.groupId;
@@ -9,17 +10,19 @@ angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'Scre
     $scope.screenId = $stateParams.screenId;
 
     $scope.screenData = {
-        typology: '',
+        typology: null,
         footer: ''
     };
     $scope.logo = null;
     $scope.background = null;
+    $scope.screenTypes = [];
 
     $scope.loadScreenDetails = function() {
         if ($scope.screenId) {
             ScreenService.getById($scope.screenId).then(function(response) {
                 if (response.data) {
                     $scope.screenData = response.data;
+                    $scope.screenData.typology_id = response.data.typology.id;
                 } else {
                     console.error('Screen not found');
                     alert('Screen not found.');
@@ -37,6 +40,18 @@ angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'Scre
             console.log('No screen ID provided.');
         }
     };
+
+    $scope.loadScreenType = function() {
+        if ($scope.licenseId) {
+            LicenseService.getScreenTypeByLicense($scope.licenseId).then(function(response) {
+                $scope.screenTypes = response.data;
+            }).catch(function(error) {
+                console.error('Error loading screen types:', error);
+            });
+        } else {
+            console.error('License ID is undefined');
+        }
+    }; 
 
     $scope.updateScreen = function() {
         var formData = new FormData();
@@ -74,4 +89,5 @@ angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'Scre
     };
 
     $scope.loadScreenDetails();
+    $scope.loadScreenType();
 }]);

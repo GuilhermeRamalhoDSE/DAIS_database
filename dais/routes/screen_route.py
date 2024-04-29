@@ -7,10 +7,10 @@ from django.http import HttpRequest, FileResponse, Http404
 from dais.models.screen_models import Screen
 from dais.models.totem_models import Totem
 from dais.schemas.screen_schema import ScreenOutSchema, ScreenCreateSchema, ScreenUpdateSchema
+from dais.schemas.screentype_schema import ScreenTypeOut
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token, check_user_permission
 import os
-from django.core.files.storage import default_storage
 
 screen_router = Router(tags=['Screen'])
 
@@ -23,15 +23,19 @@ def create_screen(request: HttpRequest, screen_in: ScreenCreateSchema, logo: Upl
     if not (is_superuser or is_staff):
         raise HttpError(403, "Only superusers or admins can create screens.")
 
-    screen = Screen.objects.create(
-        totem_id=screen_in.totem_id,
-        typology=screen_in.typology,
-        logo=logo,
-        background=background,
-        footer=screen_in.footer
-    )
+    screen_data = {
+    **screen_in.dict(exclude={'background_path', 'logo_path'}),
+    'background': background,
+    'logo': logo
+    }
+    
+    screen = Screen.objects.create(**screen_data)
+    screentype_out = ScreenTypeOut.from_orm(screen.typology)
 
-    return 201, ScreenOutSchema.from_orm(screen)
+    screen_schema = ScreenOutSchema.from_orm(screen)
+    screen_schema.typology = screentype_out
+
+    return 201, screen_schema
 
 @screen_router.get("/", response=List[ScreenOutSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_screens(request, totem_id: Optional[int] = None):

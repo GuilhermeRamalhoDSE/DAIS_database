@@ -41,7 +41,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="screen in screenList | filter:searchText">
-                        <td>{{ screen.typology }}</td>
+                        <td>{{ screen.typology.name }}</td>
                         <td>
                             <button class="btn btn-primary btn-xs"
                                 ng-click="downloadLogoFile(screen.id)">Download Logo</button>

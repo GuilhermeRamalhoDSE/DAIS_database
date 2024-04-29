@@ -10,14 +10,9 @@
                 <div class="box-body">
                     <form ng-submit="updateScreen()">
                         <div class="form-group">
-                            <label>Typology</label>
-                            <select class="form-control" ng-model="screenData.typology" required>
-                                <option value="">Select Typology</option>
-                                <option value="HOLOFAN">Holo Fan</option>
-                                <option value="LEDWALL">LED Wall</option>
-                                <option value="SCREEN">Screen</option>
-                                <option value="TOUCH_SCREEN">Touch Screen</option>
-                                <option value="PROJECTION">Projection</option>
+                            <label for="typology">Typology</label>
+                            <select id="typology" class="form-control" ng-model="screenData.typology_id" ng-options="typology.id as typology.name for typology in screenTypes" required>
+                                <option value="">--Select Typology--</option>
                             </select>
                         </div>
                         <div class="form-group">

@@ -1,5 +1,6 @@
-angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenService', '$state', '$stateParams', 'AuthService', '$http', function($scope, ScreenService, $state, $stateParams, AuthService, $http) {
+angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenService', '$state', '$stateParams', 'AuthService', 'LicenseService', '$http', function($scope, ScreenService, $state, $stateParams, AuthService, LicenseService, $http) {
     $scope.screenList = [];
+    $scope.screenTypes = [];
     $scope.logo = null;
     $scope.background = null;
     $scope.clientId = $stateParams.clientId;
@@ -7,6 +8,7 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
     $scope.groupId = $stateParams.groupId;
     $scope.groupName = $stateParams.groupName;
     $scope.isSuperuser = AuthService.isSuperuser();
+    $scope.licenseId = AuthService.getLicenseId();
 
     let totemId = parseInt($stateParams.totemId || sessionStorage.getItem('lasttotemId'), 10);
     sessionStorage.setItem('lasttotemId', totemId.toString());
@@ -17,7 +19,7 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
 
     $scope.newScreen = {
         totem_id: totemId,
-        typology: '',
+        typology_id: null,
         footer: ''
     };
 
@@ -28,6 +30,18 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
             console.error('Error loading screens:', error);
         });
     };
+
+    $scope.loadScreenType = function() {
+        if ($scope.licenseId) {
+            LicenseService.getScreenTypeByLicense($scope.licenseId).then(function(response) {
+                $scope.screenTypes = response.data;
+            }).catch(function(error) {
+                console.error('Error loading screen types:', error);
+            });
+        } else {
+            console.error('License ID is undefined');
+        }
+    }; 
 
     $scope.goToCreateScreen = function() {
         $state.go('base.screen-new', { 
@@ -167,4 +181,5 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
     };
 
     $scope.loadScreens();
+    $scope.loadScreenType();
 }]);
