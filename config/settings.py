@@ -148,5 +148,7 @@ CORS_ALLOWED_ORIGINS = [
     #  "http://localhost:80'80",
     'http://18.201.85.201',
     'https://daisdatabasedse.it',
-    'http://daisdatabasedse.it'
+    'http://daisdatabasedse.it',
+    'https://www.daisdatabasedse.it',
+    'http://www.daisdatabasedse.it'
 ]
