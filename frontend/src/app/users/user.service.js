@@ -23,7 +23,7 @@ angular.module('frontend').factory('UserService', ['$http', function($http) {
         return $http.get(baseUrl, { params: { user_id: userId } });
     };
     service.getAllLicenses = function() {
-        return $http.get('http://127.0.0.1:8000/api/licenses/');
+        return $http.get('https://daisdatabasedse.it/api/licenses/');
     };   
     
     return service;
