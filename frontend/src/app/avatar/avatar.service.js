@@ -1,5 +1,5 @@
 angular.module('frontend').factory('AvatarService', ['$http', function($http) {
-    var baseUrl = 'http://18.201.85.201/api/avatar/'; 
+    var baseUrl = 'https://daisdatabasedse.it/api/avatar/'; 
     return {
         getAvatars: function() {
             return $http.get(baseUrl);

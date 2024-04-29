@@ -112,7 +112,7 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
 
     $scope.downloadLogoFile = function(screenId) {
         if (screenId) {
-            var downloadUrl = 'http://18.201.85.201/api/screens/download/logo/' + screenId;
+            var downloadUrl = 'https://daisdatabasedse.it/api/screens/download/logo/' + screenId;
     
             $http({
                 url: downloadUrl,
@@ -137,7 +137,7 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
     
     $scope.downloadBackgroundFile = function(screenId) {
         if (screenId) {
-            var downloadUrl = 'http://18.201.85.201/api/screens/download/background/' + screenId;
+            var downloadUrl = 'https://daisdatabasedse.it/api/screens/download/background/' + screenId;
     
             $http({
                 url: downloadUrl,

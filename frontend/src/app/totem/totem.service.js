@@ -1,6 +1,6 @@
 angular.module('frontend').factory('TotemService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://18.201.85.201/api/totem/';
+    var baseUrl = 'https://daisdatabasedse.it/api/totem/';
 
     service.getAll = function(groupId) {
         return $http.get(baseUrl, { params: { group_id: groupId } });

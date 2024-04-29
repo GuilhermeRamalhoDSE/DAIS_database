@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['http://18.201.85.201/']
+ALLOWED_HOSTS = ['localhost', '18.201.85.201', 'daisdatabasedse.it', 'www.daisdatabasedse.it']
 
 # Application definition
 INSTALLED_APPS = [
@@ -146,5 +146,7 @@ AUTH_USER_MODEL = 'dais.User'
 CORS_ALLOWED_ORIGINS = [
     #  "http://127.0.0.1:8080",
     #  "http://localhost:80'80",
-    'http://18.201.85.201'
+    'http://18.201.85.201',
+    'https://daisdatabasedse.it',
+    'http://daisdatabasedse.it'
 ]

@@ -137,7 +137,7 @@ angular.module('frontend').controller('DetailController', ['$scope', 'DetailServ
 
     $scope.downloadDetailFile = function(detailId) {
         if (detailId) {
-            var downloadUrl = 'http://18.201.85.201/api/details/download/' + detailId;
+            var downloadUrl = 'https://daisdatabasedse.it/api/details/download/' + detailId;
     
             $http({
                 url: downloadUrl,

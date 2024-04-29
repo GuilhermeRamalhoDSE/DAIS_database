@@ -1,6 +1,6 @@
 angular.module('frontend').factory('LogsService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://18.201.85.201/api/logs/';
+    var baseUrl = 'https://daisdatabasedse.it/api/logs/';
 
     service.getLogsByTotem = function(totemId) {
         return $http.get(baseUrl + 'totem/' + totemId);

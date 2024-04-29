@@ -1,6 +1,6 @@
 angular.module('frontend').factory('ScreenService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://18.201.85.201/api/screens/';
+    var baseUrl = 'https://daisdatabasedse.it/api/screens/';
 
     service.getAll = function(totemId) {
         return $http.get(baseUrl, { params: { totem_id: totemId } });

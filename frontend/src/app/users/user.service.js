@@ -1,7 +1,7 @@
 angular.module('frontend').factory('UserService', ['$http', function($http) {
     var service = {};
 
-    var baseUrl = 'http://18.201.85.201/api/users/';
+    var baseUrl = 'https://daisdatabasedse.it/api/users/';
 
     service.getAllUsers = function() {
         return $http.get(baseUrl);

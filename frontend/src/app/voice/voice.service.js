@@ -1,5 +1,5 @@
 angular.module('frontend').factory('VoiceService', ['$http', function($http) {
-    const baseUrl = 'http://18.201.85.201/api/voices/';
+    const baseUrl = 'https://daisdatabasedse.it/api/voices/';
     return {
         create: function(voiceData) {
             return $http.post(baseUrl, voiceData);
