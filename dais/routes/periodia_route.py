@@ -30,9 +30,9 @@ def read_periodias(request, group_id: Optional[int] = None):
         raise HttpError(403, "You do not have permission to view these periodias.")
 
     if group_id:
-        periods_query = PeriodIA.objects.filter(group_id=group_id)  
+        periods_query = PeriodIA.objects.filter(group_id=group_id, active=True)  
     else:
-        periods_query = PeriodIA.objects.all()
+        periods_query = PeriodIA.objects.all(active=True)
     
     periods = [PeriodIAOut.from_orm(period) for period in periods_query]
 
