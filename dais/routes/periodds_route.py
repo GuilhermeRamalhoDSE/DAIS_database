@@ -30,9 +30,9 @@ def read_perioddss(request, group_id: Optional[int] = None):
         raise HttpError(403, "You do not have permission to view these perioddss.")
 
     if group_id:
-        periods_query = PeriodDS.objects.filter(group_id=group_id)
+        periods_query = PeriodDS.objects.filter(group_id=group_id, active=True)
     else:
-        periods_query = PeriodDS.objects.all()
+        periods_query = PeriodDS.objects.all(active=True)
     
     periods = [PeriodDSOut.from_orm(period) for period in periods_query]
 
