@@ -1,6 +1,6 @@
 angular.module('frontend').factory('ScreenTypeService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://127.0.0.1:8080/api/screentypes/'
+    var baseUrl = 'http://127.0.0.1:8000/api/screentypes/'
 
     service.create = function(screentypeData) {
         return $http.post(baseUrl, screentypeData);

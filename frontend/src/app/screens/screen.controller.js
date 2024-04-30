@@ -112,7 +112,7 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
 
     $scope.downloadLogoFile = function(screenId) {
         if (screenId) {
-            var downloadUrl = 'http://127.0.0.1:8080/api/screens/download/logo/' + screenId;
+            var downloadUrl = 'http://127.0.0.1:8000/api/screens/download/logo/' + screenId;
     
             $http({
                 url: downloadUrl,
@@ -137,7 +137,7 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
     
     $scope.downloadBackgroundFile = function(screenId) {
         if (screenId) {
-            var downloadUrl = 'http://127.0.0.1:8080/api/screens/download/background/' + screenId;
+            var downloadUrl = 'http://127.0.0.1:8000/api/screens/download/background/' + screenId;
     
             $http({
                 url: downloadUrl,
