@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-# Supondo que Client esteja no mesmo módulo que License
 from dais.models.client_models import Client
 
 class Group(models.Model):

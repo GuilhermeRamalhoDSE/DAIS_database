@@ -1,6 +1,8 @@
 from ninja import Schema
 from typing import Optional
 from ninja.errors import ValidationError
+from dais.models.client_models import Client 
+from django.shortcuts import get_object_or_404
 
 class GroupCreate(Schema):
     client_id: int  
@@ -32,7 +34,10 @@ class GroupOut(Schema):
 
     @staticmethod
     def resolve_client_name(obj):
-        return obj.client.name if hasattr(obj, 'client') and obj.client else "Unknown Client"
+        if hasattr(obj, 'client_id'):
+            client = get_object_or_404(Client, id=obj.client_id)
+            return client.name
+        return "Unknown Client"
 
     @staticmethod
     def resolve_total_totems(obj):
