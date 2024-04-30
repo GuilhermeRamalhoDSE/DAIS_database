@@ -2,6 +2,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field, validator
 from typing import Optional
 from django.db.models.fields.files import FieldFile
+from dais.schemas.contribution_schema import ContributionOut
 
 class DetailBaseSchema(BaseModel):
     name: str
@@ -15,7 +16,7 @@ class DetailUpdateSchema(BaseModel):
 
 class DetailSchema(BaseModel):
     id: int
-    contribution_id: int
+    contribution: ContributionOut
     name: str
     file_path: Optional[str] = Field(None, alias='file')
     created_at: Optional[datetime] = None
