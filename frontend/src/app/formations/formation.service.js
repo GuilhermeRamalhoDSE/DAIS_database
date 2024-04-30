@@ -1,6 +1,6 @@
 angular.module('frontend').factory('FormationService', ['$http', function($http){
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/formations/'
+    var baseUrl = 'http://127.0.0.1:8080/api/formations/'
 
     service.getAll = function(layerId) {
         return $http.get(baseUrl, { params: { layer_id:layerId}});

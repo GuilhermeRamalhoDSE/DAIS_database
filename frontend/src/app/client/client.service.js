@@ -1,5 +1,5 @@
 angular.module('frontend').factory('ClientService', ['$http', function($http) {
-    const baseUrl = 'https://daisdatabasedse.it/api/clients/';
+    const baseUrl = 'http://127.0.0.1:8080/api/clients/';
     return {
         create: function(clientData) {
             return $http.post(baseUrl, clientData);

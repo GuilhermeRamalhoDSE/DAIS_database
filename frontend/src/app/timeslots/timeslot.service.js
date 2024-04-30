@@ -1,6 +1,6 @@
 angular.module('frontend').factory('TimeslotService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/timeslot/';
+    var baseUrl = 'http://127.0.0.1:8080/api/timeslot/';
 
         service.createTimeslot = function(timeslotData) {
             return $http.post(baseUrl, timeslotData);

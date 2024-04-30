@@ -1,6 +1,6 @@
 angular.module('frontend').factory('PeriodDSService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/periodds/';
+    var baseUrl = 'http://127.0.0.1:8080/api/periodds/';
 
     service.createPeriodDS = function(periodDSData) {
         return $http.post(baseUrl, periodDSData);

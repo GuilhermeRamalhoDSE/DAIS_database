@@ -1,5 +1,5 @@
 angular.module('frontend').factory('LanguageService', ['$http', function($http) {
-    const baseUrl = 'https://daisdatabasedse.it/api/languages/'; 
+    const baseUrl = 'http://127.0.0.1:8080/api/languages/'; 
 
     return {
         create: function(languageData) {

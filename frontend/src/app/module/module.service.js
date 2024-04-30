@@ -1,6 +1,6 @@
 angular.module('frontend').factory('ModuleService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/modules/'
+    var baseUrl = 'http://127.0.0.1:8080/api/modules/'
 
     service.create = function(moduleData) {
         return $http.post(baseUrl, moduleData);
