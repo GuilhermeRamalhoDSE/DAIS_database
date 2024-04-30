@@ -11,8 +11,8 @@ class GroupAdminForm(forms.ModelForm):
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     form = GroupAdminForm
-    list_display = ('id', 'name', 'client', 'typology', 'total_totems')
-    search_fields = ('name', 'client__name', 'comments')
+    list_display = ('id', 'name', 'client', 'typology', 'total_totems','last_update')
+    search_fields = ('name', 'client__name', 'last_update', 'comments')
     list_filter = ('client', 'typology')
 
     def get_queryset(self, request):

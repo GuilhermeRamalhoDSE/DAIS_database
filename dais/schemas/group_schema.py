@@ -2,6 +2,7 @@ from ninja import Schema
 from typing import Optional
 from ninja.errors import ValidationError
 from dais.models.client_models import Client 
+from datetime import datetime
 from django.shortcuts import get_object_or_404
 
 class GroupCreate(Schema):
@@ -23,12 +24,16 @@ class GroupUpdate(Schema):
     typology: Optional[str] = None
     comments: Optional[str] = None
 
+class LastUpdateOut(Schema):
+    last_update: datetime
+
 class GroupOut(Schema):
     id: int
     client_id: int
     client_name: str  
     name: str
     typology: str
+    last_update: datetime
     total_totems: int 
     comments: Optional[str] = None
 

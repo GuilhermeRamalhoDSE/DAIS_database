@@ -39,6 +39,9 @@
                         <th>
                             Total Totems
                         </th>
+                        <th>
+                            Last Update
+                        </th>
                         <th data-hide="phone">
                             Comments
                         </th>
@@ -52,6 +55,7 @@
                         <td>{{ group.name }}</td>
                         <td>{{ group.typology }}</td>
                         <td>{{ group.total_totems }}</td>
+                        <td>{{ group.last_update | date:'mediumDate' }}</td>
                         <td>{{ group.comments }}</td>
                         <td>
                             <button class="btn btn-default btn-xs"

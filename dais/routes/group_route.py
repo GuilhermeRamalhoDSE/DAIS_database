@@ -3,7 +3,7 @@ from typing import List, Optional
 from django.shortcuts import get_object_or_404
 from dais.models.client_models import Client 
 from dais.models.group_models import Group
-from dais.schemas.group_schema import GroupCreate, GroupUpdate, GroupOut
+from dais.schemas.group_schema import GroupCreate, GroupUpdate, GroupOut, LastUpdateOut
 from ninja.errors import HttpError
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token, check_user_permission
@@ -55,6 +55,22 @@ def get_group_by_id(request, group_id: int):
         group = get_object_or_404(Group, id=group_id, client__license_id=license_id)
 
     return group
+
+@group_router.get("/{group_id}/last-update", response=LastUpdateOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_group_last_update(request, group_id: int):
+    if not check_user_permission(request):
+        raise HttpError(403, "You do not have permission to view this group.")
+
+    user_info = get_user_info_from_token(request)
+    license_id = user_info.get('license_id', None)
+    is_superuser = user_info.get('is_superuser', False)
+
+    if is_superuser:
+        group = get_object_or_404(Group, id=group_id)
+    else:
+        group = get_object_or_404(Group, id=group_id, client__license_id=license_id)
+
+    return LastUpdateOut(last_update=group.last_update)
 
 @group_router.put("/{group_id}", response=GroupOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_group(request, group_id: int, payload: GroupUpdate):
