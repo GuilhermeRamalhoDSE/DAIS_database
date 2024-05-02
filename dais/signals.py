@@ -36,8 +36,12 @@ def update_group_last_update(sender, instance, **kwargs):
         group_instance = None
         if sender in [PeriodDS, PeriodIA]:
             group_instance = instance.group
-        elif sender in [TimeSlot, Contribution, Layer, ContributionIA]:
+        elif sender in [TimeSlot, Contribution, Detail]:
             group_instance = instance.period.group
+        elif sender == Layer:
+            group_instance = instance.period.group
+        elif sender == ContributionIA:
+            group_instance = instance.layer.period.group  
         elif sender == Formation:
             group_instance = instance.contributionia.layer.period.group
         
