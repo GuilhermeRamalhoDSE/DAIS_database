@@ -6,7 +6,7 @@ class Totem(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name=_("Gruppo"))
     name = models.CharField(max_length=255, null=True, verbose_name=_("nome"))
     installation_date = models.DateField(verbose_name=_("Data di installazione"))
-    active = models.BooleanField(default=True, verbose_name=_("Attivo"))
+    active = models.BooleanField(default=False, verbose_name=_("Attivo"))
     comments = models.TextField(blank=True, null=True, verbose_name=_("Commenti"))
 
     def __str__(self):
