@@ -24,7 +24,7 @@
             <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
                 <thead>
                     <tr>
-                        <th data-toggle="true" ng-if="isSuperuser">
+                        <th data-toggle="true" ng-if="isSuperuser()">
                             Group ID
                         </th>
                         <th>
@@ -50,7 +50,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="group in groupList | filter:searchText">
-                        <td ng-if="isSuperuser">{{ group.id }}</td>
+                        <td ng-if="isSuperuser()">{{ group.id }}</td>
                         <td>{{ group.client_name }}</td>
                         <td>{{ group.name }}</td>
                         <td>{{ group.typology }}</td>

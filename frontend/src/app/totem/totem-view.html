@@ -25,6 +25,9 @@
                 <thead>
                     <tr>
                         <th data-toggle="true" data-sortable="true">
+                            ID
+                        </th>
+                        <th data-toggle="true" data-sortable="true">
                             Name
                         </th>
                         <th data-hide="phone,tablet" data-sortable="true">
@@ -50,6 +53,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="totem in totemList | filter:searchText">
+                        <td>{{ totem.id }}</td>
                         <td>{{ totem.name }}</td>
                         <td>{{ groupName }}</td>
                         <td>{{ clientName }}</td>
