@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.timezone import now
-
+from django.db.models import F
 from dais.models.group_models import Group
 from dais.models.periodds_models import PeriodDS
 from dais.models.timeslot_models import TimeSlot
@@ -32,9 +32,7 @@ from dais.models.formation_models import Formation
 def update_group_last_update(sender, instance, **kwargs):
     current_time = now()
     if sender == Group:
-        if instance.last_update != current_time:
-            instance.last_update = current_time
-            instance.save(update_fields=['last_update'])
+        Group.objects.filter(pk=instance.pk, last_update__lt=current_time).update(last_update=current_time)
     else:
         group_instance = None
         if sender in [PeriodDS, PeriodIA]:
@@ -43,6 +41,5 @@ def update_group_last_update(sender, instance, **kwargs):
             group_instance = instance.period.group
         elif sender == Formation:
             group_instance = instance.contributionia.layer.period.group
-        if group_instance and group_instance.last_update != current_time:
-            group_instance.last_update = current_time
-            group_instance.save(update_fields=['last_update'])
+        if group_instance:
+            Group.objects.filter(pk=group_instance.pk, last_update__lt=current_time).update(last_update=current_time)
