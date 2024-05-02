@@ -54,13 +54,15 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
     };
 
     $scope.createScreen = function() {
-        if (!totemId || !$scope.logo || !$scope.background) {
-            return;
-        }
 
         var formData = new FormData();
-        formData.append('logo', $scope.logo);
-        formData.append('background', $scope.background);
+
+        if ($scope.logo) {
+            formData.append('logo', $scope.logo);
+        }
+        if ($scope.background) {
+            formData.append('background', $scope.background);
+        }
 
         var screenData = { ...$scope.newScreen };
         formData.append('screen_in', JSON.stringify(screenData));

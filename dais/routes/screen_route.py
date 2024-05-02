@@ -15,7 +15,7 @@ import os
 screen_router = Router(tags=['Screen'])
 
 @screen_router.post("/", response={201: ScreenOutSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def create_screen(request: HttpRequest, screen_in: ScreenCreateSchema, logo: UploadedFile = File(...), background: UploadedFile = File(...)):
+def create_screen(request: HttpRequest, screen_in: ScreenCreateSchema, logo: UploadedFile = File(None), background: UploadedFile = File(None)):
     user_info = get_user_info_from_token(request)
     is_superuser = user_info.get('is_superuser', False)
     is_staff = user_info.get('is_staff', False)
