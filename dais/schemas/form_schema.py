@@ -22,3 +22,6 @@ class FormSchema(BaseModel):
     name: str
     api: bool
     last_update: datetime
+
+    class Config:
+        from_attributes = True

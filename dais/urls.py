@@ -25,7 +25,7 @@ from .routes.formation_route import formation_router
 from .routes.setup_route import setup_router
 from .routes.periodds_out_route import perioddsout_router
 from .routes.periodia_out_route import periodiaout_router
-
+from .routes.form_route import form_router
 
 api = NinjaAPI()
 
@@ -54,6 +54,7 @@ api.add_router("/formations", formation_router)
 api.add_router("/setup", setup_router)
 api.add_router("/period/DS/", perioddsout_router)
 api.add_router("/period/IA/", periodiaout_router)
+api.add_router("/forms", form_router)
 
 urlpatterns = [
     path("api/", api.urls),
