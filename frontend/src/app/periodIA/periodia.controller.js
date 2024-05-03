@@ -88,5 +88,17 @@ angular.module('frontend').controller('PeriodIAController', ['$scope', 'PeriodIA
         };
     };
 
+    $scope.deletePeriod = function(periodIAId) {
+        if (confirm('Are you sure you want to delete this period?')) {
+            PeriodIAService.deletePeriodIA(periodIAId).then(function(response) {
+                alert('Period deleted successfully!');
+                $scope.loadPeriods(); 
+            }).catch(function(error) {
+                console.error('Error deleting period:', error);
+                alert('Failed to delete period: ' + error.data.message);
+            });
+        }
+    };
+
     $scope.loadPeriods();
 }]);

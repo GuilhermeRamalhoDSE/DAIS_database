@@ -93,5 +93,17 @@ angular.module('frontend').controller('PeriodDSController', ['$scope', 'PeriodDS
         };
     };
 
+    $scope.deletePeriod = function(periodDSId) {
+        if (confirm('Are you sure you want to delete this period?')) {
+            PeriodDSService.deletePeriodDS(periodDSId).then(function(response) {
+                alert('Period deleted successfully!');
+                $scope.loadPeriods(); 
+            }).catch(function(error) {
+                console.error('Error deleting period:', error);
+                alert('Failed to delete period: ' + error.data.message);
+            });
+        }
+    };
+
     $scope.loadPeriods();
 }]);
