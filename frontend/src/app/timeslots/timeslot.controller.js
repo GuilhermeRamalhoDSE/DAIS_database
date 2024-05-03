@@ -15,8 +15,8 @@ function($scope, TimeslotService, $state, $stateParams) {
     }
 
     $scope.newTimeslot = {
-        start_time: new Date(),
-        end_time: new Date(),
+        start_time: formatTimeForInput(new Date()),
+        end_time: formatTimeForInput(new Date()),
         period_id: perioddsId
     };
 
