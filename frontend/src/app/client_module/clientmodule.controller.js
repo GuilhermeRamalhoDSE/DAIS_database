@@ -21,7 +21,6 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
     $scope.newClientModule = {
         client_id: clientId,
         name: '',
-        module_id: null
     };
 
     $scope.loadClientModule = function() {
