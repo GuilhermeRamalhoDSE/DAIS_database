@@ -54,6 +54,9 @@
                             <button class="btn btn-danger btn-xs" ng-click="deleteClient(client.id)">Delete</button>
                         </td>
                         <td>
+                            <button class="btn btn-default btn-xs" ng-click="goToModules(client.id, client.name)">Modules</button>
+                        </td>
+                        <td>
                             <button class="btn btn-default btn-xs" ng-click="viewGroups(client.id, client.name)">Groups</button>
                         </td>
                     </tr>

@@ -42,6 +42,10 @@ angular.module('frontend').controller('ClientController', ['$scope', 'ClientServ
     $scope.viewGroups = function(clientId, clientName) {
         $state.go('base.group-view', { clientId: clientId, clientName: clientName });
     };
+
+    $scope.goToModules = function(clientId, clientName) {
+        $state.go('base.clientmodule-view', { clientId: clientId, clientName: clientName });
+    };
    
     $scope.deleteClient = function(clientId) {
         if (confirm('Are you sure you want to delete this client?')) {

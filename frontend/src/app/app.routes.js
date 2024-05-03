@@ -134,8 +134,38 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.clientmodule-new', {
+        url: '/:clientId/:clientName/module/new',
+        templateUrl: 'app/client_module/clientmodule-new.html',
+        controller: 'ClientModuleController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.clientmodule-view', {
+        url: '/:clientId/:clientName/modules',
+        templateUrl: 'app/client_module/clientmodule-view.html',
+        controller: 'ClientModuleController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.clientmodule-update', {
+        url: '/:clientId/:clientName/module/update/:clientmoduleId',
+        templateUrl: 'app/client_module/clientmodule-update.html',
+        controller: 'ClientModuleUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.form-new', {
-        url: '/form/new',
+        url: '/:clientId/:clientName/:clientmoduleId/form/new',
         templateUrl: 'app/forms/form-new.html',
         controller: 'FormController',
         data: {
@@ -145,7 +175,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.form-view', {
-        url: '/forms',
+        url: '/:clientId/:clientName/:clientmoduleId/forms',
         templateUrl: 'app/forms/form-view.html',
         controller: 'FormController',
         data: {
@@ -155,7 +185,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.form-update', {
-        url: '/form/update/:formId',
+        url: '/:clientId/:clientName/:clientmoduleId/form/update/:formId',
         templateUrl: 'app/forms/form-update.html',
         controller: 'FormUpdateController',
         data: {
