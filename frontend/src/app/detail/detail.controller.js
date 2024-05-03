@@ -1,4 +1,4 @@
-angular.module('frontend').controller('DetailController', ['$scope', 'DetailService', '$state', '$stateParams', 'AuthService', function($scope, DetailService, $state, $stateParams, AuthService) {
+angular.module('frontend').controller('DetailController', ['$scope', 'DetailService', '$state', '$stateParams', 'AuthService', '$http', function($scope, DetailService, $state, $stateParams, AuthService, $http) {
     $scope.detailList = [];
     $scope.file = null;
     $scope.perioddsId = $stateParams.perioddsId;
