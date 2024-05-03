@@ -65,7 +65,7 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
             ClientModuleService.delete(clientmoduleId).then(function(response) {
                 alert('Client Module deleted successfully');
                 $scope.loadClientModule();
-                $scope.go('base.clientmodule-view', {
+                $state.go('base.clientmodule-view', {
                     clientId: clientId,
                     clientName: clientName
                 });

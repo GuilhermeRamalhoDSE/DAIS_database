@@ -10,6 +10,7 @@ class ClientModuleUpdateSchema(BaseModel):
     name: Optional[str] = None
 
 class ClientModuleSchema(BaseModel):
+    id: int
     client_id: int
     name: str
     form_count: int
