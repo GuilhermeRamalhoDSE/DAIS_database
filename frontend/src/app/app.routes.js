@@ -134,6 +134,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.form-new', {
+        url: '/form/new',
+        templateUrl: 'app/forms/form-new.html',
+        controller: 'FormController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.form-view', {
+        url: '/forms',
+        templateUrl: 'app/forms/form-view.html',
+        controller: 'FormController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.form-update', {
+        url: '/form/update/:formId',
+        templateUrl: 'app/forms/form-update.html',
+        controller: 'FormUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.avatar-new', {
         url: '/avatar/new',
         templateUrl: 'app/avatar/avatar-new.html',
