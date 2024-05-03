@@ -134,7 +134,7 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
 
     $scope.downloadFile = function(formationId) {
         if (formationId) {
-            var downloadUrl = 'https://daisdatabasedse.it/api/formations/download/' + formationId;
+            var downloadUrl = 'http://localhost:8000/api/formations/download/' + formationId;
     
             $http({
                 url: downloadUrl,

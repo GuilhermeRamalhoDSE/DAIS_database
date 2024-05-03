@@ -1,7 +1,7 @@
 angular.module('frontend').factory('LicenseService', ['$http', function($http) {
     var service = {};
 
-    var baseUrl = 'https://daisdatabasedse.it/api/licenses/';
+    var baseUrl = 'http://localhost:8000/api/licenses/';
 
     service.getAll = function() {
         return $http.get(baseUrl);
