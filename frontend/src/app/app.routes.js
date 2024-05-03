@@ -155,7 +155,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.clientmodule-update', {
-        url: '/:clientId/:clientName/module/update/:clientmoduleId',
+        url: '/:clientId/:clientName/module/update/:clientmoduleId/:clientmoduleName',
         templateUrl: 'app/client_module/clientmodule-update.html',
         controller: 'ClientModuleUpdateController',
         data: {
