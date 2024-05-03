@@ -6,7 +6,7 @@ class ClientModuleAdmin(admin.ModelAdmin):
     list_filter = ('id', 'name')
     search_fields = ('id', 'name')
     ordering = ('id',)
-    readonly_fields = ('form_count')
+    readonly_fields = ('form_count',)
     fields = ('id', 'name', 'form_count')
 
     def form_count(self, obj):
