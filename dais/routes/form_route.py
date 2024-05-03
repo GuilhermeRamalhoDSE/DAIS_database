@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from typing import Optional, List
 from dais.schemas.form_schema import FormCreateSchema, FormSchema, FormUpdateSchema
 from dais.models.form_models import Form
+from dais.models.clientmodule_models import ClientModule
 from dais.models.client_models import Client
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
@@ -13,7 +14,8 @@ form_router = Router(tags=['Forms'])
 @form_router.post('/', response={201: FormSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_form(request, form_in: FormCreateSchema):
     user_info = get_user_info_from_token(request)
-    client = get_object_or_404(Client, id=form_in.client_id)
+    client_module = get_object_or_404(ClientModule, id=form_in.client_module_id)
+    client = get_object_or_404(Client, id=client_module.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
         raise Http404('You do not have permission to add forms')
@@ -27,16 +29,17 @@ def create_form(request, form_in: FormCreateSchema):
     return 201, form_schema
 
 @form_router.get('/', response=List[FormSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def read_forms(request, client_id: Optional[int] = None):
+def read_forms(request, client_module_id: Optional[int] = None):
     user_info = get_user_info_from_token(request)
-    client = get_object_or_404(Client, id=client_id)
+    client_module = get_object_or_404(ClientModule, id=client_module_id)
+    client = get_object_or_404(Client, id=client_module.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
         raise Http404('You do not have permission to view forms')
     
     query = Form.objects.all()
-    if client_id is not None:
-        query = query.filter(client_id=client_id)
+    if client_module_id is not None:
+        query = query.filter(client_module_id=client_module_id)
     
     forms = [FormSchema.from_orm(form) for form in query]
     return forms
@@ -45,7 +48,8 @@ def read_forms(request, client_id: Optional[int] = None):
 def read_form_by_id(request, form_id: int):
     user_info = get_user_info_from_token(request)
     form = get_object_or_404(Form, id=form_id)
-    client = get_object_or_404(Client, id=form.client_id)
+    client_module = get_object_or_404(ClientModule, id=form.client_module_id)
+    client = get_object_or_404(Client, id=client_module.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
         raise Http404('You do not have permission to view this form')
@@ -56,7 +60,8 @@ def read_form_by_id(request, form_id: int):
 def update_form(request, form_id: int, form_in: FormUpdateSchema):
     user_info = get_user_info_from_token(request)
     form = get_object_or_404(Form, id=form_id)
-    client = get_object_or_404(Client, id=form.client_id)
+    client_module = get_object_or_404(ClientModule, id=form.client_module_id)
+    client = get_object_or_404(Client, id=client_module.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
         raise Http404('You do not have permission to update this form')    
@@ -71,7 +76,8 @@ def update_form(request, form_id: int, form_in: FormUpdateSchema):
 def delete_form(request, form_id: int):
     user_info = get_user_info_from_token(request)
     form = get_object_or_404(Form, id=form_id)
-    client = get_object_or_404(Client, id=form.client_id)
+    client_module = get_object_or_404(ClientModule, id=form.client_module_id)
+    client = get_object_or_404(Client, id=client_module.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
         raise Http404('You do not have permission to delete this form')    
