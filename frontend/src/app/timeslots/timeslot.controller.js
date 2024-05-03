@@ -15,8 +15,8 @@ function($scope, TimeslotService, $state, $stateParams) {
     }
 
     $scope.newTimeslot = {
-        start_time: new Date(),
-        end_time: new Date(),
+        start_time: '',
+        end_time: '',
         period_id: perioddsId
     };
 
@@ -118,10 +118,9 @@ function($scope, TimeslotService, $state, $stateParams) {
     };
 
     $scope.resetForm = function() {
-        var now = new Date();
         $scope.newTimeslot = {
-            start_time: formatTimeForInput(now),
-            end_time: formatTimeForInput(new Date(now.getTime() + 60 * 60000)), 
+            start_time: '',
+            end_time: '', 
             period_id: perioddsId
         };
     };
