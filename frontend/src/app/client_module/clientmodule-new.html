@@ -1,0 +1,29 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="ClientModuleController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Client Module</h2>
+                    <small>Add a new module to the client</small>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form novalidate>
+                        <div class="form-group">
+                            <label for="clientName">Client Name</label>
+                            <input type="text" class="form-control" id="clientName" ng-model="clientName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="moduleName">Module Name</label>
+                            <input type="text" class="form-control" id="moduleName" ng-model="newClientModule.name" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" ng-click="createClientModule()">Create</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

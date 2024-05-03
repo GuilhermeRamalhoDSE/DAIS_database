@@ -2,7 +2,6 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
     $scope.clientmoduleList = [];
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
-    $scope.modules = [];
     let clientId = parseInt($stateParams.clientId || sessionStorage.getItem('lastclientId'), 10);
     if (isNaN(clientId)) {
         console.error('Invalid clientId');
@@ -31,22 +30,10 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
         });
     };
 
-    $scope.loadModules = function() {
-        if ($scope.licenseId) {
-            LicenseService.getModulesByLicense($scope.licenseId).then(function(response) {
-                $scope.modules = response.data;
-            }).catch(function(error) {
-                console.error('Error loading modules', error);
-            });
-        } else {
-            console.error('License ID is undefined');
-        }
-    };
-
     $scope.goToCreateClientModule = function() {
         $state.go('base.clientmodule-new', {
-            clientId: $scope.clientId,
-            clientName: $scope.clientName
+            clientId: clientId,
+            clientName: clientName
         });
     };
 
@@ -55,8 +42,8 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
             alert('Client Module created successfully!');
             $scope.loadClientModule();
             $state.go('base.clientmodule-view', {
-                clientId: $scope.clientId,
-                clientName: $scope.clientName
+                clientId: clientId,
+                clientName: clientName
             });
         }).catch(function(error) {
             console.error('Error creating client module:', error);
@@ -65,8 +52,8 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
 
     $scope.editClientModule = function(clientmoduleId, clientmoduleName) {
         $state.go('base.clientmodule-update', {
-            clientId: $scope.clientId,
-            clientName: $scope.clientName,
+            clientId: clientId,
+            clientName: clientName,
             clientmoduleId: clientmoduleId,
             clientmoduleName: clientmoduleName
         });
@@ -79,8 +66,8 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
                 alert('Client Module deleted successfully');
                 $scope.loadClientModule();
                 $scope.go('base.clientmodule-view', {
-                    clientId: $scope.clientId,
-                    clientName: $scope.clientName
+                    clientId: clientId,
+                    clientName: clientName
                 });
                 }).catch(function(error) {
                     console.error('Error deleting client module:', error);
@@ -90,18 +77,17 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
 
     $scope.cancelCreate = function() {
         $state.go('base.clientmodule-view', {
-            clientId: $scope.clientId,
-            clientName: $scope.clientName
+            clientId: clientId,
+            clientName: clientName
         });
     };
 
     $scope.goBack = function() {
         $state.go('base.client-view', {
-            clientId: $scope.clientId,
-            clientName: $scope.clientName
+            clientId: clientId,
+            clientName: clientName
         });
     };
 
     $scope.loadClientModule();
-    $scope.loadModules();
 }])
