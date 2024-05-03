@@ -1,0 +1,25 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="ClientModuleUpdateController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Update Client Module - {{ clientmoduleName }}</h2>
+                    <small>Update the details for the selected client module.</small>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="updateClientModule()" novalidate>
+                        <div class="form-group">
+                            <label for="moduleName">Module Name</label>
+                            <input type="text" class="form-control" id="moduleName" ng-model="clientmoduleData.name" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

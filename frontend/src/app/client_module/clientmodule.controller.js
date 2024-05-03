@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ClientModuleController', ['$scope', 'ClientModuleService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$http', function($scope, ClientModuleService, LicenseService, AuthService, $state, $stateParams, $http) {
+angular.module('frontend').controller('ClientModuleController', ['$scope', 'ClientModuleService', 'AuthService', '$state', '$stateParams', function($scope, ClientModuleService, AuthService, $state, $stateParams) {
     $scope.clientmoduleList = [];
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
