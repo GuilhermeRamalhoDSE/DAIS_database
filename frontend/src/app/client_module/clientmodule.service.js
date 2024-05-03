@@ -1,6 +1,6 @@
 angular.module('frontend').factory('ClientModuleService', ['$http', function($http){
     var service = {};
-    var baseUrl = 'http://localhost:8000/api/clientmodules/'
+    var baseUrl = 'https://daisdatabasedse.it/api/clientmodules/'
 
     service.getAll = function(clientId) {
         return $http.get(baseUrl, { params: { client_id:clientId}});
