@@ -59,6 +59,15 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
         });
     };
 
+    $scope.detailClientModule = function(clientmoduleId, clientmoduleName) {
+        $state.go('base.-update', {
+            clientId: clientId,
+            clientName: clientName,
+            clientmoduleId: clientmoduleId,
+            clientmoduleName: clientmoduleName
+        });
+    };
+
     $scope.deleteClientModule = function(clientmoduleId) {
         var isConfirmed = confirm('Are you sure you want to delete this client module?')
         if(isConfirmed) {
