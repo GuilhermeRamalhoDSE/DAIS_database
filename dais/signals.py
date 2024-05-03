@@ -38,7 +38,9 @@ def update_group_last_update(sender, instance, **kwargs):
 
     if isinstance(instance, (PeriodDS, PeriodIA)):
         group_instance = instance.group
-    elif isinstance(instance, (TimeSlot, Contribution)):
+    elif isinstance(instance, TimeSlot):
+        group_instance = instance.period.group
+    elif isinstance(instance, Contribution):
         group_instance = instance.time_slot.period.group
     elif isinstance(instance, Detail):
         group_instance = instance.contribution.time_slot.period.group
