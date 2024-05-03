@@ -30,20 +30,24 @@ from dais.models.formation_models import Formation
 @receiver(post_delete, sender=Formation)
 def update_group_last_update(sender, instance, **kwargs):
     current_time = now()
+    group_instance = None
+
     if sender == Group:
         Group.objects.filter(pk=instance.pk).update(last_update=current_time)
-    else:
-        group_instance = None
-        if sender in [PeriodDS, PeriodIA]:
-            group_instance = instance.group
-        elif sender in [TimeSlot, Contribution, Detail]:
-            group_instance = instance.period.group
-        elif sender == Layer:
-            group_instance = instance.period.group
-        elif sender == ContributionIA:
-            group_instance = instance.layer.period.group  
-        elif sender == Formation:
-            group_instance = instance.contributionia.layer.period.group
-        
-        if group_instance:
-            Group.objects.filter(pk=group_instance.pk).update(last_update=current_time)
+        return
+
+    if isinstance(instance, (PeriodDS, PeriodIA)):
+        group_instance = instance.group
+    elif isinstance(instance, (TimeSlot, Contribution)):
+        group_instance = instance.time_slot.period.group
+    elif isinstance(instance, Detail):
+        group_instance = instance.contribution.time_slot.period.group
+    elif isinstance(instance, Layer):
+        group_instance = instance.period.group
+    elif isinstance(instance, ContributionIA):
+        group_instance = instance.layer.period.group
+    elif isinstance(instance, Formation):
+        group_instance = instance.contributionia.layer.period.group
+
+    if group_instance:
+        Group.objects.filter(pk=group_instance.pk).update(last_update=current_time)
