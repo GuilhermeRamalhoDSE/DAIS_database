@@ -86,7 +86,7 @@ class LicenseSchema(LicenseBaseSchema):
     def prepare_modules(cls, value):
         if value is None:
             return []
-        return [ModuleOut(id=module.id, name=module.name) for module in value.all()]
+        return [ModuleOut(id=module.id, name=module.name, slug=module.slug) for module in value.all()]
     
     @validator('screentypes', pre=True, each_item=False)
     def prepare_screentypes(cls, value):
