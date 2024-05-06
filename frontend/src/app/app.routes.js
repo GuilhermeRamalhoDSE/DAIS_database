@@ -194,6 +194,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.formfield-new', {
+        url: '/:clientId/:clientName/:clientmoduleId/:formId/:formName/field/new',
+        templateUrl: 'app/form_field/form_field-new.html',
+        controller: 'FormFieldController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.formfield-view', {
+        url: '/:clientId/:clientName/:clientmoduleId/:formId/:formName/fields',
+        templateUrl: 'app/form_field/form_field-view.html',
+        controller: 'FormFieldController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.formfield-update', {
+        url: '/:clientId/:clientName/:clientmoduleId/:formId/:formName/field/update/:formfieldId/:formfieldName',
+        templateUrl: 'app/form_field/form_field-update.html',
+        controller: 'FormFieldUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.avatar-new', {
         url: '/avatar/new',
         templateUrl: 'app/avatar/avatar-new.html',
