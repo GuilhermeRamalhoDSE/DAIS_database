@@ -7,7 +7,10 @@ angular.module('frontend').controller('FormUpdateController', ['$scope', 'FormSe
     $scope.formId = $stateParams.formId;
     $scope.formName = $stateParams.formName;
     
-    $scope.formData = {};
+    $scope.formData = {
+        name: '',
+        api: false
+    };
 
     $scope.loadFormDetails = function() {
         if(!$scope.formId){
@@ -37,8 +40,8 @@ angular.module('frontend').controller('FormUpdateController', ['$scope', 'FormSe
         });
     }; 
 
-    $scope.updateFormation = function() {
-        FormService.update($scope.formId, formData).then(function(response) {
+    $scope.updateForm = function() {
+        FormService.update($scope.formId, $scope.formData).then(function(response) {
             alert('Form updated successfully!');
             $state.go('base.form-view', { 
                 clientId: $scope.clientId,
@@ -46,6 +49,7 @@ angular.module('frontend').controller('FormUpdateController', ['$scope', 'FormSe
                 clientmoduleId: $scope.clientmoduleId,
              });
         }).catch(function(error) {
+            alert('Error updating form!')
             console.error('Error updating form:', error);
         });
     };

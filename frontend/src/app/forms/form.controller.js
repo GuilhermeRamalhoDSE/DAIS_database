@@ -45,7 +45,7 @@ angular.module('frontend').controller('FormController', ['$scope', 'FormService'
     };
 
     $scope.editForm = function(formId, formName) {
-        $state.go('base.formation-update', { 
+        $state.go('base.form-update', { 
             clientId: $scope.clientId,
             clientName: $scope.clientName,
             clientmoduleId: clientmoduleId,
