@@ -1,0 +1,65 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="FormController">
+    <div class="box">
+        <div class="box-header">
+            <h2>Forms for {{ clientName }}</h2>
+            <small>View and manage form</small>
+        </div>
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <div class="col-sm-6">
+                    Search: <input id="filter" type="text" class="form-control input-sm w-auto inline m-r"
+                        ng-model="searchText" />
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-fw primary" ng-click="goToCreateForm()">
+                        <i class="fa fa-fw fa-plus text-muted"></i>
+                        <span>New Form</span>
+                    </button>
+                    <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Last Update
+                        </th>
+                        <th>
+                            API
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="form in formList | filter:searchText">
+                        <td>{{ form.name }}</td>
+                        <td>{{ form.last_update | date:'medium' }}</td>
+                        <td>
+                            <input type="checkbox" ng-checked="form.api" ng-click="toggleActive(form)">
+                        </td>
+                        <td>
+                            <button class="btn btn-default btn-xs" ng-click="editForm(form.id, form.name)">Edit</button>
+                            <button class="btn btn-danger btn-xs" ng-click="deleteForm(form.id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="hide-if-no-paging">
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            <ul class="pagination"></ul>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
