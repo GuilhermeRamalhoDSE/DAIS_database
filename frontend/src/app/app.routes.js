@@ -185,7 +185,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.form-update', {
-        url: '/:clientId/:clientName/:clientmoduleId/form/update/:formId',
+        url: '/:clientId/:clientName/:clientmoduleId/form/update/:formId/:formName',
         templateUrl: 'app/forms/form-update.html',
         controller: 'FormUpdateController',
         data: {
