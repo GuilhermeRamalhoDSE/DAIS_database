@@ -11,7 +11,6 @@ angular.module('frontend').controller('FormController', ['$scope', 'FormService'
     $scope.newForm = {
         client_module_id: clientmoduleId,
         name: '',
-
     };
 
     $scope.loadForms = function() {
