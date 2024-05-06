@@ -49,6 +49,10 @@
                             <button class="btn btn-default btn-xs" ng-click="editForm(form.id, form.name)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteForm(form.id)">Delete</button>
                         </td>
+                        <td>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="goToFormField(form.id, form.name)">Fields</button>
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot class="hide-if-no-paging">

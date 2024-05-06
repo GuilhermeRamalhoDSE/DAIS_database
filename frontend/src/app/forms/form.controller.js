@@ -30,6 +30,16 @@ angular.module('frontend').controller('FormController', ['$scope', 'FormService'
         });
     };
 
+    $scope.goToFormField = function(formId, formName) {
+        $state.go('base.formfield-view', { 
+            clientId: $scope.clientId,
+            clientName: $scope.clientName,
+            clientmoduleId: clientmoduleId,
+            formId: formId,
+            formName: formName
+        });
+    };
+
     $scope.createForm = function() {
         FormService.create($scope.newForm).then(function(response) {
             alert('Form created successfully!');
