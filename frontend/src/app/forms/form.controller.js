@@ -1,4 +1,4 @@
-angular.module('frontend').controller('FormController', ['$scope', 'FormService', 'AuthService', '$state', '$stateParams', '$http', function($scope, FormationService, AuthService, $state, $stateParams, $http) {
+angular.module('frontend').controller('FormController', ['$scope', 'FormService', 'AuthService', '$state', '$stateParams', function($scope, FormService, AuthService, $state, $stateParams) {
     $scope.formList = [];
 
     $scope.clientId = $stateParams.clientId;
@@ -11,10 +11,11 @@ angular.module('frontend').controller('FormController', ['$scope', 'FormService'
     $scope.newForm = {
         client_module_id: clientmoduleId,
         name: '',
+        api: false,
     };
 
     $scope.loadForms = function() {
-        FormationService.getAll(clientmoduleId).then(function(response) {
+        FormService.getAll(clientmoduleId).then(function(response) {
             $scope.formList = response.data;
         }).catch(function(error) {
             console.error('Error loading forms:', error);
@@ -30,7 +31,7 @@ angular.module('frontend').controller('FormController', ['$scope', 'FormService'
     };
 
     $scope.createForm = function() {
-        Form.create($scope.newForm).then(function(response) {
+        FormService.create($scope.newForm).then(function(response) {
             alert('Form created successfully!');
             $scope.loadForms();
             $state.go('base.form-view',{

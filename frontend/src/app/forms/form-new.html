@@ -1,0 +1,33 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="FormController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Form</h2>
+                    <small>Add a new form to the client module</small>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form novalidate>
+                        <div class="form-group">
+                            <label for="clientName">Client Name</label>
+                            <input type="text" class="form-control" id="clientName" ng-model="clientName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="formName">Form Name</label>
+                            <input type="text" class="form-control" id="formName" ng-model="newForm.name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="formApi">API</label>
+                            <input type="checkbox" id="formApi" ng-model="newForm.api">
+                        </div>
+                        <button type="button" class="btn btn-primary" ng-click="createForm()">Create</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
