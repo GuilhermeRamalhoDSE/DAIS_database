@@ -2,13 +2,14 @@ from ninja import Router
 from django.shortcuts import get_object_or_404
 from typing import Optional, List
 from dais.schemas.clientmodule_schema import ClientModuleCreateSchema, ClientModuleSchema, ClientModuleUpdateSchema
+from dais.schemas.module_schema import ModuleOut
 from dais.models.clientmodule_models import ClientModule
 from dais.models.client_models import Client
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
 from django.http import Http404
 
-client_module_router = Router(tags=['Module Client'])
+client_module_router = Router(tags=['Client Module'])
 
 @client_module_router.post('/', response={201: ClientModuleSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_client_module(request, client_module_in: ClientModuleCreateSchema):
@@ -22,7 +23,10 @@ def create_client_module(request, client_module_in: ClientModuleCreateSchema):
 
     client_module = ClientModule.objects.create(**client_module_data)
 
+    module_out = ModuleOut.from_orm(client_module.module)
+
     client_module_schema = ClientModuleSchema.from_orm(client_module)
+    client_module_schema.module = module_out
 
     return 201, client_module_schema
 

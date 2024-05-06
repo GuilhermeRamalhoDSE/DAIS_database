@@ -59,12 +59,25 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
         });
     };
 
-    $scope.detailClientModule = function(clientmoduleId, clientmoduleName) {
-        $state.go('base.-update', {
+    $scope.detailClientModule = function(clientModule) {
+        let route = "";
+        switch(clientModule.module.slug) {
+            case 'form':
+                route = 'base.form-view';
+                break;
+            case 'touch-screen-interactions':
+                route = 'base.touchscreen-view';
+                break;
+            default:
+                console.error('Unknown module type');
+                return;
+        }
+        
+        $state.go(route, {
             clientId: clientId,
             clientName: clientName,
-            clientmoduleId: clientmoduleId,
-            clientmoduleName: clientmoduleName
+            clientmoduleId: clientModule.id,
+            clientmoduleName: clientModule.name
         });
     };
 

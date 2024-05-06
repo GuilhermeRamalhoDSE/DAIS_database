@@ -1,9 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .client_models import Client
+from .module_models import Module
 
 class ClientModule(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name=_('Cliente'))
+    module = models.ForeignKey(Module, on_delete=models.CASCADE,  null=True, verbose_name=_('Modulo'))
     name = models.CharField(max_length=255, verbose_name=_('Nome'))
 
     def __str__(self):
