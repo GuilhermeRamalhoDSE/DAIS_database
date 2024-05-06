@@ -10,14 +10,14 @@ class FormField(models.Model):
     ]
     form = models.ForeignKey(Form, on_delete=models.CASCADE, verbose_name=_('Form'))
     name = models.CharField(max_length=255, verbose_name=_('Nome'))
-    numero = models.IntegerField(verbose_name=_('Numero'))
+    number = models.IntegerField(verbose_name=_('Numero'))
     field_type = models.CharField(max_length=50, choices=FIELD_TYPES, default='text', verbose_name=_('Tipo di Campo'))
     required = models.BooleanField(default=False, verbose_name=_('Obbligatorio'))
 
     class Meta:
         verbose_name = _('Campo di Form')
         verbose_name_plural = _('Campi di Form')
-        ordering = ['numero']
+        ordering = ['number']
 
     def __self__(self):
-        return f'{self.numero} - {self.name}' 
+        return f'{self.number} - {self.name}' 

@@ -5,12 +5,12 @@ class FormFieldInline(admin.StackedInline):
     model = FormField
     extra = 1  
     min_num = 1 
-    ordering = ['numero']
+    ordering = ['number']
 
 class FormFieldAdmin(admin.ModelAdmin):
-    list_display = ['form', 'name', 'field_type', 'required']
+    list_display = ['form', 'number', 'name', 'field_type', 'required']
     list_filter = ['form', 'field_type', 'required']
     search_fields = ['name']
-    ordering = ['form', 'numero']
+    ordering = ['form', 'number']
 
 admin.site.register(FormField, FormFieldAdmin)
