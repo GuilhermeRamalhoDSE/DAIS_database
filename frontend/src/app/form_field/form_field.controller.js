@@ -43,7 +43,7 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
         FormFieldService.create($scope.newFormField).then(function(response) {
             alert('Field created successfully!');
             $scope.loadFormFields();
-            $state.go('base.formfield-new', {
+            $state.go('base.formfield-view', {
                 clientId: $scope.clientId,
                 clientName: $scope.clientName,
                 clientmoduleId: $scope.clientmoduleId,
@@ -73,7 +73,7 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
             FormFieldService.delete(formfieldId).then(function(response) {
                 alert('Field deleted successfully!');
                 $scope.loadFormFields();
-                $state.go('base.formfield-new', {
+                $state.go('base.formfield-view', {
                     clientId: $scope.clientId,
                     clientName: $scope.clientName,
                     clientmoduleId: $scope.clientmoduleId,
@@ -87,7 +87,7 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
     };
 
     $scope.cancelCreate = function() {
-        $state.go('base.formfield-new', {
+        $state.go('base.formfield-view', {
             clientId: $scope.clientId,
             clientName: $scope.clientName,
             clientmoduleId: $scope.clientmoduleId,

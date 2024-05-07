@@ -24,9 +24,11 @@ def create_form_field(request, form_field_in: FormFieldCreateSchema):
     
     form_field_data = {**form_field_in.dict()}
 
-    form_field = Form.objects.create(**form_field_data)
+    form_field = FormField.objects.create(**form_field_data)
 
     form_field_schema = FormFieldSchema.from_orm(form_field)
+
+    return 201, form_field_schema
 
 @form_field_router.get('/', response=List[FormFieldSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_form_fields(request, form_id: Optional[int] = None):
