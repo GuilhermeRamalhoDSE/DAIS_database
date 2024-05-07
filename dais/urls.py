@@ -8,6 +8,7 @@ from .routes.client_route import client_router
 from .routes.clientmodule_route import client_module_router
 from .routes.form_route import form_router
 from .routes.formfield_route import form_field_router
+from .routes.formdata_route import formdata_router
 from .routes.avatar_route import avatar_router
 from .routes.voice_route import voice_router
 from .routes.language_route import language_router
@@ -39,6 +40,7 @@ api.add_router("/clients", client_router)
 api.add_router("/clientmodules", client_module_router)
 api.add_router("/forms", form_router)
 api.add_router("/formfield", form_field_router)
+api.add_router("/formdata", formdata_router)
 api.add_router("/avatar", avatar_router)
 api.add_router("/voices", voice_router)
 api.add_router("/languages", language_router)

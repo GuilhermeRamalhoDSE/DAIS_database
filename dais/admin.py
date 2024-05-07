@@ -4,6 +4,7 @@ from dais.admins.client_admin import ClientAdmin
 from dais.admins.clientmodule_admin import ClientModuleAdmin
 from dais.admins.form_admin import FormAdmin
 from dais.admins.formfield_admin import FormFieldAdmin
+from dais.admins.formdata_admin import FormDataAdmin
 from dais.admins.avatar_admin import AvatarAdmin
 from dais.admins.voice_admin import VoiceAdmin
 from dais.admins.language_admin import LanguageAdmin
