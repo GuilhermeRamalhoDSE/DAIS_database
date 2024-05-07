@@ -112,11 +112,8 @@ def get_totem_by_id(request, totem_id: int):
 
     return totem
 
-@totem_router.get("/{totem_id}/is_active", response={200: str}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+@totem_router.get("/{totem_id}/is_active", response={200: str})
 def check_totem_active(request, totem_id: int):
-    if not check_user_permission(request):
-        raise HttpError(403, "You do not have permission to check this totem.")
-
     totem = get_object_or_404(Totem, id=totem_id)
     return "YES" if totem.active else "NO"
 
