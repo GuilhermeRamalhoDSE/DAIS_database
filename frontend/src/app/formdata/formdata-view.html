@@ -12,9 +12,9 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="submitFormData()">
-                        <i class="fa fa-fw fa-save text-muted"></i>
-                        <span>Save Data</span>
+                    <button class="btn btn-fw primary" ng-click="goToCreateFormData()">
+                        <i class="fa fa-fw fa-plus text-muted"></i>
+                        <span>New Data</span>
                     </button>
                     <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
                 </div>
@@ -24,30 +24,22 @@
             <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
                 <thead>
                     <tr>
-                        <th>
-                            Field Name
-                        </th>
-                        <th>
-                            Value
-                        </th>
-                        <th>
-                            Actions
-                        </th>
+                        <th ng-repeat="field in formFields">{{ field.name }}</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="field in formFields | filter:searchText">
-                        <td>{{ field.name }}</td>
-                        <td><input type="text" class="form-control" ng-model="formData[field.name]"></td>
+                    <tr ng-repeat="data in formData | filter:searchText">
+                        <td ng-repeat="field in formFields">{{ data[field.name] }}</td>
                         <td>
-                            <button class="btn btn-default btn-xs" ng-click="getFormData(field.id)">Edit</button>
-                            <button class="btn btn-danger btn-xs" ng-click="deleteFormData(field.id)">Delete</button>
+                            <button class="btn btn-default btn-xs" ng-click="editFormData(data.id)">Edit</button>
+                            <button class="btn btn-danger btn-xs" ng-click="deleteFormData(data.id)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
                 <tfoot class="hide-if-no-paging">
                     <tr>
-                        <td colspan="3" class="text-center">
+                        <td colspan="{{ formFields.length + 1 }}" class="text-center">
                             <ul class="pagination"></ul>
                         </td>
                     </tr>
