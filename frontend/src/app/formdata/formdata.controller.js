@@ -22,10 +22,26 @@ angular.module('frontend').controller('FormDataController', ['$scope', 'FormData
         });
     };
 
+    $scope.goToCreateFormData = function() {
+        $state.go('base.formdata-new', {
+            clientId: $scope.clientId,
+            clientName: $scope.clientName,
+            clientmoduleId: $scope.clientmoduleId,
+            formId: formId,
+            formName: formName 
+        });
+    };
+
     $scope.submitFormData = function() {
         FormDataService.create($stateParams.formId, $scope.formData).then(function(response) {
             alert('Data saved successfully!');
-            $state.go('some-state'); 
+            $state.go('base.formdata-view', {
+                clientId: $scope.clientId,
+                clientName: $scope.clientName,
+                clientmoduleId: $scope.clientmoduleId,
+                formId: formId,
+                formName: formName 
+            }); 
         }).catch(function(error) {
             console.error('Error saving form data:', error);
             alert('Failed to save data.');
