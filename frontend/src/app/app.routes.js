@@ -224,6 +224,26 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.formdata-new', {
+        url: '/:clientId/:clientName/:clientmoduleId/:formId/:formName/data/new',
+        templateUrl: 'app/formdata/formdata-new.html',
+        controller: 'FormDataController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.formdata-view', {
+        url: '/:clientId/:clientName/:clientmoduleId/:formId/:formName/data',
+        templateUrl: 'app/formdatad/formdata-view.html',
+        controller: 'FormDataController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.avatar-new', {
         url: '/avatar/new',
         templateUrl: 'app/avatar/avatar-new.html',
