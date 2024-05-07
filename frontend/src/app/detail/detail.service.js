@@ -1,6 +1,6 @@
 angular.module('frontend').factory('DetailService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://localhost:8000/api/details/';
+    var baseUrl = 'https://daisdatabasedse.it/api/details/';
 
     service.getAll = function(contributionId) {
         return $http.get(baseUrl, { params: { contribution_id: contributionId } });

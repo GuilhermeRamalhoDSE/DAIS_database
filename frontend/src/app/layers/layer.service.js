@@ -1,6 +1,6 @@
 angular.module('frontend').factory('LayerService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://localhost:8000/api/layers/'; 
+    var baseUrl = 'https://daisdatabasedse.it/api/layers/'; 
 
     service.createLayer = function(layerData) {
         return $http.post(baseUrl, layerData);

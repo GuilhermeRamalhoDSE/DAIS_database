@@ -1,7 +1,7 @@
 angular.module('frontend').factory('UserService', ['$http', function($http) {
     var service = {};
 
-    var baseUrl = 'http://localhost:8000/api/users/';
+    var baseUrl = 'https://daisdatabasedse.it/api/users/';
 
     service.getAllUsers = function() {
         return $http.get(baseUrl);
@@ -23,7 +23,7 @@ angular.module('frontend').factory('UserService', ['$http', function($http) {
         return $http.get(baseUrl, { params: { user_id: userId } });
     };
     service.getAllLicenses = function() {
-        return $http.get('http://localhost:8000/api/licenses/');
+        return $http.get('https://daisdatabasedse.it/api/licenses/');
     };   
     
     return service;

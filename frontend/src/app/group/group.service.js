@@ -1,6 +1,6 @@
 angular.module('frontend').factory('GroupService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://localhost:8000/api/groups/';
+    var baseUrl = 'https://daisdatabasedse.it/api/groups/';
 
     service.getAll = function(clientId) {
         return $http.get(baseUrl, { params: { client_id: clientId }});

@@ -2,7 +2,7 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
     var authService = {};
 
     authService.login = function(credentials) {
-        return $http.post('http://localhost:8000/api/login/', credentials).then(function(response) {
+        return $http.post('https://daisdatabasedse.it/api/login/', credentials).then(function(response) {
             var storage = credentials.rememberMe ? $window.localStorage : $window.sessionStorage;
             
             storage.setItem('jwtToken', response.data.token);

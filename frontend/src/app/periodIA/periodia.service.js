@@ -1,6 +1,6 @@
 angular.module('frontend').factory('PeriodIAService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://localhost:8000/api/periodia/'; 
+    var baseUrl = 'https://daisdatabasedse.it/api/periodia/'; 
 
     service.createPeriodIA = function(periodIAData) {
         return $http.post(baseUrl, periodIAData);
