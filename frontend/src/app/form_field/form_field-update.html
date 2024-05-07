@@ -1,0 +1,41 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="FormFieldUpdateController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Updating Field: {{ formfieldName }}</h2>
+                    <small>Update the field details in the module.</small>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="updateFormField()" novalidate>
+                        <div class="form-group">
+                            <label for="fieldName">Name</label>
+                            <input type="text" class="form-control" id="fieldName" ng-model="formfieldData.name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fieldNumber">Number</label>
+                            <input type="number" class="form-control" id="fieldNumber" ng-model="formfieldData.number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fieldType">Type</label>
+                            <select class="form-control" id="fieldType" ng-model="formfieldData.field_type" required>
+                                <option value="text">Text</option>
+                                <option value="number">Number</option>
+                                <option value="date">Date</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="fieldRequired">Required</label>
+                            <input type="checkbox" id="fieldRequired" ng-model="formfieldData.required">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
