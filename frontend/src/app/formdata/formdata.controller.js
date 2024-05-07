@@ -1,10 +1,21 @@
-angular.module('frontend').controller('FormDataController', ['$scope', 'FormDataService', 'FormFieldService', '$state', '$stateParams', function($scope, FormDataService, FormFieldService, $state, $stateParams) {
-    $scope.formData = {};
+angular.module('frontend').controller('FormDataController', ['$scope', 'FormDataService', 'FormFieldService', 'AuthService', '$state', '$stateParams', function($scope, FormDataService, FormFieldService, AuthService, $state, $stateParams) {
+    $scope.formData = [];
     $scope.formFields = []; 
 
-    $scope.loadFormFields = function() {
+    $scope.clientId = $stateParams.clientId;
+    $scope.clientName = $stateParams.clientName;
+    $scope.clientmoduleId = $stateParams.clientmoduleId;
+    $scope.isSuperuser = AuthService.isSuperuser();
+ 
+    let formId = parseInt($stateParams.formId || sessionStorage.getItem('lastformId'), 10);
+    sessionStorage.setItem('lastformId', formId.toString());
 
-        FormFieldService.getById($stateParams.formId).then(function(response) {
+    let formName = $stateParams.formName || sessionStorage.getItem('lastformName');
+    sessionStorage.setItem('lastformName', formName);
+    $scope.formName = formName;
+
+    $scope.loadFormFields = function() {
+        FormFieldService.getAll($stateParams.formId).then(function(response) {
             $scope.formFields = response.data;
         }).catch(function(error) {
             console.error('Failed to fetch form fields:', error);
@@ -23,7 +34,7 @@ angular.module('frontend').controller('FormDataController', ['$scope', 'FormData
 
     $scope.getFormData = function(form_data_id) {
         FormDataService.getById(form_data_id).then(function(response) {
-            $scope.formData = response.data.data; 
+            $scope.formData = response.data.data;
         }).catch(function(error) {
             console.error('Error fetching form data:', error);
         });
