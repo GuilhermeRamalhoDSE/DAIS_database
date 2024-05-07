@@ -56,7 +56,7 @@ def get_group_by_id(request, group_id: int):
 
     return group
 
-@group_router.get("/{group_id}/last-update", response=LastUpdateOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+@group_router.get("/{group_id}/last-update", response=LastUpdateOut)
 def get_group_last_update(request, group_id: int):   
     group = get_object_or_404(Group, id=group_id)
 
