@@ -236,7 +236,7 @@ angular.module('frontend')
     $stateProvider
     .state('base.formdata-view', {
         url: '/:clientId/:clientName/:clientmoduleId/:formId/:formName/data',
-        templateUrl: 'app/formdatad/formdata-view.html',
+        templateUrl: 'app/formdata/formdata-view.html',
         controller: 'FormDataController',
         data: {
             requireLogin: true, 
