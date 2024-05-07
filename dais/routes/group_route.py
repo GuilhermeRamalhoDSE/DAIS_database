@@ -60,7 +60,7 @@ def get_group_by_id(request, group_id: int):
 def get_group_last_update(request, group_id: int):   
     group = get_object_or_404(Group, id=group_id)
 
-    return LastUpdateOut(last_update=group.last_update)
+    return {"last_update": group.last_update}
 
 @group_router.put("/{group_id}", response=GroupOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_group(request, group_id: int, payload: GroupUpdate):
