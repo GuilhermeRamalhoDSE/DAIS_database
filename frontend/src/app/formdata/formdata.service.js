@@ -10,8 +10,8 @@ angular.module('frontend').factory('FormDataService', ['$http', function($http){
         return $http.get(baseUrl + formdataId);
     };
 
-    service.create = function(formdataData) {
-        return $http.post(baseUrl, formdataData);
+    service.create = function(formId, formdataData) {
+        return $http.post(baseUrl, {form_id: formId, data: formdataData});
     };
 
     service.delete = function(formdataId) {
