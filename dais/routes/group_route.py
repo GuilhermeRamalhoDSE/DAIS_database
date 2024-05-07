@@ -57,18 +57,8 @@ def get_group_by_id(request, group_id: int):
     return group
 
 @group_router.get("/{group_id}/last-update", response=LastUpdateOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def get_group_last_update(request, group_id: int):
-    if not check_user_permission(request):
-        raise HttpError(403, "You do not have permission to view this group.")
-
-    user_info = get_user_info_from_token(request)
-    license_id = user_info.get('license_id', None)
-    is_superuser = user_info.get('is_superuser', False)
-
-    if is_superuser:
-        group = get_object_or_404(Group, id=group_id)
-    else:
-        group = get_object_or_404(Group, id=group_id, client__license_id=license_id)
+def get_group_last_update(request, group_id: int):   
+    group = get_object_or_404(Group, id=group_id)
 
     return LastUpdateOut(last_update=group.last_update)
 
