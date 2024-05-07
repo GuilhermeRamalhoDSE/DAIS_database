@@ -33,7 +33,7 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
         $state.go('base.formfield-new', {
             clientId: $scope.clientId,
             clientName: $scope.clientName,
-            clientmoduleId: clientmoduleId,
+            clientmoduleId: $scope.clientmoduleId,
             formId: formId,
             formName: formName 
         });
@@ -46,7 +46,7 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
             $state.go('base.formfield-new', {
                 clientId: $scope.clientId,
                 clientName: $scope.clientName,
-                clientmoduleId: clientmoduleId,
+                clientmoduleId: $scope.clientmoduleId,
                 formId: formId,
                 formName: formName 
             });
@@ -59,7 +59,7 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
         $state.go('base.formfield-update', { 
             clientId: $scope.clientId,
             clientName: $scope.clientName,
-            clientmoduleId: clientmoduleId,
+            clientmoduleId: $scope.clientmoduleId,
             formId: formId,
             formName: formName,
             formfieldId: formfieldId,
@@ -76,7 +76,7 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
                 $state.go('base.formfield-new', {
                     clientId: $scope.clientId,
                     clientName: $scope.clientName,
-                    clientmoduleId: clientmoduleId,
+                    clientmoduleId: $scope.clientmoduleId,
                     formId: formId,
                     formName: formName 
                 });
@@ -90,7 +90,7 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
         $state.go('base.formfield-new', {
             clientId: $scope.clientId,
             clientName: $scope.clientName,
-            clientmoduleId: clientmoduleId,
+            clientmoduleId: $scope.clientmoduleId,
             formId: formId,
             formName: formName 
         });
@@ -100,7 +100,7 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
         $state.go('base.form-view',{
             clientId: $scope.clientId,
             clientName: $scope.clientName,
-            clientmoduleId: clientmoduleId
+            clientmoduleId: $scope.clientmoduleId
         });
     };
     
