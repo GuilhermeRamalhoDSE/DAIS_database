@@ -3,7 +3,7 @@ from typing import List
 from django.shortcuts import get_object_or_404
 from dais.models.totem_models import Totem
 from dais.models.logs_models import Log
-from dais.schemas.logs_schema import LogCreate, LogOut
+from dais.schemas.logs_schema import LogCreate, LogOut, LogCreateOut
 from ninja.errors import HttpError
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token, check_user_permission
@@ -23,6 +23,26 @@ def create_log(request, payload: LogCreate):
 
     log = Log.objects.create(**payload.dict(), typology=totem.group.typology, date=datetime.now())
     return 201, log
+
+@log_router.get("/create-log/", response={201: LogCreateOut})
+def create_log_from_url(request, totem_id: int, information: str):
+    totem = get_object_or_404(Totem, id=totem_id)
+    log = Log.objects.create(
+        totem=totem,
+        information=information,
+        date=datetime.now(),
+        typology=totem.group.typology
+    )
+
+    log_output = LogCreateOut(
+        id=log.id,
+        totem_id=log.totem_id,
+        totem_name=totem.name if totem and totem.name else "Totem Deleted",
+        date=log.date,
+        typology=log.typology,
+        information=log.information
+    )
+    return 201, log_output
 
 @log_router.get("/totem/{totem_id}", response=List[LogOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_logs_by_totem(request, totem_id: int):
