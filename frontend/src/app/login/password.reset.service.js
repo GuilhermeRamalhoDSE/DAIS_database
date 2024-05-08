@@ -1,5 +1,5 @@
 angular.module('frontend').factory('PasswordResetService', ['$http', function($http) {
-    var baseUrl = 'http://127.0.0.1:8000/api/password/'; 
+    var baseUrl = 'https://daisdatabasedse.it/api/password/'; 
     return {
         requestReset: function(email) {
             return $http.post(baseUrl + 'request-password-reset/?email=' + encodeURIComponent(email));
