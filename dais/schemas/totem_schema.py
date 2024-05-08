@@ -24,6 +24,7 @@ class TotemOut(Schema):
     active: bool
     screen_count: int 
     comments: Optional[str] = None
+    last_update: date
 
     @staticmethod
     def resolve_screen_count(obj):
