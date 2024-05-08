@@ -1,6 +1,6 @@
 from ninja import Schema
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
 
 class TotemCreate(Schema):
     group_id: int
@@ -24,7 +24,7 @@ class TotemOut(Schema):
     active: bool
     screen_count: int 
     comments: Optional[str] = None
-    last_update: date
+    last_update: datetime
 
     @staticmethod
     def resolve_screen_count(obj):
