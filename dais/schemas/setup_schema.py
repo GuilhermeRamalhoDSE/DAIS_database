@@ -12,6 +12,7 @@ class ScreenDetails(BaseModel):
 class TotemDetails(BaseModel):
     id: int
     name: str
+    last_update: datetime
     screen_count: int
     screens: List[ScreenDetails]
 
