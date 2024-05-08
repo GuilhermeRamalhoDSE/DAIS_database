@@ -22,7 +22,7 @@ def setup_totem(request, totem_id: int):
         ) for s in screens
     ]
     
-    totem_details = TotemDetails(id=totem.id, name=totem.name, screen_count=len(screens), screens=screen_details)
+    totem_details = TotemDetails(id=totem.id, name=totem.name, last_update=totem.last_update, screen_count=len(screens), screens=screen_details)
     group_details = GroupDetails(id=group.id, name=group.name, typology=group.typology, last_update=group.last_update)
 
     return SetupResponseSchema(group=group_details, totem=totem_details)
