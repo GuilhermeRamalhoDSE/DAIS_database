@@ -16,11 +16,21 @@ class TotemDetails(BaseModel):
     screen_count: int
     screens: List[ScreenDetails]
 
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
 class GroupDetails(BaseModel):
     id: int
     name: str
     typology: str
     last_update: datetime
+
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }
 
 class SetupResponseSchema(BaseModel):
     group: GroupDetails
