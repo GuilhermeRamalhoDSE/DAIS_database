@@ -1,10 +1,12 @@
 from typing import Union
 from ninja import Router
+from ninja.responses import Response
 from django.shortcuts import get_object_or_404
 from dais.models.totem_models import Totem
 from dais.models.group_models import Group
 from dais.models.screen_models import Screen
 from dais.schemas.setup_schema import SetupResponseSchema, ScreenDetails, TotemDetails, GroupDetails, ErrorResponse
+import json
 
 setup_router = Router()
 
@@ -32,4 +34,5 @@ def setup_totem(request, totem_id: int):
     totem_details = TotemDetails(id=totem.id, name=totem.name, last_update=totem.last_update, screen_count=len(screens), screens=screen_details)
     group_details = GroupDetails(id=group.id, name=group.name, typology=group.typology, last_update=group.last_update)
 
-    return SetupResponseSchema(group=group_details, totem=totem_details)
+    response_data = SetupResponseSchema(group=group_details, totem=totem_details)
+    return Response(json.loads(response_data.json()), status=200)
