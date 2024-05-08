@@ -12,7 +12,6 @@ from dais.models.contributionia_models import ContributionIA
 from dais.models.formation_models import Formation
 from dais.models.totem_models import Totem
 from dais.models.screen_models import Screen
-from dais.models.logs_models import Log
 
 @receiver(post_save, sender=Group)
 @receiver(post_save, sender=PeriodDS)
@@ -59,8 +58,6 @@ def update_group_last_update(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Screen)
 @receiver(post_delete, sender=Screen)
-@receiver(post_save, sender=Log)
-@receiver(post_delete, sender=Log)
 def update_totem_last_update(sender, instance, **kwargs):
     current_time = now()
     if hasattr(instance, 'totem'):
