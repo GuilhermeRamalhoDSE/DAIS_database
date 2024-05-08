@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
+from django.utils.timezone import localtime
 
 
 class ScreenDetails(BaseModel):
@@ -18,7 +19,7 @@ class TotemDetails(BaseModel):
 
     class Config:
         json_encoders = {
-            datetime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+            datetime: lambda v: localtime(v).strftime('%Y-%m-%d %H:%M:%S')
         }
 
 class GroupDetails(BaseModel):
@@ -29,7 +30,7 @@ class GroupDetails(BaseModel):
 
     class Config:
         json_encoders = {
-            datetime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+            datetime: lambda v: localtime(v).strftime('%Y-%m-%d %H:%M:%S')
         }
 
 class SetupResponseSchema(BaseModel):
