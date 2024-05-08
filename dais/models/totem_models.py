@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils.timezone import now
 from .group_models import Group
 
 class Totem(models.Model):
@@ -8,6 +9,7 @@ class Totem(models.Model):
     installation_date = models.DateField(verbose_name=_("Data di installazione"))
     active = models.BooleanField(default=False, verbose_name=_("Attivo"))
     comments = models.TextField(blank=True, null=True, verbose_name=_("Commenti"))
+    last_update = models.DateTimeField(default=now, verbose_name=_("Data dell'ultimo aggiornamento"))
 
     def __str__(self):
         return self.name
