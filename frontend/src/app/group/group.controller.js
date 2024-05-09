@@ -1,5 +1,6 @@
 angular.module('frontend').controller('GroupController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', function($scope, GroupService, $state, $stateParams, AuthService) {
     $scope.groupList = [];
+    $scope.forms = [];
     $scope.isSuperuser = AuthService.isSuperuser();
 
     let clientId = parseInt($stateParams.clientId || sessionStorage.getItem('lastclientId'), 10);
@@ -22,6 +23,7 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
         typology: "",
         comments: "",
         client_id: clientId, 
+        forms_ids: []
     };
 
     $scope.loadGroups = function() {
@@ -33,6 +35,14 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
             $scope.groupList = response.data;
         }).catch(function(error) {
             console.error('Error fetching groups:', error);
+        });
+    };
+
+    $scope.loadForms = function() {
+        FormService.getAll().then(function(response) {
+            $scope.forms = response.data;
+        }).catch(function(error) {
+            alert('Error fetching forms:', error);
         });
     };
 
@@ -93,9 +103,36 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
             name: "",
             typology: "",
             comments: "",
-            client_id: clientId
+            client_id: clientId,
+            forms_ids: []
         };
     };
 
+    $scope.toggleFormAssignment = function(group, formId) {
+        const isAssigned = group.forms && group.forms.some(form => form.id === formId);
+        if (isAssigned) {
+            GroupService.removeFormFromGroup(group.id, formId)
+                .then(function(response) {
+                    $scope.loadGroups(); 
+                })
+                .catch(function(error) {
+                    console.error('Error removing form from group:', error);
+                });
+        } else {
+            GroupService.addFormToGroup(group.id, formId)
+                .then(function(response) {
+                    $scope.loadGroups(); 
+                })
+                .catch(function(error) {
+                    console.error('Error adding form to group:', error);
+                });
+        }
+    };
+
+    $scope.isFormAssignedToGroup = function(group, formId) {
+        return group.forms && group.forms.some(form => form.id === formId);
+    };
+
     $scope.loadGroups();
+    $scope.loadForms();
 }]);
