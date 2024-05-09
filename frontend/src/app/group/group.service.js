@@ -30,6 +30,17 @@ angular.module('frontend').factory('GroupService', ['$http', function($http) {
     service.delete = function(id) {
         return $http.delete(baseUrl + id);
     };
+    service.addFormToGroup = function(groupId, formId) {
+        return $http.post(`${baseUrl}${groupId}/add-form/`, { form_id: formId });
+    };
+
+    service.removeFormFromGroup = function(groupId, formId) {
+        return $http.post(`${baseUrl}${groupId}/remove-form/`, { form_id: formId });
+    };
+
+    service.getFormsByGroup = function(groupId) {
+        return $http.get(baseUrl + groupId + '/forms/');
+    };
 
     return service;
 }]);
