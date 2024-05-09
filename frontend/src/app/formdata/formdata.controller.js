@@ -1,5 +1,6 @@
 angular.module('frontend').controller('FormDataController', ['$scope', 'FormDataService', 'FormFieldService', 'AuthService', '$state', '$stateParams', function($scope, FormDataService, FormFieldService, AuthService, $state, $stateParams) {
     $scope.formData = {};
+    $scope.formDataList = [];
     $scope.formFields = []; 
 
     $scope.clientId = $stateParams.clientId;
@@ -15,8 +16,9 @@ angular.module('frontend').controller('FormDataController', ['$scope', 'FormData
     $scope.formName = formName;
 
     $scope.loadFormFields = function() {
-        FormFieldService.getAll($stateParams.formId).then(function(response) {
+        FormFieldService.getAll(formId).then(function(response) {
             $scope.formFields = response.data;
+            $scope.getFormData();
         }).catch(function(error) {
             console.error('Failed to fetch form fields:', error);
         });
@@ -32,22 +34,14 @@ angular.module('frontend').controller('FormDataController', ['$scope', 'FormData
         });
     };
 
-    $scope.createFormData = function() {
-        console.log('Form Data:', $scope.formData);  
+    $scope.createFormData = function() {  
         
         if (!Object.keys($scope.formData).length) {
             alert('Please fill in the form data.');
             return;
         }
-    
-        var data = {
-            form_id: $stateParams.formId,
-            data: $scope.formData  
-        };
-    
-        console.log('Payload to send:', JSON.stringify(data));
 
-        FormDataService.create(data).then(function(response) {
+        FormDataService.create(formId, $scope.formData).then(function(response) {
             alert('Data saved successfully!');
             $state.go('base.formdata-view', {
                 clientId: $scope.clientId,
@@ -62,9 +56,10 @@ angular.module('frontend').controller('FormDataController', ['$scope', 'FormData
         });
     };
     
-    $scope.getFormData = function(form_data_id) {
-        FormDataService.getById(form_data_id).then(function(response) {
-            $scope.formData = response.data.data;
+    $scope.getFormData = function() {
+        FormDataService.getAll(formId).then(function(response) {
+            console.log(response.data);
+            $scope.formDataList = response.data; 
         }).catch(function(error) {
             console.error('Error fetching form data:', error);
         });

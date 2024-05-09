@@ -29,10 +29,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="data in formData | filter:searchText track by data.id">
-                        <td ng-repeat="field in formFields">{{ data[field.name] }}</td>
+                    <tr ng-repeat="data in formDataList | filter:searchText track by data.id">
+                        <td ng-repeat="field in formFields">
+                            <span ng-if="field.field_type !== 'date'">{{ data.data[field.name] }}</span>
+                            <span ng-if="field.field_type === 'date'">{{ data.data[field.name] | date:'dd/MM/yyyy'
+                                }}</span>
+                        </td>
                         <td>
-                            <button class="btn btn-default btn-xs" ng-click="editFormData(data.id)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteFormData(data.id)">Delete</button>
                         </td>
                     </tr>
