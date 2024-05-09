@@ -3,7 +3,8 @@ from typing import List, Optional
 from django.shortcuts import get_object_or_404
 from dais.models.client_models import Client 
 from dais.models.group_models import Group
-from dais.schemas.group_schema import GroupCreate, GroupUpdate, GroupOut, LastUpdateOut
+from dais.models.form_models import Form
+from dais.schemas.group_schema import GroupCreate, GroupUpdate, GroupOut, LastUpdateOut, FormIdSchema
 from ninja.errors import HttpError
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token, check_user_permission
@@ -15,8 +16,27 @@ group_router = Router(tags=["Group"])
 def create_group(request, payload: GroupCreate):
     client = get_object_or_404(Client, id=payload.client_id)
     
-    group = Group.objects.create(**payload.dict())
+    group = Group.objects.create(**payload.dict(exclude={'forms_id'}))
     return 201, group
+
+@group_router.post("/{group_id}/add-form/", response={200: GroupOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def add_form_to_group(request, group_id: int, payload: FormIdSchema):
+    group = get_object_or_404(Group, id=group_id)
+    form = get_object_or_404(Form, id=payload.form_id)
+    
+    group.forms.add(form)
+    
+    return GroupOut.from_orm(group)
+
+@group_router.post("/{group_id}/remove-form/", response={200: GroupOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def remove_form_from_group(request, group_id: int, payload: FormIdSchema):
+    group = get_object_or_404(Group, id=group_id)
+    form = get_object_or_404(Form, id=payload.form_id)
+    
+    if group.forms.filter(id=form.id).exists():
+        group.forms.remove(form)
+    
+    return GroupOut.from_orm(group)
 
 @group_router.get("/", response=List[GroupOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_groups(request, client_id: Optional[int] = None, license_id: Optional[int] = None):
@@ -61,6 +81,12 @@ def get_group_last_update(request, group_id: int):
     group = get_object_or_404(Group, id=group_id)
 
     return {"last_update": group.last_update}
+
+@group_router.get("/{group_id}/forms/", response=List[GroupOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_group_by_module(request, group_id: int):
+    group = get_object_or_404(Group, id=group_id)
+    forms = group.forms.all()
+    return [Group.from_orm(form) for form in forms]
 
 @group_router.put("/{group_id}", response=GroupOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_group(request, group_id: int, payload: GroupUpdate):

@@ -39,7 +39,8 @@ class ClientModuleSchema(BaseModel):
                 typology=group.typology,
                 last_update=group.last_update,
                 total_totems=GroupOut.resolve_total_totems(group),  
-                comments=group.comments
+                comments=group.comments,
+                forms=group.forms
             ) for group in value.all()
         ]
 

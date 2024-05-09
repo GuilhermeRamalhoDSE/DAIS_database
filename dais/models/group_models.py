@@ -14,6 +14,8 @@ class Group(models.Model):
     typology = models.CharField(max_length=24, choices=TYPOLOGY_CHOICES, verbose_name=_("Tipologia"))
     comments = models.TextField(blank=True, null=True, verbose_name=_("Commenti"))
     last_update = models.DateTimeField(default=now, verbose_name=_("Data dell'ultimo aggiornamento"))
+    forms = models.ManyToManyField('dais.Form', verbose_name=_('Form'), blank=True)
+
 
     @property
     def total_totems(self):

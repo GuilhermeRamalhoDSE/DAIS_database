@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from dais.models.clientmodule_models import ClientModule
-from dais.models.module_models import Module
+
 
 class Form(models.Model):
     client_module = models.ForeignKey(ClientModule, null=True, on_delete=models.CASCADE, verbose_name=_('Clienti'))
