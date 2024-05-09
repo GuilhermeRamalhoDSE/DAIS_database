@@ -1,10 +1,11 @@
 from ninja import Router
 from django.shortcuts import get_object_or_404
 from typing import Optional, List
-from dais.schemas.clientmodule_schema import ClientModuleCreateSchema, ClientModuleSchema, ClientModuleUpdateSchema
+from dais.schemas.clientmodule_schema import ClientModuleCreateSchema, ClientModuleSchema, ClientModuleUpdateSchema, GroupIdSchema
 from dais.schemas.module_schema import ModuleOut
 from dais.models.clientmodule_models import ClientModule
 from dais.models.client_models import Client
+from dais.models.group_models import Group
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
 from django.http import Http404
@@ -19,7 +20,7 @@ def create_client_module(request, client_module_in: ClientModuleCreateSchema):
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
         raise Http404('You do not have permission to add client modules')
     
-    client_module_data = {**client_module_in.dict()}
+    client_module_data = {**client_module_in.dict(exclude={'groups_id'})}
 
     client_module = ClientModule.objects.create(**client_module_data)
 
@@ -29,6 +30,25 @@ def create_client_module(request, client_module_in: ClientModuleCreateSchema):
     client_module_schema.module = module_out
 
     return 201, client_module_schema
+
+@client_module_router.post("/{client_module_id}/add-group/", response={200: ClientModuleSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def add_group_to_module(request, client_module_id: int, payload: GroupIdSchema):
+    client_module = get_object_or_404(ClientModule, id=client_module_id)
+    group = get_object_or_404(Group, id=payload.group_id)
+    
+    client_module.groups.add(group)
+    
+    return ClientModuleSchema.from_orm(client_module)
+
+@client_module_router.post("/{client_module_id}/remove-group/", response={200: ClientModuleSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def remove_group_from_module(request, client_module_id: int, payload: GroupIdSchema):
+    client_module = get_object_or_404(ClientModule, id=client_module_id)
+    group = get_object_or_404(Group, id=payload.group_id)
+    
+    if client_module.groups.filter(id=group.id).exists():
+        client_module.groups.remove(group)
+    
+    return ClientModuleSchema.from_orm(client_module)
 
 @client_module_router.get('/', response=List[ClientModuleSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_client_module(request, client_id: Optional[int] = None):
