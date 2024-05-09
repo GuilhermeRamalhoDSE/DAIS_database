@@ -30,7 +30,19 @@ class ClientModuleSchema(BaseModel):
     def prepare_groups(cls, value):
         if value is None:
             return []
-        return [GroupOut(id=group.id, client_id=group.client_id, client_name=group.client_name, name=group.name, typology=group.typology, last_update_date=group.last_update, total_totems=group.total_totems, comments=group.comments) for group in value.all()]
+        return [
+            GroupOut(
+                id=group.id,
+                client_id=group.client_id,
+                client_name=GroupOut.resolve_client_name(group), 
+                name=group.name,
+                typology=group.typology,
+                last_update=group.last_update,
+                total_totems=GroupOut.resolve_total_totems(group),  
+                comments=group.comments
+            ) for group in value.all()
+        ]
+
 
     class Config:
         from_attributes = True

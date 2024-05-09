@@ -76,6 +76,12 @@ def read_client_module_by_id(request, client_module_id: int):
     
     return ClientModuleSchema.from_orm(client_module)
 
+@client_module_router.get("/{client_module_id}/groups/", response=List[ClientModuleSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_group_by_module(request, client_module_id: int):
+    client_module = get_object_or_404(ClientModule, id=client_module_id)
+    groups = client_module.groups.all()
+    return [ClientModuleSchema.from_orm(group) for group in groups]
+
 @client_module_router.put('/{client_module_id}', response=ClientModuleSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_client_module(request, client_module_id: int, client_module_in: ClientModuleUpdateSchema):
     user_info = get_user_info_from_token(request)

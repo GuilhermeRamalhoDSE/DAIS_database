@@ -1,6 +1,7 @@
-angular.module('frontend').controller('ClientModuleController', ['$scope', 'ClientModuleService', 'LicenseService', 'AuthService', '$state', '$stateParams', function($scope, ClientModuleService, LicenseService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('ClientModuleController', ['$scope', 'ClientModuleService', 'LicenseService', 'AuthService', 'GroupService', '$state', '$stateParams', function($scope, ClientModuleService, LicenseService, AuthService, GroupService, $state, $stateParams) {
     $scope.clientmoduleList = [];
     $scope.modules = [];
+    $scope.groups = [];
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
     let clientId = parseInt($stateParams.clientId || sessionStorage.getItem('lastclientId'), 10);
@@ -21,7 +22,8 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
     $scope.newClientModule = {
         client_id: clientId,
         name: '',
-        module_id: null
+        module_id: null,
+        groups_ids: []
     };
 
     $scope.loadClientModule = function() {
@@ -43,6 +45,14 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
             console.error('License ID is undefined');
         }
     }; 
+
+    $scope.loadGroups = function() {
+        GroupService.getAll().then(function(response) {
+            $scope.groups = response.data;
+        }).catch(function(error) {
+            alert('Error fetching groups:', error);
+        });
+    };
 
     $scope.goToCreateClientModule = function() {
         $state.go('base.clientmodule-new', {
@@ -124,7 +134,32 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
             clientName: clientName
         });
     };
+    $scope.toggleGroupAssignment = function(client_module, groupId) {
+        const isAssigned = client_module.groups && client_module.groups.some(group => group.id === groupId);
+        if (isAssigned) {
+            ClientModuleService.removeGroupFromModule(client_module.id, groupId)
+                .then(function(response) {
+                    $scope.loadClientModule(); 
+                })
+                .catch(function(error) {
+                    console.error('Error removing group from module:', error);
+                });
+        } else {
+            ClientModuleService.addGroupToModule(client_module.id, groupId)
+                .then(function(response) {
+                    $scope.loadClientModule(); 
+                })
+                .catch(function(error) {
+                    console.error('Error adding group to module:', error);
+                });
+        }
+    };
+
+    $scope.isGroupAssignedToModule = function(client_module, groupId) {
+        return client_module.groups && client_module.groups.some(group => group.id === groupId);
+    };
 
     $scope.loadClientModule();
     $scope.loadModules();
+    $scope.loadGroups();
 }])

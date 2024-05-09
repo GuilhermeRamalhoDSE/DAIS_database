@@ -34,7 +34,7 @@ class GroupOut(Schema):
     name: str
     typology: str
     last_update: datetime
-    total_totems: int 
+    total_totems: Optional[int] = None
     comments: Optional[str] = None
 
     @staticmethod

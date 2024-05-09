@@ -33,6 +33,9 @@
                         <th>
                             Module Count
                         </th>
+                        <th>
+                            Groups
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -42,13 +45,23 @@
                         <td>{{ module.name }}</td>
                         <td>{{ module.form_count }}</td>
                         <td>
+                            <div ng-repeat="group in groups">
+                                <label>
+                                    <input type="checkbox" ng-checked="isGroupAssignedToModule(module, group.id)"
+                                        ng-click="toggleGroupAssignment(module, group.id)">
+                                    {{ group.name }}
+                                </label>
+                            </div>
+                        </td>
+                        <td>
                             <button class="btn btn-default btn-xs"
                                 ng-click="editClientModule(module.id, module.name)">Edit</button>
                             <button class="btn btn-danger btn-xs"
                                 ng-click="deleteClientModule(module.id)">Delete</button>
                         </td>
                         <td>
-                            <button class="btn btn-default btn-xs" ng-click="detailClientModule(module)">Details</button>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="detailClientModule(module)">Details</button>
                         </td>
                     </tr>
                 </tbody>
