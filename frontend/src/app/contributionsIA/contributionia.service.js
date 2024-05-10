@@ -1,6 +1,6 @@
 angular.module('frontend').factory('ContributionIAService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/contributionsIA/';
+    var baseUrl = 'http://127.0.0.1:8000/api/contributionsIA/';
 
     service.getAll = function(layerId) {
         return $http.get(baseUrl, { params: { layer_id: layerId } });
