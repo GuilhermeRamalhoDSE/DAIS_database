@@ -42,6 +42,9 @@
                         <th data-hide="phone">
                             Comments
                         </th>
+                        <th>
+                            Forms
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -53,6 +56,15 @@
                         <td>{{ group.typology }}</td>
                         <td>{{ group.total_totems }}</td>
                         <td>{{ group.comments }}</td>
+                        <td>
+                            <div ng-repeat="form in forms">
+                                <label>
+                                    <input type="checkbox" ng-checked="isFormAssignedToGroup(group, form.id)"
+                                        ng-click="toggleFormAssignment(group, form.id)">
+                                    {{ form.name }}
+                                </label>
+                            </div>
+                        </td>
                         <td>
                             <button class="btn btn-default btn-xs"
                                 ng-click="editGroup(group.id, group.name)">Edit</button>

@@ -1,4 +1,4 @@
-angular.module('frontend').controller('GroupController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', function($scope, GroupService, $state, $stateParams, AuthService) {
+angular.module('frontend').controller('GroupController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', 'FormService', function($scope, GroupService, $state, $stateParams, AuthService, FormService) {
     $scope.groupList = [];
     $scope.forms = [];
     $scope.isSuperuser = AuthService.isSuperuser();
@@ -39,7 +39,7 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
     };
 
     $scope.loadForms = function() {
-        FormService.getAll().then(function(response) {
+        FormService.getAllByClientId(clientId).then(function(response) {
             $scope.forms = response.data;
         }).catch(function(error) {
             alert('Error fetching forms:', error);

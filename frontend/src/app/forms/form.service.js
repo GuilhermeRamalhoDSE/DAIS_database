@@ -10,6 +10,10 @@ angular.module('frontend').factory('FormService', ['$http', function($http){
         return $http.get(baseUrl + formId);
     };
 
+    service.getAllByClientId = function(clientId) {
+        return $http.get(baseUrl + 'get-forms/' + clientId);
+    };
+
     service.create = function(formData) {
         return $http.post(baseUrl, formData);
     };

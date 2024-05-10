@@ -44,6 +44,19 @@ def read_forms(request, client_module_id: Optional[int] = None):
     forms = [FormSchema.from_orm(form) for form in query]
     return forms
 
+@form_router.get('/get-forms/{client_id}', response=List[FormSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def read_forms_by_client(request, client_id: int):
+    user_info = get_user_info_from_token(request)
+
+    client = get_object_or_404(Client, id=client_id)
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+        raise Http404('You do not have permission to view forms')
+
+    client_modules = ClientModule.objects.filter(client=client)
+    forms = Form.objects.filter(client_module__in=client_modules).distinct()
+
+    return [FormSchema.from_orm(form) for form in forms]
+
 @form_router.get('/{form_id}', response=FormSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_form_by_id(request, form_id: int):
     user_info = get_user_info_from_token(request)

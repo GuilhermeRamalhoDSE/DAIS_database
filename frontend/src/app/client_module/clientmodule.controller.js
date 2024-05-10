@@ -47,7 +47,7 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
     }; 
 
     $scope.loadGroups = function() {
-        GroupService.getAll().then(function(response) {
+        GroupService.getAll(clientId).then(function(response) {
             $scope.groups = response.data;
         }).catch(function(error) {
             alert('Error fetching groups:', error);
