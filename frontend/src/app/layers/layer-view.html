@@ -34,6 +34,9 @@
                             Name
                         </th>
                         <th>
+                            Avatar
+                        </th>
+                        <th>
                             Trigger
                         </th>
                         <th>Actions</th>
@@ -44,6 +47,7 @@
                         <td>{{ layer.layer_number }}</td>
                         <td>{{ layer.parent }}</td>
                         <td>{{ layer.name }}</td>
+                        <td>{{ layer.avatar.name }}</td>
                         <td>{{ layer.trigger }}</td>
                         <td>
                             <button class="btn btn-default btn-xs" ng-click="editLayer(layer.id)">Edit</button>
