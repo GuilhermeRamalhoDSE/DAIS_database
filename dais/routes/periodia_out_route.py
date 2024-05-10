@@ -18,10 +18,10 @@ def get_ia_overview(request, group_id: int):
         layers = Layer.objects.filter(period=period).prefetch_related('children', 'avatar')
         layer_data = []
         for layer in layers:
-            contributions = ContributionIA.objects.filter(layer=layer).select_related('language', 'layer')
+            contributions = ContributionIA.objects.filter(layer=layer).select_related('language')
             contribution_data = [ContributionIASchema.from_orm(contribution).dict() for contribution in contributions]
 
-            formations = Formation.objects.filter(layer=layer).select_related('voice', 'language', 'layer')
+            formations = Formation.objects.filter(layer=layer).select_related('voice', 'language')
             formation_data = [FormationSchema.from_orm(formation).dict() for formation in formations]
 
             layer_serialized = LayerOut.from_orm(layer).dict()
@@ -30,6 +30,7 @@ def get_ia_overview(request, group_id: int):
                 "formations": formation_data,
             })
             layer_data.append(layer_serialized)
+
 
         period_data.append({
             "id": period.id,

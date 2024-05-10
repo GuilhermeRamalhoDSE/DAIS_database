@@ -21,7 +21,7 @@ class LayerUpdate(Schema):
 
 class LayerOut(Schema):
     id: int
-    period: PeriodIAOut
+    period_id: int
     layer_number: int
     parent: Optional[int] = None 
     avatar: AvatarSchema
@@ -34,7 +34,7 @@ class LayerOut(Schema):
     def from_orm(cls, obj):
         return cls(
             id=obj.id,
-            period=obj.period,
+            period_id=obj.period_id,
             layer_number=obj.layer_number,
             parent=obj.parent.layer_number if obj.parent else None,  
             avatar=obj.avatar,

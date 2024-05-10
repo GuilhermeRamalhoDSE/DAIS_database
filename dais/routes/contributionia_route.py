@@ -33,7 +33,6 @@ def create_contribution(request, contribution_in: ContributionIACreateSchema, fi
     
     contribution_schema = ContributionIASchema.from_orm(contribution)
     contribution_schema.language = language_out
-    contribution_schema.layer = layer_out
     
     return 201, contribution_schema
 

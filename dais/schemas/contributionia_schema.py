@@ -43,7 +43,7 @@ class ContributionIASchema(BaseModel):
     name: str
     file_path: Optional[str] = Field(None, alias='file')
     language: LanguageOut
-    layer: LayerOut
+    layer_id: int
     type: str
     trigger: str
     detail: Optional[str] = None

@@ -31,7 +31,6 @@ def create_formation(request, formation_in: FormationCreateSchema, file: Uploade
     voice_out = VoiceOut.from_orm(formation.voice)
 
     formation_schema = FormationSchema.from_orm(formation)
-    formation_schema.layer = layer_out
     formation_schema.language = language_out
     formation_schema.voice = voice_out
 
