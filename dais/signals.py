@@ -51,7 +51,7 @@ def update_group_last_update(sender, instance, **kwargs):
     elif isinstance(instance, ContributionIA):
         group_instance = instance.layer.period.group
     elif isinstance(instance, Formation):
-        group_instance = instance.contributionia.layer.period.group
+        group_instance = instance.layer.period.group
 
     if group_instance:
         Group.objects.filter(pk=group_instance.pk).update(last_update=current_time)
