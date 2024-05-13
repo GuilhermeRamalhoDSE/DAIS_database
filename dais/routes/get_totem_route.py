@@ -7,7 +7,6 @@ from dais.models.group_models import Group
 from dais.models.screen_models import Screen
 from dais.models.form_models import Form
 from dais.schemas.setup_schema import SetupResponseSchema, ScreenDetails, TotemDetails, GroupDetails, ErrorResponse, FormSchema
-import json
 from django.db.models import Prefetch
 
 get_totem_router = Router()
