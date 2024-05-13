@@ -22,11 +22,32 @@ class TotemDetails(BaseModel):
             datetime: lambda v: localtime(v).strftime('%Y-%m-%d %H:%M:%S')
         }
 
+class FormFieldSchema(BaseModel):
+    id: int
+    name: str
+    number: int
+    field_type: str
+    required: bool
+
+class FormSchema(BaseModel):
+    id: int
+    client_module_id: int
+    name: str
+    api: bool
+    last_update: datetime
+    fields: List[FormFieldSchema]
+
+    class Config:
+        json_encoders = {
+            datetime: lambda v: localtime(v).strftime('%Y-%m-%d %H:%M:%S')
+        }
+
 class GroupDetails(BaseModel):
     id: int
     name: str
     typology: str
     last_update: datetime
+    forms: List[FormSchema]
 
     class Config:
         json_encoders = {
