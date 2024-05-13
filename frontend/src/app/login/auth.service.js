@@ -13,15 +13,46 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
             
             if (response.data.license_id != null) {
                 storage.setItem('licenseId', response.data.license_id.toString());
+                authService.fetchAndStoreModules(response.data.license_id);
             } else {
-               
                 storage.removeItem('licenseId'); 
-            }
-            
+                storage.removeItem('licenseModules');
+            }  
             return response.data;
+        });
+    };  
+
+    authService.fetchAndStoreModules = function(licenseId) {
+        var storage = $window.localStorage.getItem('jwtToken') ? $window.localStorage : $window.sessionStorage;
+    
+        return $http.get('http://127.0.0.1:8000/api/licenses/' + licenseId + '/modules/').then(function(response) {
+            console.log('Response data:', response.data);  
+            if (response.data && Array.isArray(response.data)) { 
+                var moduleSlugs = response.data.map(module => module.slug); 
+                storage.setItem('licenseModules', JSON.stringify(moduleSlugs));
+            } else {
+                console.log('No modules found or response is incorrect:', response.data); 
+                storage.setItem('licenseModules', '[]');
+            }
+        }).catch(function(error) {
+            console.error('Failed to fetch modules', error);
+            storage.setItem('licenseModules', '[]');
         });
     };
 
+    authService.isModuleInAnyGroup = function(moduleSlug, groupId) {
+        if (!groupId) return Promise.resolve(false);
+    
+        return $http.get(`http://127.0.0.1:8000/api/groups/${groupId}/modules/`)
+        .then(function(response) {
+            return response.data.some(module => module.slug === moduleSlug);
+        }).catch(function(error) {
+            console.error('Failed to check module associations for group:', groupId, error);
+            return false;
+        });
+    };
+    
+      
     authService.getUserId = function() {
         return $window.localStorage.getItem('userId') || $window.sessionStorage.getItem('userId');
     };
@@ -51,6 +82,16 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
 
     authService.getToken = function() {
         return $window.localStorage.getItem('jwtToken') || $window.sessionStorage.getItem('jwtToken');
+    };
+
+    authService.isModuleEnabled = function(slug) {
+        var modules = JSON.parse($window.localStorage.getItem('licenseModules') || $window.sessionStorage.getItem('licenseModules') || '[]');
+        return modules.includes(slug);
+    };       
+
+    authService.hasModules = function() {
+        var modules = JSON.parse($window.localStorage.getItem('licenseModules') || $window.sessionStorage.getItem('licenseModules') || '[]');
+        return modules.length > 0;
     };
 
     authService.isOnlyStaff = function() {

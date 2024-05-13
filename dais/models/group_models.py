@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from dais.models.client_models import Client
+from dais.models.module_models import Module
 
 class Group(models.Model):
     TYPOLOGY_CHOICES = [
@@ -20,6 +21,10 @@ class Group(models.Model):
     @property
     def total_totems(self):
         return self.totem_set.count()
+    
+    @property
+    def modules(self):
+        return Module.objects.filter(clientmodule__groups=self).distinct()
     
     class Meta:
         verbose_name = _("Gruppo")

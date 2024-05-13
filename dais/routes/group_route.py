@@ -4,7 +4,9 @@ from django.shortcuts import get_object_or_404
 from dais.models.client_models import Client 
 from dais.models.group_models import Group
 from dais.models.form_models import Form
+from dais.schemas.form_schema import FormSchema
 from dais.schemas.group_schema import GroupCreate, GroupUpdate, GroupOut, LastUpdateOut, FormIdSchema
+from dais.schemas.module_schema import ModuleOut
 from ninja.errors import HttpError
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token, check_user_permission
@@ -82,11 +84,17 @@ def get_group_last_update(request, group_id: int):
 
     return {"last_update": group.last_update}
 
-@group_router.get("/{group_id}/forms/", response=List[GroupOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def get_group_by_module(request, group_id: int):
+@group_router.get("/{group_id}/modules/", response=List[ModuleOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_group_modules(request, group_id: int):
+    group = get_object_or_404(Group, id=group_id)
+    modules = group.modules.all()
+    return [{'id': module.id, 'name': module.name, 'slug': module.slug} for module in modules]
+
+@group_router.get("/{group_id}/forms/", response=List[FormSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_forms_by_group(request, group_id: int):
     group = get_object_or_404(Group, id=group_id)
     forms = group.forms.all()
-    return [Group.from_orm(form) for form in forms]
+    return [FormSchema.from_orm(form) for form in forms]
 
 @group_router.put("/{group_id}", response=GroupOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_group(request, group_id: int, payload: GroupUpdate):

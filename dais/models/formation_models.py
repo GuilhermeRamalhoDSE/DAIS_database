@@ -6,7 +6,7 @@ from dais.models.language_models import Language
 from django.utils.timezone import now
 
 def formation_directory_path(instance, filename):
-    return 'formation_[0]/[1]/[2]'.format(instance.id, instance.created_at.strftime('%Y/%m/%d'), filename)
+    return 'formation_{0}/{1}/{2}'.format(instance.id, instance.created_at.strftime('%Y/%m/%d'), filename)
 
 class Formation(models.Model):
     layer = models.ForeignKey(Layer, on_delete=models.CASCADE, verbose_name=_('Layer ID'))

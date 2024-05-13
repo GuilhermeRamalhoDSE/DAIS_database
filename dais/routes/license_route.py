@@ -3,7 +3,9 @@ from typing import List
 from django.shortcuts import get_object_or_404
 from dais.models.license_models import License
 from dais.models.avatar_models import Avatar
+from dais.models.group_models import Group
 from dais.schemas.avatar_schema import AvatarSchema
+from dais.schemas.group_schema import GroupOut
 from dais.schemas.language_schema import LanguageOut
 from dais.schemas.voice_schema import VoiceOut
 from dais.schemas.module_schema import ModuleOut
@@ -130,6 +132,12 @@ def read_licenses(request, license_id: int = Query(None), name: str = Query(None
 
     licenses = License.objects.filter(**filters)
     return [LicenseSchema.from_orm(license) for license in licenses]
+
+@license_router.get("/{license_id}/groups/", response=List[GroupOut])
+def get_groups_by_license(request, license_id: int):
+    license = get_object_or_404(License, id=license_id)
+    groups = Group.objects.filter(client__license=license).distinct()
+    return [GroupOut.from_orm(group) for group in groups]
 
 @license_router.get("/{license_id}/avatars/", response=List[AvatarSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def get_avatars_by_license(request, license_id: int):
