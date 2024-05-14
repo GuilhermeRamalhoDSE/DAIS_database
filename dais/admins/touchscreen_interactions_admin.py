@@ -2,7 +2,7 @@ from django.contrib import admin
 from dais.models.touchscreen_interactions_models import TouchScreenInteractions
 
 class TouchScreenInteractionsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'clientmodule_id', 'name', 'total_buttons', 'last_update')
+    list_display = ('id', 'client_module_id', 'name', 'total_buttons', 'last_update')
     search_fields = ('id','name')
     list_filter = ('id','name')
     ordering = ('id',)
