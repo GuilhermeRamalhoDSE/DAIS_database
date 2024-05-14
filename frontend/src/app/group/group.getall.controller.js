@@ -18,7 +18,6 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
             return;
         }
         GroupService.getAllByLicense(licenseId).then(function(response) {
-            console.log("Data received:", response.data);
             $scope.groupList = response.data.map(group => ({ ...group, moduleFormEnabled: false }));
             $scope.checkModuleFormEnabled();
         }).catch(function(error) {
