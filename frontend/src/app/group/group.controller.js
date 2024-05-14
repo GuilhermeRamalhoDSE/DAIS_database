@@ -26,13 +26,24 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
         forms_ids: []
     };
 
+    $scope.checkModuleFormEnabled = function() {
+        if (AuthService.isModuleEnabled('form')) {
+            $scope.groupList.forEach(group => {
+                group.moduleFormEnabled = group.forms && group.forms.length > 0;  
+            });
+        }
+    };
+
     $scope.loadGroups = function() {
         if (!clientId) {
             console.error('Client ID is missing');
             return;
         }
+    
         GroupService.getAll(clientId).then(function(response) {
-            $scope.groupList = response.data;
+            console.log("Data received:", response.data);
+            $scope.groupList = response.data.map(group => ({...group, moduleFormEnabled: false}));
+            $scope.checkModuleFormEnabled();
         }).catch(function(error) {
             console.error('Error fetching groups:', error);
         });
