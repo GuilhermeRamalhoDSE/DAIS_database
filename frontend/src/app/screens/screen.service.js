@@ -1,6 +1,6 @@
 angular.module('frontend').factory('ScreenService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://127.0.0.1:8080/api/screens/';
+    var baseUrl = 'http://127.0.0.1:8000/api/screens/';
 
     service.getAll = function(totemId) {
         return $http.get(baseUrl, { params: { totem_id: totemId } });

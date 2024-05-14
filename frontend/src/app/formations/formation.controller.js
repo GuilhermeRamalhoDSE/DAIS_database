@@ -134,7 +134,7 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
 
     $scope.downloadFile = function(formationId) {
         if (formationId) {
-            var downloadUrl = 'http://127.0.0.1:8080/api/formations/download/' + formationId;
+            var downloadUrl = 'http://127.0.0.1:8000/api/formations/download/' + formationId;
     
             $http({
                 url: downloadUrl,

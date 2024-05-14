@@ -1,6 +1,6 @@
 angular.module('frontend').factory('FormService', ['$http', function($http){
     var service = {};
-    var baseUrl = 'http://127.0.0.1:8080/api/forms/'
+    var baseUrl = 'http://127.0.0.1:8000/api/forms/'
 
     service.getAll = function(clientmoduleId) {
         return $http.get(baseUrl, { params: { client_module_id:clientmoduleId}});

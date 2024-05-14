@@ -1,6 +1,6 @@
 angular.module('frontend').factory('LayerService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'http://127.0.0.1:8080/api/layers/'; 
+    var baseUrl = 'http://127.0.0.1:8000/api/layers/'; 
 
     service.createLayer = function(layerData) {
         return $http.post(baseUrl, layerData);
