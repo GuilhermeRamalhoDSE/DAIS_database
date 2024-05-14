@@ -2,6 +2,8 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
     $scope.groupList = [];
     $scope.forms = [];
     $scope.isSuperuser = AuthService.isSuperuser();
+    $scope.moduleFormEnabled = false;
+    $scope.modulesAvailable = AuthService.hasModules();
 
     let clientId = parseInt($stateParams.clientId || sessionStorage.getItem('lastclientId'), 10);
     if (isNaN(clientId)) {
