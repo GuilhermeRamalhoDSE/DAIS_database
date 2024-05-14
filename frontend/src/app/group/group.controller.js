@@ -41,7 +41,6 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
         }
     
         GroupService.getAll(clientId).then(function(response) {
-            console.log("Data received:", response.data);
             $scope.groupList = response.data.map(group => ({...group, moduleFormEnabled: false}));
             $scope.checkModuleFormEnabled();
         }).catch(function(error) {
