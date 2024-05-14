@@ -8,7 +8,7 @@ class FormField(models.Model):
         ('Number', _('Numero')),
         ('Date', _('Data'))
     ]
-    form = models.ForeignKey(Form, on_delete=models.CASCADE, verbose_name=_('Form'))
+    form = models.ForeignKey(Form, on_delete=models.CASCADE, related_name='fields', verbose_name=_('Form'))
     name = models.CharField(max_length=255, verbose_name=_('Nome'))
     number = models.IntegerField(verbose_name=_('Numero'))
     field_type = models.CharField(max_length=50, choices=FIELD_TYPES, default='text', verbose_name=_('Tipo di Campo'))

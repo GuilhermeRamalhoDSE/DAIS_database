@@ -29,6 +29,16 @@ class FormFieldSchema(BaseModel):
     field_type: str
     required: bool
 
+    @classmethod
+    def from_orm(cls, obj):
+        return cls(
+            id=obj.id,
+            name=obj.name,
+            number=obj.number,
+            field_type=obj.field_type,
+            required=obj.required
+        )
+
 class FormSchema(BaseModel):
     id: int
     client_module_id: int
@@ -38,9 +48,20 @@ class FormSchema(BaseModel):
     fields: List[FormFieldSchema]
 
     class Config:
+        from_attributes = True
         json_encoders = {
             datetime: lambda v: localtime(v).strftime('%Y-%m-%d %H:%M:%S')
         }
+    @classmethod
+    def from_orm(cls, obj):
+        return cls(
+            id=obj.id,
+            client_module_id=obj.client_module_id,
+            name=obj.name,
+            api=obj.api,
+            last_update=obj.last_update,
+            fields=[FormFieldSchema.from_orm(field) for field in obj.fields.all()]
+        )
 
 class GroupDetails(BaseModel):
     id: int

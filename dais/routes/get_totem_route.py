@@ -14,7 +14,12 @@ get_totem_router = Router()
 @get_totem_router.get("/{totem_id}", response=Union[SetupResponseSchema, ErrorResponse])
 def get_totem(request, totem_id: int):
     totem = get_object_or_404(Totem, id=totem_id)
-    group = get_object_or_404(Group.objects.prefetch_related(Prefetch('forms', queryset=Form.objects.all())), id=totem.group_id)
+    group = get_object_or_404(
+        Group.objects.prefetch_related(
+            Prefetch('forms', queryset=Form.objects.prefetch_related('fields'))
+        ),
+        id=totem.group_id
+    )
 
     screens = Screen.objects.filter(totem_id=totem_id)
     screen_details = [ScreenDetails(
