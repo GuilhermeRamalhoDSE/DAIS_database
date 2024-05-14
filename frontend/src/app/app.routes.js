@@ -244,6 +244,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.touchscreeninteraction-new', {
+        url: '/:clientId/:clientName/:clientmoduleId/touchscreen-interaction/new',
+        templateUrl: 'app/touchscreen-interactions/touchscreen-interactions-new.html',
+        controller: 'TouchscreenInteractionController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.touchscreeninteraction-view', {
+        url: '/:clientId/:clientName/:clientmoduleId/touchscreen-interactions',
+        templateUrl: 'app/touchscreen-interactions/touchscreen-interactions-view.html',
+        controller: 'TouchscreenInteractionController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.touchscreeninteraction-update', {
+        url: '/:clientId/:clientName/:clientmoduleId/touchscreen-interaction/update/touchscreeninteractionId',
+        templateUrl: 'app/touchscreen-interactions/touchscreen-interactions-update.html',
+        controller: 'TouchscreenInteractionUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.avatar-new', {
         url: '/avatar/new',
         templateUrl: 'app/avatar/avatar-new.html',
