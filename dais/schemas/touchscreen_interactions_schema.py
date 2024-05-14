@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 class TouchScreenInteractionsCreateSchema(BaseModel):
-    cliente_module_id: int
+    client_module_id: int
     name: str
 
 class TouchScreenInteractionsUpdateSchema(BaseModel):
