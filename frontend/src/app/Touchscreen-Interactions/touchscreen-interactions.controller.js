@@ -95,5 +95,5 @@ angular.module('frontend').controller('TouchscreenInteractionController', ['$sco
         });
     };
     
-    $scope.loadForms();
+    $scope.loadTouchscreenInteraction();
 }])

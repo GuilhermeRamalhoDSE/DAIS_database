@@ -8,7 +8,7 @@
         <div class="p-a white lt box-shadow">
             <div class="row">
                 <div class="col-sm-6">
-                    Search: <input id="filter" type="text" class="touchscreeninteraction-control input-sm w-auto inline m-r"
+                    Search: <input id="filter" type="text" class="form-control input-sm w-auto inline m-r"
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
@@ -31,7 +31,7 @@
                             Last Update
                         </th>
                         <th>
-                            API
+                            Total Buttons
                         </th>
                         <th>
                             Actions
@@ -42,18 +42,16 @@
                     <tr ng-repeat="touchscreeninteraction in touchscreeninteractionList | filter:searchText">
                         <td>{{ touchscreeninteraction.name }}</td>
                         <td>{{ touchscreeninteraction.last_update | date:'medium' }}</td>
+                        <td>{{ touchscreeninteraction.total_buttons }}</td>
                         <td>
-                            <input type="checkbox" ng-checked="touchscreeninteraction.api" ng-click="toggleActive(touchscreeninteraction)">
+                            <button class="btn btn-default btn-xs"
+                                ng-click="editTouchscreenInteraction(touchscreeninteraction.id, touchscreeninteraction.name)">Edit</button>
+                            <button class="btn btn-danger btn-xs"
+                                ng-click="deleteTouchscreenInteraction(touchscreeninteraction.id)">Delete</button>
                         </td>
                         <td>
-                            <button class="btn btn-default btn-xs" ng-click="editTouchscreenInteraction(touchscreeninteraction.id, touchscreeninteraction.name)">Edit</button>
-                            <button class="btn btn-danger btn-xs" ng-click="deleteTouchscreenInteraction(touchscreeninteraction.id)">Delete</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-default btn-xs" ng-click="goToTouchscreenInteractionField(touchscreeninteraction.id, touchscreeninteraction.name)">Fields</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-default btn-xs" ng-click="goToTouchscreenInteractionData(touchscreeninteraction.id, touchscreeninteraction.name)">Data</button>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="goToTouchscreenInteractionField(touchscreeninteraction.id, touchscreeninteraction.name)">Fields</button>
                         </td>
                     </tr>
                 </tbody>

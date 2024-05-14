@@ -90,7 +90,7 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
                 route = 'base.form-view';
                 break;
             case 'touch-screen-interactions':
-                route = 'base.touchscreen-view';
+                route = 'base.touchscreeninteraction-view';
                 break;
             default:
                 console.error('Unknown module type');
