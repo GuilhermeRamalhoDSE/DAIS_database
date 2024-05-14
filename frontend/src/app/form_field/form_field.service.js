@@ -1,6 +1,6 @@
 angular.module('frontend').factory('FormFieldService', ['$http', function($http){
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/formfield/'
+    var baseUrl = 'http://127.0.0.1:8080/api/formfield/'
 
     service.getAll = function(formId) {
         return $http.get(baseUrl, { params: { form_id:formId}});

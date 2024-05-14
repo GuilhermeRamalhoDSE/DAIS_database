@@ -1,6 +1,6 @@
 angular.module('frontend').factory('ContributionService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/contributionsDS/';
+    var baseUrl = 'http://127.0.0.1:8080/api/contributionsDS/';
 
     service.getAll = function(timeslotId) {
         return $http.get(baseUrl, { params: { time_slot_id: timeslotId } });
