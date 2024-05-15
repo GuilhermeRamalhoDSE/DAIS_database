@@ -19,10 +19,13 @@ angular.module('frontend').factory('GroupService', ['$http', function($http) {
     };
 
     service.create = function(groupData) {
-
         return $http.post(baseUrl, groupData);
     };
 
+    service.updateLastUpdate = function(groupId) {
+        return $http.post(`${baseUrl}${groupId}/update-last-update/`);
+    };
+    
     service.update = function(id, groupData) {
         return $http.put(baseUrl + id, groupData);
     };

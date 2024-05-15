@@ -43,6 +43,14 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
         });
     };    
 
+    $scope.updateLastUpdate = function(groupId) {
+        GroupService.updateLastUpdate(groupId).then(function(response) {
+            alert('Last update date changed to: ' + new Date(response.data.last_update).toLocaleString());
+        }, function(error) {
+            alert('Error updating the last update date!');
+        });
+    };
+    
     $scope.detailGroup = function(group) {
         if (group.typology === 'Digital Signage') {
             $state.go('base.periodds-view', { clientId: group.client_id, clientName: group.client_name, groupId: group.id, groupName: group.name });

@@ -58,6 +58,14 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
         });
     };
 
+    $scope.updateLastUpdate = function(groupId) {
+        GroupService.updateLastUpdate(groupId).then(function(response) {
+            alert('Last update date changed to: ' + new Date(response.data.last_update).toLocaleString());
+        }, function(error) {
+            alert('Error updating the last update date!');
+        });
+    };
+    
     $scope.goToCreateGroup = function() {
         $state.go('base.group-new', { clientId: clientId, clientName: clientName }); 
     };

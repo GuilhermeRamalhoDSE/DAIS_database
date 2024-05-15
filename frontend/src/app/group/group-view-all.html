@@ -41,12 +41,17 @@
                         <td>{{ group.last_update | date:'mediumDate' }}</td>
                         <td>{{ group.comments }}</td>
                         <td>
+                            <button class="btn btn-warning btn-xs" ng-click="updateLastUpdate(group.id)">
+                                Update Setup
+                            </button>
                             <button class="btn btn-default btn-xs" ng-click="editGroup(group)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteGroup(group.id)">Delete</button>
                         </td>
-                        <td >
+                        <td>
                             <div ng-repeat="form in group.forms">
-                                <button ng-if="group.moduleFormEnabled && group.forms.length > 0" class="btn btn-default btn-xs" ng-click="goToForm(group, form)">{{ form.name }}</button>
+                                <button ng-if="group.moduleFormEnabled && group.forms.length > 0"
+                                    class="btn btn-default btn-xs" ng-click="goToForm(group, form)">{{ form.name
+                                    }}</button>
                             </div>
                         </td>
                         <td>

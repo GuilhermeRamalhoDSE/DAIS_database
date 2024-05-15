@@ -21,6 +21,12 @@ def create_group(request, payload: GroupCreate):
     group = Group.objects.create(**payload.dict(exclude={'forms_id'}))
     return 201, group
 
+@group_router.post("/{group_id}/update-last-update/", response={200: LastUpdateOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def update_group_last_update(request, group_id: int):
+    group = get_object_or_404(Group, id=group_id)
+    group.update_last_update()
+    return {"last_update": group.last_update}
+
 @group_router.post("/{group_id}/add-form/", response={200: GroupOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def add_form_to_group(request, group_id: int, payload: FormIdSchema):
     group = get_object_or_404(Group, id=group_id)
