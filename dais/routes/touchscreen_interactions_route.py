@@ -28,7 +28,7 @@ def create_touchscreen_interactions(request, touchscreen_interactions_in: TouchS
 
     return 201, touchscreen_interactions_schema
 
-@touchscreen_interactions_router.get('', response=List[TouchScreenInteractionsSchema], auth=[QueryTokenAuth, HeaderTokenAuth])
+@touchscreen_interactions_router.get('/', response=List[TouchScreenInteractionsSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_touchscreen_interactions(request, client_module_id: Optional[int] = None):
     user_info = get_user_info_from_token(request)
     client_module = get_object_or_404(ClientModule, id=client_module_id)

@@ -1,4 +1,4 @@
-angular.module('frontend').controller('TouchscreenInteractionController', ['$scope', 'FormService', 'AuthService', '$state', '$stateParams', function($scope, TouchscreenInteractionService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('TouchscreenInteractionController', ['$scope', 'TouchscreenInteractionService', 'AuthService', '$state', '$stateParams', function($scope, TouchscreenInteractionService, AuthService, $state, $stateParams) {
     $scope.touchscreeninteractionList = [];
 
     $scope.clientId = $stateParams.clientId;
@@ -68,7 +68,7 @@ angular.module('frontend').controller('TouchscreenInteractionController', ['$sco
         if (isConfirmed) {
             TouchscreenInteractionService.delete(touchscreeninteractionId).then(function(response) {
                 alert('Touchscreen Interaction deleted successfully!');
-                $scope.loadForms();
+                $scope.loadTouchscreenInteraction();
                 $state.go('base.touchscreeninteraction-view',{
                     clientId: $scope.clientId,
                     clientName: $scope.clientName,

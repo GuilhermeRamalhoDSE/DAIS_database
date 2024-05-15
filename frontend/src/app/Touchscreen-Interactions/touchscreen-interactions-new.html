@@ -1,0 +1,29 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="TouchscreenInteractionController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Touchscreen Interaction</h2>
+                    <small>Add a new touchscreen interaction to the client</small>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form novalidate>
+                        <div class="form-group">
+                            <label for="clientName">Client Name</label>
+                            <input type="text" class="form-control" id="clientName" ng-model="clientName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="touchscreeninteractionName">Name</label>
+                            <input type="text" class="form-control" id="touchscreeninteractionName" ng-model="newTouchscreenInteraction.name" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" ng-click="createTouchscreenInteraction()">Create</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
