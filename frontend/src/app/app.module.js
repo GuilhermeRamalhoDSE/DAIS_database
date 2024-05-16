@@ -1,4 +1,4 @@
-angular.module('frontend', ['ui.router', 'ngFileUpload  '])
+angular.module('frontend', ['ui.router', 'ngFileUpload'])
 .config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
 }])
