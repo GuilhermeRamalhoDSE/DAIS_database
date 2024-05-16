@@ -9,7 +9,7 @@
                 </div>
                 <div class="box-divider m-0"></div>
                 <div class="box-body">
-                    <form ng-submit="updateContribution()" novalidate>
+                    <form ng-submit="updateContribution()" novalidate enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" id="name" ng-model="contributionData.name" required>
@@ -39,7 +39,12 @@
                         </div>
                         <div class="form-group">
                             <label for="file">File</label>
-                            <input type="file" class="form-control" id="file" file-model="newFile">
+                            <input type="file" class="form-control" id="file" file-model="file">
+                        </div>
+                        <div class="progress mb-2" ng-show="showProgress">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
+                                {{ loadingProgress }}%
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>

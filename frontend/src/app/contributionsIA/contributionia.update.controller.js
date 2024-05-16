@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ContributionIAUpdateController', ['$scope', 'ContributionIAService', 'LicenseService', 'AuthService', '$state', '$stateParams', function($scope, ContributionIAService, LicenseService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('ContributionIAUpdateController', ['$scope', 'ContributionIAService', 'LicenseService', 'AuthService', '$state', '$stateParams', 'Upload', '$q', '$interval', function($scope, ContributionIAService, LicenseService, AuthService, $state, $stateParams, Upload, $q, $interval) {
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
     $scope.clientId = $stateParams.clientId;
@@ -43,10 +43,10 @@ angular.module('frontend').controller('ContributionIAUpdateController', ['$scope
              });
              return;
         }
-    ContributionIAService.getById($scope.contributioniaId).then(function(response) {
-        if (response.data) {
-            $scope.contributionData = response.data;
-            $scope.contributionData.language_id = response.data.language.id; 
+        ContributionIAService.getById($scope.contributioniaId).then(function(response) {
+            if (response.data) {
+                $scope.contributionData = response.data;
+                $scope.contributionData.language_id = response.data.language.id; 
             } else {
                 console.error('Contribution not found');
                 alert('Contribution not found.');
@@ -58,7 +58,7 @@ angular.module('frontend').controller('ContributionIAUpdateController', ['$scope
                     periodiaId: $scope.periodiaId,
                     layerId: $scope.layerId,
                     layerName: $scope.layerName,
-                    });
+                });
             }
         }).catch(function(error) {
             console.error('Error fetching contribution details:', error);
@@ -67,28 +67,33 @@ angular.module('frontend').controller('ContributionIAUpdateController', ['$scope
 
     $scope.updateContribution = function() {
         var formData = new FormData();
-
+    
         if ($scope.file) {
             formData.append('file', $scope.file);
         }
-
+    
         formData.append('data', JSON.stringify($scope.contributionData));
-        ContributionIAService.update($scope.contributioniaId, formData).then(function(response) {
-            alert('Contribution updated successfully!');
-            $state.go('base.contributionia-view', { 
-                        clientId: $scope.clientId,
-                        clientName: $scope.clientName,
-                        groupId: $scope.groupId,
-                        groupName: $scope.groupName,
-                        periodiaId: $scope.periodiaId,
-                        layerId: $scope.layerId,
-                        layerName: $scope.layerName,
-                     });
+    
+        $scope.upload($scope.file).then(function() {
+            ContributionIAService.update($scope.contributioniaId, formData).then(function(response) {
+                alert('Contribution updated successfully!');
+                $state.go('base.contributionia-view', { 
+                    clientId: $scope.clientId,
+                    clientName: $scope.clientName,
+                    groupId: $scope.groupId,
+                    groupName: $scope.groupName,
+                    periodiaId: $scope.periodiaId,
+                    layerId: $scope.layerId,
+                    layerName: $scope.layerName,
+                });
+            }).catch(function(error) {
+                console.error('Error updating contribution:', error);
+            });
         }).catch(function(error) {
-            console.error('Error updating contribution:', error);
+            console.error('Error uploading file:', error);
         });
     };
-
+    
     $scope.cancelUpdate = function() {
         $state.go('base.contributionia-view', {
             clientId: $scope.clientId,
@@ -99,6 +104,23 @@ angular.module('frontend').controller('ContributionIAUpdateController', ['$scope
             layerId: $scope.layerId,
             layerName: $scope.layerName
         });
+    };
+
+    $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+
+        return deferred.promise; 
     };
 
     $scope.loadContributionDetails();

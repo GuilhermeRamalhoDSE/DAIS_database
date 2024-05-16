@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ContributionIAController', ['$scope', 'ContributionIAService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$http', function($scope, ContributionIAService, LicenseService, AuthService, $state, $stateParams, $http) {
+angular.module('frontend').controller('ContributionIAController', ['$scope', 'ContributionIAService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$http', 'Upload', '$q', '$interval', function($scope, ContributionIAService, LicenseService, AuthService, $state, $stateParams, $http, Upload, $q, $interval) {
     $scope.contributionList = [];
     $scope.file = null;
 
@@ -68,6 +68,8 @@ angular.module('frontend').controller('ContributionIAController', ['$scope', 'Co
 
         var contributionData = { ...$scope.newContribution };
         formData.append('contribution_in', JSON.stringify(contributionData));
+
+        $scope.upload($scope.file);
 
         ContributionIAService.create(formData).then(function(response) {
             alert('Contribution created successfully!');
@@ -167,6 +169,23 @@ angular.module('frontend').controller('ContributionIAController', ['$scope', 'Co
             layerId: layerId,
             layerName: layerName
         });
+    };
+
+    $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+    
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+    
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+    
+        return deferred.promise; 
     };
 
     $scope.loadLanguages();
