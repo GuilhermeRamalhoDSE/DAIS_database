@@ -1,4 +1,4 @@
-angular.module('frontend').controller('FormationUpdateController', ['$scope', 'FormationService', 'LicenseService', 'AuthService', '$state', '$stateParams', function($scope, FormationService, LicenseService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('FormationUpdateController', ['$scope', 'FormationService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$q', '$interval', 'Upload', function($scope, FormationService, LicenseService, AuthService, $state, $stateParams, $q, $interval, Upload) {
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
     $scope.clientId = $stateParams.clientId;
@@ -56,11 +56,11 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
              });
              return;
         }
-    FormationService.getById($scope.formationId).then(function(response) {
-        if (response.data) {
-            $scope.formationData = response.data;
-            $scope.formationData.language_id = response.data.language.id; 
-            $scope.formationData.voice_id = response.data.voice.id; 
+        FormationService.getById($scope.formationId).then(function(response) {
+            if (response.data) {
+                $scope.formationData = response.data;
+                $scope.formationData.language_id = response.data.language.id; 
+                $scope.formationData.voice_id = response.data.voice.id; 
             } else {
                 console.error('formation not found');
                 alert('formation not found.');
@@ -72,7 +72,7 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
                     periodiaId: $scope.periodiaId,
                     layerId: $scope.layerId,
                     layerName: $scope.layerName,
-                    });
+                });
             }
         }).catch(function(error) {
             console.error('Error fetching formation details:', error);
@@ -87,19 +87,22 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
         }
 
         formData.append('formation_in', JSON.stringify($scope.formationData));
-        FormationService.update($scope.formationId, formData).then(function(response) {
-            alert('formation updated successfully!');
-            $state.go('base.formation-view', { 
-                        clientId: $scope.clientId,
-                        clientName: $scope.clientName,
-                        groupId: $scope.groupId,
-                        groupName: $scope.groupName,
-                        periodiaId: $scope.periodiaId,
-                        layerId: $scope.layerId,
-                        layerName: $scope.layerName,
-                     });
-        }).catch(function(error) {
-            console.error('Error updating formation:', error);
+
+        $scope.upload($scope.file).then(function() {
+            FormationService.update($scope.formationId, formData).then(function(response) {
+                alert('formation updated successfully!');
+                $state.go('base.formation-view', { 
+                    clientId: $scope.clientId,
+                    clientName: $scope.clientName,
+                    groupId: $scope.groupId,
+                    groupName: $scope.groupName,
+                    periodiaId: $scope.periodiaId,
+                    layerId: $scope.layerId,
+                    layerName: $scope.layerName,
+                });
+            }).catch(function(error) {
+                console.error('Error updating formation:', error);
+            });
         });
     };
 
@@ -115,7 +118,25 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
         });
     };
 
+    $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+    
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+    
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+    
+        return deferred.promise; 
+    };
+
     $scope.loadFormationDetails();
     $scope.loadLanguages();
     $scope.loadVoices();
+
 }]);

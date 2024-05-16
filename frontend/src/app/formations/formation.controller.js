@@ -1,4 +1,6 @@
-angular.module('frontend').controller('FormationController', ['$scope', 'FormationService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$http', function($scope, FormationService, LicenseService, AuthService, $state, $stateParams, $http) {
+angular.module('frontend').controller('FormationController', ['$scope', 'FormationService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$http', '$q', '$interval', 'Upload', function($scope, FormationService, LicenseService, AuthService, $state, $stateParams, $http, $q, $interval, Upload) {
+
+
     $scope.formationList = [];
     $scope.file = null;
 
@@ -74,13 +76,15 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
         if (!layerId || !$scope.file) {
             return;
         }
-
+    
         var formData = new FormData();
         formData.append('file', $scope.file);
-
+    
         var formationData = { ...$scope.newFormation };
         formData.append('formation_in', JSON.stringify(formationData));
-
+    
+        $scope.upload($scope.file);
+    
         FormationService.create(formData).then(function(response) {
             alert('Formation created successfully!');
             $scope.loadFormations();
@@ -157,6 +161,24 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
         }
     };
 
+    $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+    
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+    
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+    
+        return deferred.promise; 
+    };
+    
+
     $scope.cancelCreate = function() {
         $state.go('base.formation-view', {
             clientId: $scope.clientId,
@@ -184,4 +206,4 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
     $scope.loadLanguages();
     $scope.loadVoices();
     $scope.loadFormations();
-}])
+}]);

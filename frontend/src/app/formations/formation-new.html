@@ -9,7 +9,7 @@
                 </div>
                 <div class="box-divider m-0"></div>
                 <div class="box-body">
-                    <form novalidate>
+                    <form ng-submit="createFormation()" novalidate enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="layerName">Layer Name</label>
                             <input type="text" class="form-control" id="layerName" ng-model="layerName" readonly>
@@ -20,7 +20,7 @@
                         </div>
                         <div class="form-group">
                             <label for="file">File Upload</label>
-                            <input type="file" class="form-control" file-model="file" required>
+                            <input type="file" class="form-control" id="file" file-model="file" required>
                         </div>
                         <div class="form-group">
                             <label for="language_id">Language</label>
@@ -37,6 +37,11 @@
                         <div class="form-group">
                             <label for="trigger">Trigger</label>
                             <input type="text" class="form-control" id="trigger" ng-model="newFormation.trigger">
+                        </div>
+                        <div class="progress mb-2" ng-show="showProgress">
+                            <div class="progress-bar progress-bar-striped info" role="progressbar" ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
+                                {{ loadingProgress }}%
+                            </div>
                         </div>
                         <button type="button" class="btn btn-primary" ng-click="createFormation()">Create</button>
                         <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
