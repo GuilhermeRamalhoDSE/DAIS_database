@@ -91,18 +91,21 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
     };
     
     $scope.upload = function(file) {
+        $scope.showProgress = true;
         Upload.upload({
             url: 'upload/url',
             data: { file: file, 'username': $scope.username }
         }).then(function(resp) {
-            console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            console.log('Success ' + resp.config.data.file.name + ' uploaded. Response: ' + resp.data);
+            $scope.showProgress = false;
         }, function(resp) {
             console.log('Error status: ' + resp.status);
+            $scope.showProgress = false;
         }, function(evt) {
             var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            $scope.loadingProgress = progressPercentage;
         });
-    };
+    };    
     
 
     $scope.loadAvatars();
