@@ -7,11 +7,13 @@ angular.module('frontend').factory('AvatarService', ['$http', function($http) {
         getAvatarById: function(avatarId) {
             return $http.get(baseUrl, { params: { avatar_id: avatarId } });
         },        
-        createAvatar: function(avatarData) {
-            return $http.post(baseUrl, avatarData, {
+        createAvatar: function(avatarData, config) {
+            return $http.post(baseUrl, avatarData, angular.extend({
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
-            });
+            }, config, {
+                uploadEventHandlers: config.uploadEventHandlers
+            }));
         },
         updateAvatar: function(avatarId, avatarData) {
             return $http.put(baseUrl + avatarId, avatarData, {

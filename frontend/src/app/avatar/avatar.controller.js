@@ -1,6 +1,9 @@
 angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'AvatarService', '$state', 'AuthService', function($scope, $http, AvatarService, $state, AuthService) {
     $scope.avatarList = [];
     $scope.isSuperuser = AuthService.isSuperuser();
+    $scope.isLoading = false; 
+    $scope.loadingProgress = 0;
+    $scope.showOverlay = false;
 
     $scope.newAvatar = {
         name: "",
@@ -20,27 +23,43 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'A
     };
 
     $scope.createAvatar = function() {
+        $scope.isLoading = true;
+        $scope.showOverlay = true;
         var avatarData = new FormData();
         var avatarIn = JSON.stringify({
             name: $scope.newAvatar.name,
             voice: $scope.newAvatar.voice,
             file: $scope.newAvatar.file ? $scope.newAvatar.file.name : null
         });
-    
+
         avatarData.append('avatar_in', avatarIn);
-    
+
         if ($scope.newAvatar.file) {
             avatarData.append('file', $scope.newAvatar.file);
         }
-    
-        AvatarService.createAvatar(avatarData).then(function(response) {
+
+        AvatarService.createAvatar(avatarData, {
+            uploadEventHandlers: {
+                progress: function(e) {
+                    if (e.lengthComputable) {
+                        $scope.$apply(function() {
+                            $scope.loadingProgress = (e.loaded / e.total) * 100;
+                            console.log("Progress: " + $scope.loadingProgress);
+                        });
+                    }
+                }
+            }
+        }).then(function(response) {
             alert('Avatar created successfully!');
             $scope.loadAvatars();
             $state.go('base.avatar-view');
+        }).finally(function() {
+            $scope.isLoading = false;
+            $scope.showOverlay = false;
         }).catch(function(error) {
             alert('Error creating avatar:', error);
         });
-    };    
+    };
 
     $scope.resetForm = function() {
         $scope.newAvatar = { name: "", file: null, voice: "" }; 
@@ -69,26 +88,38 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'A
 
     $scope.downloadAvatarFile = function(avatarId) {
         if (avatarId) {
+            $scope.isLoading = true;
             var downloadUrl = 'http://127.0.0.1:8000/api/avatar/download/' + avatarId;
-            
+    
             $http({
                 url: downloadUrl,
                 method: 'GET',
-                responseType: 'blob', 
-            }).then(function (response) {
+                responseType: 'blob',
+                eventHandlers: {
+                    progress: function(e) {
+                        if (e.lengthComputable) {
+                            $scope.$apply(function() {
+                                $scope.loadingProgress = (e.loaded / e.total) * 100;
+                            });
+                        }
+                    }
+                }
+            }).then(function(response) {
+                $scope.isLoading = false;
                 var blob = new Blob([response.data], {type: response.headers('Content-Type')});
                 var downloadLink = angular.element('<a></a>');
                 downloadLink.attr('href', window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'AvatarFile-' + avatarId + '.fbx'); 
-                
+                downloadLink.attr('download', 'AvatarFile-' + avatarId + '.fbx');
+    
                 downloadLink[0].click();
-            }).catch(function (error) {
+            }).catch(function(error) {
+                $scope.isLoading = false;
                 console.error("Download failed: ", error);
             });
         } else {
             console.error("Download failed: Avatar ID is invalid.");
         }
-    };      
+    };       
 
     $scope.loadAvatars();
 }]);
