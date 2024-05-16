@@ -1,4 +1,4 @@
-angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'AvatarService', '$state', 'AuthService', function($scope, $http, AvatarService, $state, AuthService) {
+angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'Upload', 'AvatarService', '$state', 'AuthService', function($scope, $http, Upload, AvatarService, $state, AuthService) {
     $scope.avatarList = [];
     $scope.isSuperuser = AuthService.isSuperuser();
 
@@ -88,7 +88,22 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'A
         } else {
             console.error("Download failed: Avatar ID is invalid.");
         }
-    };      
+    };
+    
+    $scope.upload = function(file) {
+        Upload.upload({
+            url: 'upload/url',
+            data: { file: file, 'username': $scope.username }
+        }).then(function(resp) {
+            console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+        }, function(resp) {
+            console.log('Error status: ' + resp.status);
+        }, function(evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    };
+    
 
     $scope.loadAvatars();
 }]);

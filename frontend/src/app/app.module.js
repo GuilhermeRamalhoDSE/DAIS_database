@@ -1,4 +1,4 @@
-angular.module('frontend', ['ui.router'])
+angular.module('frontend', ['ui.router', 'ngFileUpload  '])
 .config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
 }])
@@ -37,10 +37,10 @@ angular.module('frontend').directive('fileModel', ['$parse', function ($parse) {
         link: function(scope, element, attrs) {
             var model = $parse(attrs.fileModel);
             var modelSetter = model.assign;
-
-            element.bind('change', function(){
-                scope.$apply(function(){
+            element.bind('change', function() {
+                scope.$apply(function() {
                     modelSetter(scope, element[0].files[0]);
+                    scope.upload(element[0].files[0]);
                 });
             });
         }
