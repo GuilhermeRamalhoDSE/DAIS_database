@@ -73,7 +73,7 @@ angular.module('frontend').controller('PeriodDSController', ['$scope', 'PeriodDS
     };
 
     $scope.cancelCreate = function() {
-        $state.go('base.group-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
+        $state.go('base.periodds-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
     };
 
     $scope.goBack = function() {
