@@ -1,4 +1,4 @@
-angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'Upload', 'AvatarService', '$state', 'AuthService', function($scope, $http, Upload, AvatarService, $state, AuthService) {
+angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'Upload', 'AvatarService', '$state', 'AuthService', '$q', '$interval', function($scope, $http, Upload, AvatarService, $state, AuthService, $q, $interval) {
     $scope.avatarList = [];
     $scope.isSuperuser = AuthService.isSuperuser();
 
@@ -33,12 +33,14 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
             avatarData.append('file', $scope.newAvatar.file);
         }
     
-        AvatarService.createAvatar(avatarData).then(function(response) {
-            alert('Avatar created successfully!');
-            $scope.loadAvatars();
-            $state.go('base.avatar-view');
-        }).catch(function(error) {
-            alert('Error creating avatar:', error);
+        $scope.upload($scope.newAvatar.file).then(function() {
+            AvatarService.createAvatar(avatarData).then(function(response) {
+                alert('Avatar created successfully!');
+                $scope.loadAvatars();
+                $state.go('base.avatar-view');
+            }).catch(function(error) {
+                alert('Error creating avatar:', error);
+            });
         });
     };    
 
@@ -91,21 +93,21 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
     };
     
     $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+    
         $scope.showProgress = true;
-        Upload.upload({
-            url: 'upload/url',
-            data: { file: file, 'username': $scope.username }
-        }).then(function(resp) {
-            console.log('Success ' + resp.config.data.file.name + ' uploaded. Response: ' + resp.data);
-            $scope.showProgress = false;
-        }, function(resp) {
-            console.log('Error status: ' + resp.status);
-            $scope.showProgress = false;
-        }, function(evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            $scope.loadingProgress = progressPercentage;
-        });
-    };    
+        $scope.loadingProgress = 0;
+    
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+    
+        return deferred.promise; 
+    };  
     
 
     $scope.loadAvatars();

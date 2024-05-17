@@ -18,6 +18,15 @@
                             <label>File</label>
                             <input type="file" file-model="formAvatar.file" class="form-control" placeholder="Avatar File">
                         </div>
+                        <div class="progress mb-2" ng-show="showProgress">
+                            <div class="progress-bar progress-bar-striped info" role="progressbar" 
+                                 ng-style="{'width': loadingProgress + '%'}" 
+                                 aria-valuenow="{{ loadingProgress }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                                {{ loadingProgress }}%
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
                     </form>

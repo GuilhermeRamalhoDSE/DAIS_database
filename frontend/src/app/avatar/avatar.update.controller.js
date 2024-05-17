@@ -1,4 +1,4 @@
-angular.module('frontend').controller('AvatarUpdateController', ['$scope', '$state', 'AvatarService', 'AuthService', function($scope, $state, AvatarService, AuthService) {
+angular.module('frontend').controller('AvatarUpdateController', ['$scope', '$state', 'AvatarService', 'AuthService', '$q', '$interval', function($scope, $state, AvatarService, AuthService, $q, $interval) {
     $scope.formAvatar = {};
     $scope.isSuperuser = AuthService.isSuperuser();
 
@@ -33,18 +33,37 @@ angular.module('frontend').controller('AvatarUpdateController', ['$scope', '$sta
         
         avatarDataToUpdate.append('payload', JSON.stringify(payload));
         
-        AvatarService.updateAvatar($scope.formAvatar.id, avatarDataToUpdate).then(function(response) {
-            alert('Avatar updated successfully');
-            $state.go('base.avatar-view');
-        }).catch(function(error) {
-            console.error('Error updating avatar:', error);
-            alert('Failed to update avatar');
+        $scope.upload($scope.formAvatar.file).then(function() {
+            AvatarService.updateAvatar($scope.formAvatar.id, avatarDataToUpdate).then(function(response) {
+                alert('Avatar updated successfully');
+                $state.go('base.avatar-view');
+            }).catch(function(error) {
+                console.error('Error updating avatar:', error);
+                alert('Failed to update avatar');
+            });
         });
     };
     
     $scope.cancelUpdate = function() {
         $state.go('base.avatar-view');
     };
+
+    $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+    
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+    
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+    
+        return deferred.promise; 
+    };  
 
     $scope.loadAvatar();
 }]);
