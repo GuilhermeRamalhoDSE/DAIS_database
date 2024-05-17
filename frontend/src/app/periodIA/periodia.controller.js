@@ -87,6 +87,10 @@ angular.module('frontend').controller('PeriodIAController', ['$scope', 'PeriodIA
             active: true 
         };
     };
+    
+    $scope.cancelCreate = function() {
+        $state.go('base.periodia-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
+    };
 
     $scope.deletePeriod = function(periodIAId) {
         if (confirm('Are you sure you want to delete this period?')) {
