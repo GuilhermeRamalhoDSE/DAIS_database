@@ -1,0 +1,25 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="TouchscreenInteractionUpdateController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Updating TouchscreenInteraction</h2>
+                    <small>Update the TouchscreenInteraction.</small>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="updateTouchscreenInteraction()" novalidate>
+                        <div class="form-group">
+                            <label for="touchscreeninteractionName">Name</label>
+                            <input type="text" class="form-control" id="touchscreeninteractionName" ng-model="touchscreeninteractionData.name" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

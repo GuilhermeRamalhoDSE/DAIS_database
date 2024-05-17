@@ -265,7 +265,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.touchscreeninteraction-update', {
-        url: '/:clientId/:clientName/:clientmoduleId/touchscreen-interaction/update/touchscreeninteractionId',
+        url: '/:clientId/:clientName/:clientmoduleId/touchscreen-interaction/update/:touchscreeninteractionId',
         templateUrl: 'app/touchscreen-interactions/touchscreen-interactions-update.html',
         controller: 'TouchscreenInteractionUpdateController',
         data: {

@@ -61,5 +61,5 @@ angular.module('frontend').controller('TouchscreenInteractionUpdateController', 
          });
     };
 
-    $scope.loadtouchscreeninteractionDetails();
+    $scope.loadTouchscreenInteractionDetails();
 }]);
