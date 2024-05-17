@@ -1,7 +1,7 @@
 <!-- ############ PAGE START-->
 <div class="padding" ng-controller="ContributionIAUpdateController">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="box">
                 <div class="box-header">
                     <h2>Updating {{ contributioniaName }} </h2>
@@ -52,6 +52,60 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header">
+                    <h2>File Preview</h2>
+                    <small>Preview of the uploaded file</small>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="preview">Preview</label>
+                        <div id="preview" class="preview-container">
+                            <div ng-if="hasFileForPreview()">
+                                <video id="videoPreview" class="preview-video" controls ng-if="isVideoFile()"></video>
+                                <div id="imagePreviewContainer" class="preview-image-container" ng-if="isImageFile()">
+                                    <img id="imagePreview" class="preview-image" />
+                                </div>
+                                <audio id="audioPreview" style="width: 100%;" controls ng-if="isAudioFile()"></audio>
+                            </div>
+                            <div ng-if="!hasFileForPreview()">
+                                <p>No file selected for preview</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- ############ PAGE END-->
+
+<style>
+    .preview-container {
+        max-width: 100%;
+        max-height: 400px;
+        overflow: hidden;
+    }
+    
+    .preview-image-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .preview-container video {
+    width: 100%;
+    height: auto;
+}
+    .preview-image {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+</style>
