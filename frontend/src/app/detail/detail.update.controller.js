@@ -1,4 +1,4 @@
-angular.module('frontend').controller('DetailUpdateController', ['$scope', 'DetailService', '$state', '$stateParams', 'AuthService', function($scope, DetailService, $state, $stateParams, AuthService) {
+angular.module('frontend').controller('DetailUpdateController', ['$scope', 'DetailService', '$state', '$stateParams', 'AuthService','Upload', '$q', '$interval', function($scope, DetailService, $state, $stateParams, AuthService, Upload, $q, $interval) {
 
     $scope.clientId = $stateParams.clientId;
     $scope.clientName = $stateParams.clientName;
@@ -40,28 +40,28 @@ angular.module('frontend').controller('DetailUpdateController', ['$scope', 'Deta
     };
 
     $scope.updateDetail = function() {
-        var formData = new FormData();
-
         if ($scope.file) {
-            formData.append('file', $scope.file);
-        }
-
-        formData.append('detail_in', JSON.stringify($scope.detailData));
-
-        DetailService.update($scope.detailId, formData).then(function(response) {
-            alert('Detail updated successfully!');
-            $state.go('base.detail-view', {
-                clientId: $scope.clientId,
-                clientName: $scope.clientName,
-                groupId: $scope.groupId,
-                groupName: $scope.groupName,
-                perioddsId: $scope.perioddsId,
-                timeslotId: $scope.timeslotId,
-                contributionId: $scope.contributionId
+            $scope.upload($scope.file).then(function() {
+                var formData = new FormData();
+                formData.append('file', $scope.file);
+                formData.append('detail_in', JSON.stringify($scope.detailData));
+    
+                DetailService.update($scope.detailId, formData).then(function(response) {
+                    alert('Detail updated successfully!');
+                    $state.go('base.detail-view', {
+                        clientId: $scope.clientId,
+                        clientName: $scope.clientName,
+                        groupId: $scope.groupId,
+                        groupName: $scope.groupName,
+                        perioddsId: $scope.perioddsId,
+                        timeslotId: $scope.timeslotId,
+                        contributionId: $scope.contributionId
+                    });
+                }).catch(function(error) {
+                    console.error('Error updating detail:', error);
+                });
             });
-        }).catch(function(error) {
-            console.error('Error updating detail:', error);
-        });
+        } 
     };
 
     $scope.cancelUpdate = function() {
@@ -74,6 +74,23 @@ angular.module('frontend').controller('DetailUpdateController', ['$scope', 'Deta
             timeslotId: $scope.timeslotId,
             contributionId: $scope.contributionId
         });
+    };
+
+    $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+    
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+    
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+    
+        return deferred.promise; 
     };
 
     $scope.loadDetail();

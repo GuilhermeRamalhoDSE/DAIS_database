@@ -1,4 +1,4 @@
-angular.module('frontend').controller('DetailController', ['$scope', 'DetailService', '$state', '$stateParams', 'AuthService', '$http', function($scope, DetailService, $state, $stateParams, AuthService, $http) {
+angular.module('frontend').controller('DetailController', ['$scope', 'DetailService', '$state', '$stateParams', 'AuthService', '$http', '$q', '$interval', function($scope, DetailService, $state, $stateParams, AuthService, $http, $q, $interval) {
     $scope.detailList = [];
     $scope.file = null;
     $scope.perioddsId = $stateParams.perioddsId;
@@ -49,25 +49,27 @@ angular.module('frontend').controller('DetailController', ['$scope', 'DetailServ
             return;
         }
 
-        var formData = new FormData();
-        formData.append('file', $scope.file);
+        $scope.upload($scope.file).then(function() {
+            var formData = new FormData();
+            formData.append('file', $scope.file);
 
-        var detailData = { ...$scope.newDetail };
-        formData.append('detail_in', JSON.stringify(detailData));
+            var detailData = { ...$scope.newDetail };
+            formData.append('detail_in', JSON.stringify(detailData));
 
-        DetailService.create(formData).then(function(response) {
-            alert('Detail created successfully!');
-            $scope.loadDetails();
-            $state.go('base.detail-view', { 
-                clientId: $scope.clientId,
-                clientName: $scope.clientName,
-                groupId: $scope.groupId,
-                groupName: $scope.groupName,
-                perioddsId: $scope.perioddsId,
-                timeslotId: $scope.timeslotId,
-                contributionId: contributionId });
-        }).catch(function(error) {
-            console.error('Error creating detail:', error);
+            DetailService.create(formData).then(function(response) {
+                alert('Detail created successfully!');
+                $scope.loadDetails();
+                $state.go('base.detail-view', { 
+                    clientId: $scope.clientId,
+                    clientName: $scope.clientName,
+                    groupId: $scope.groupId,
+                    groupName: $scope.groupName,
+                    perioddsId: $scope.perioddsId,
+                    timeslotId: $scope.timeslotId,
+                    contributionId: contributionId });
+            }).catch(function(error) {
+                console.error('Error creating detail:', error);
+            });
         });
     };
 
@@ -159,6 +161,23 @@ angular.module('frontend').controller('DetailController', ['$scope', 'DetailServ
             alert('Invalid Detail ID');
         }
     };    
+
+    $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+
+        return deferred.promise; 
+    };  
 
     $scope.loadDetails();
 }]);
