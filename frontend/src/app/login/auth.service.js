@@ -26,7 +26,6 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
         var storage = $window.localStorage.getItem('jwtToken') ? $window.localStorage : $window.sessionStorage;
     
         return $http.get('http://127.0.0.1:8000/api/licenses/' + licenseId + '/modules/').then(function(response) {
-            console.log('Response data:', response.data);  
             if (response.data && Array.isArray(response.data)) { 
                 var moduleSlugs = response.data.map(module => module.slug); 
                 storage.setItem('licenseModules', JSON.stringify(moduleSlugs));
