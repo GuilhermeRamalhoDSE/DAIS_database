@@ -10,6 +10,7 @@ from .routes.form_route import form_router
 from .routes.formfield_route import form_field_router
 from .routes.formdata_route import formdata_router
 from .routes.touchscreen_interactions_route import touchscreen_interactions_router
+from .routes.buttontype_route import buttontype_router
 from .routes.avatar_route import avatar_router
 from .routes.voice_route import voice_router
 from .routes.language_route import language_router
@@ -44,6 +45,7 @@ api.add_router("/forms", form_router)
 api.add_router("/formfield", form_field_router)
 api.add_router("/formdata", formdata_router)
 api.add_router("/touchscreen-interactions", touchscreen_interactions_router)
+api.add_router("/buttontypes", buttontype_router)
 api.add_router("/avatar", avatar_router)
 api.add_router("/voices", voice_router)
 api.add_router("/languages", language_router)
