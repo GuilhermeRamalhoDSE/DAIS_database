@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenService', '$state', '$stateParams', 'AuthService', 'LicenseService', '$http', function($scope, ScreenService, $state, $stateParams, AuthService, LicenseService, $http) {
+angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenService', '$state', '$stateParams', 'AuthService', 'LicenseService', '$http', '$q', '$interval', 'Upload', function($scope, ScreenService, $state, $stateParams, AuthService, LicenseService, $http, $q, $interval, Upload) {
     $scope.screenList = [];
     $scope.screenTypes = [];
     $scope.logo = null;
@@ -22,6 +22,7 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
         typology_id: null,
         footer: ''
     };
+
 
     $scope.loadScreens = function() {
         ScreenService.getAll(totemId).then(function(response) {
@@ -54,19 +55,35 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
     };
 
     $scope.createScreen = function() {
-
         var formData = new FormData();
-
+    
         if ($scope.logo) {
-            formData.append('logo', $scope.logo);
+            $scope.upload($scope.logo).then(function() {
+                formData.append('logo', $scope.logo);
+                
+                if ($scope.background) {
+                    $scope.upload($scope.background).then(function() {
+                        formData.append('background', $scope.background);
+                        uploadScreenData(formData);
+                    });
+                } else {
+                    uploadScreenData(formData);
+                }
+            });
+        } else if ($scope.background) {
+            $scope.upload($scope.background).then(function() {
+                formData.append('background', $scope.background);
+                uploadScreenData(formData);
+            });
+        } else {
+            uploadScreenData(formData);
         }
-        if ($scope.background) {
-            formData.append('background', $scope.background);
-        }
-
+    };
+    
+    function uploadScreenData(formData) {
         var screenData = { ...$scope.newScreen };
         formData.append('screen_in', JSON.stringify(screenData));
-
+    
         ScreenService.create(formData).then(function(response) {
             alert('Screen created successfully!');
             $scope.loadScreens();
@@ -80,7 +97,7 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
         }).catch(function(error) {
             console.error('Error creating screen:', error);
         });
-    };
+    }    
 
     $scope.editScreen = function(screenId) {
         $state.go('base.screen-update', { 
@@ -180,6 +197,23 @@ angular.module('frontend').controller('ScreenController', ['$scope', 'ScreenServ
             groupName: $scope.groupName,
             totemId: totemId,
             totemName: totemName});
+    };
+
+    $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+    
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+    
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+    
+        return deferred.promise; 
     };
 
     $scope.loadScreens();
