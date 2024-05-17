@@ -89,7 +89,7 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
             case 'form':
                 route = 'base.form-view';
                 break;
-            case 'touch-screen-interactions':
+            case 'touchscreen-interaction':
                 route = 'base.touchscreeninteraction-view';
                 break;
             default:
