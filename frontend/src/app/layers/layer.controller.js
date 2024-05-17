@@ -112,7 +112,17 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
         }
     };
     
-
+    $scope.isParentZeroPresent = function() {
+        if ($scope.layerList && $scope.layerList.length > 0) {
+            for (var i = 0; i < $scope.layerList.length; i++) {
+                if ($scope.layerList[i].parent === null) {
+                    return true; 
+                }
+            }
+        }
+        return false; 
+    };
+    
     $scope.resetForm = function() {
         $scope.newLayer = {
             period_id: periodiaId,

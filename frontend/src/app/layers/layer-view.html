@@ -12,7 +12,7 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="goToCreateLayer()">
+                    <button class="btn btn-fw primary" ng-if="!isParentZeroPresent()" ng-click="goToCreateLayer()">
                         <i class="fa fa-fw fa-plus text-muted"></i>
                         <span>New Layer</span>
                     </button>
