@@ -71,7 +71,7 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
 
     $scope.downloadAvatarFile = function(avatarId) {
         if (avatarId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/avatar/download/' + avatarId;
+            var downloadUrl = 'https://daisdatabasedse.it/api/avatar/download/' + avatarId;
             
             $http({
                 url: downloadUrl,
