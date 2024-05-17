@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from dais.schemas.buttontype_schema import ButtonTypeOut
 
 class ButtonCreateSchema(BaseModel):
     interaction_id: int
@@ -21,7 +22,7 @@ class ButtonSchema(BaseModel):
     id: int
     interaction_id: int
     name: str
-    button_type_id: int
+    button_type: ButtonTypeOut
     url: Optional[str] = None
     form_id: Optional[int] = None
     file: Optional[str] = None
