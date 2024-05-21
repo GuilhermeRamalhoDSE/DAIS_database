@@ -1,29 +1,26 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from dais.models.avatar_models import Avatar
 from dais.models.voice_models import Voice
 from dais.models.language_models import Language
 from dais.models.module_models import Module
 from dais.models.screentype_models import ScreenType
+from dais.models.buttontype_models import ButtonType
 
 class License(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_("Nome"))
-    email = models.EmailField(unique=True, verbose_name=_("Email"))
-    address = models.CharField(max_length=255, verbose_name=_("Indirizzo"), null=True, blank=True)
-    tel = models.CharField(max_length=20, verbose_name=_("Telefono"), null=True, blank=True)
-    license_code = models.CharField(max_length=100, unique=True, verbose_name=_("Codice Licenza"))
-    active = models.BooleanField(default=True, verbose_name=_("Attivo"))
-    start_date = models.DateField(verbose_name=_("Data Inizio"))
-    end_date = models.DateField(verbose_name=_("Data Scadenza"))
-    avatars = models.ManyToManyField(Avatar, verbose_name=_("Avatares"), blank=True)
-    voices = models.ManyToManyField(Voice, verbose_name=_("Voci"), blank=True)
-    languages = models.ManyToManyField(Language, verbose_name=_("Lingue"), blank=True)
-    modules = models.ManyToManyField(Module, verbose_name=_("Moduli"), blank=True)
-    screentypes = models.ManyToManyField(ScreenType, verbose_name=_("Tipologie Schermi"), blank=True)
-
-    class Meta:
-        verbose_name = _("Gestione Licenza")
-        verbose_name_plural = _("Gestione Licenze")
+    name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
+    tel = models.CharField(max_length=20, null=True, blank=True)
+    license_code = models.CharField(max_length=100, unique=True)
+    active = models.BooleanField(default=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    avatars = models.ManyToManyField(Avatar, blank=True)
+    voices = models.ManyToManyField(Voice, blank=True)
+    languages = models.ManyToManyField(Language, blank=True)
+    modules = models.ManyToManyField(Module, blank=True)
+    screentypes = models.ManyToManyField(ScreenType, blank=True)
+    buttontypes = models.ManyToManyField(ButtonType, blank=True)
 
     def __str__(self):
         return self.name
