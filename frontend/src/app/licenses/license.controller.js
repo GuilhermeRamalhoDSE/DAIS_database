@@ -1,10 +1,11 @@
-angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', 'ScreenTypeService', '$state', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, ScreenTypeService, $state) {
+angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', 'ScreenTypeService', 'ButtonTypeService', '$state', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, ScreenTypeService, ButtonTypeService, $state) {
     $scope.licenses = [];
     $scope.avatars = [];
     $scope.voices = [];
     $scope.languages = [];
     $scope.modules = [];
     $scope.screentypes = [];
+    $scope.buttontypes = [];
  
     $scope.newLicense = {
         name: "",
@@ -20,6 +21,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         languages_ids: [],
         modules_ids: [],
         screentypes_ids: [],
+        buttontypes_ids: [],
     };
 
     $scope.getAllLicenses = function() {
@@ -70,6 +72,14 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         });
     };
 
+    $scope.loadButtonTypes = function() {
+        ButtonTypeService.getAll().then(function(response) {
+            $scope.buttontypes = response.data;
+        }).catch(function(error) {
+            alert('Error fetching button type:', error);
+        });
+    };
+
     $scope.goToCreateLicense = function() {
         $state.go('base.licenses-new');
     };
@@ -100,6 +110,8 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
                 voices_ids: [],
                 languages_ids: [],
                 modules_ids: [],
+                screentypes_ids: [],
+                buttontypes_ids: [],
             };
             $state.go('base.licenses-view'); 
         }).catch(function(error) {
@@ -255,10 +267,36 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         return license.screentypes && license.screentypes.some(screentype => screentype.id === screentypeId);
     };
 
+    $scope.toggleButtonTypeAssignment = function(license, buttontypeId) {
+        const isAssigned = license.buttontypes && license.buttontypes.some(buttontype => buttontype.id === buttontypeId);
+        if (isAssigned) {
+            LicenseService.removeButtonTypeFromLicense(license.id, buttontypeId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error removing button type from license:', error);
+                });
+        } else {
+            LicenseService.addButtonTypeToLicense(license.id, buttontypeId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error adding button type to license:', error);
+                });
+        }
+    };
+
+    $scope.isButtonTypeAssignedToLicense = function(license, buttontypeId) {
+        return license.buttontypes && license.buttontypes.some(buttontype => buttontype.id === buttontypeId);
+    };
+
     $scope.getAllLicenses(); 
     $scope.loadAvatars();
     $scope.loadVoices();
     $scope.loadLanguages();
     $scope.loadModules();
     $scope.loadScreenTypes();
+    $scope.loadButtonTypes();
 }]);
