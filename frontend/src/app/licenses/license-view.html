@@ -55,6 +55,7 @@
             <th>Languages</th>
             <th>Modules</th>
             <th>Screen Types</th>
+            <th>Button Types</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -113,6 +114,15 @@
                   <input type="checkbox" ng-checked="isScreenTypeAssignedToLicense(license, screentype.id)"
                     ng-click="toggleScreenTypeAssignment(license, screentype.id)">
                   {{ screentype.name }}
+                </label>
+              </div>
+            </td>
+            <td>
+              <div ng-repeat="buttontype in buttontypes">
+                <label>
+                  <input type="checkbox" ng-checked="isButtonTypeAssignedToLicense(license, buttontype.id)"
+                    ng-click="toggleButtonTypeAssignment(license, buttontype.id)">
+                  {{ buttontype.name }}
                 </label>
               </div>
             </td>
