@@ -7,6 +7,7 @@ from .voice_schema import VoiceOut
 from .language_schema import LanguageOut
 from .module_schema import ModuleOut
 from .screentype_schema import ScreenTypeOut
+from .buttontype_schema import ButtonTypeOut
 
 class AvatarIdSchema(BaseModel):
     avatar_id: int
@@ -22,6 +23,9 @@ class ModuleIdSchema(BaseModel):
 
 class ScreenTypeIdSchema(BaseModel):
     screentype_id: int
+
+class ButtonTypeIdSchema(BaseModel):
+    buttontype_id: int
     
 class LicenseBaseSchema(BaseModel):
     name: str
@@ -37,6 +41,7 @@ class LicenseBaseSchema(BaseModel):
     languages_id: List[int] = []
     modules_id: List[int] = []
     screentypes_id: List[int] = []
+    buttontypes_id: List[int] = []
 
 class LicenseCreateSchema(LicenseBaseSchema):
     pass
@@ -55,6 +60,7 @@ class LicenseUpdateSchema(BaseModel):
     language_ids: Optional[List[int]] = None
     module_ids: Optional[List[int]] = None
     screentype_ids: Optional[List[int]] = None
+    buttontype_ids: Optional[List[int]] = None
 
 class LicenseSchema(LicenseBaseSchema):
     id: int
@@ -63,6 +69,7 @@ class LicenseSchema(LicenseBaseSchema):
     languages: List[LanguageOut]
     modules: List[ModuleOut]
     screentypes: List[ScreenTypeOut]
+    buttontypes: List[ButtonTypeOut]
 
     @validator('avatars', pre=True, each_item=False)
     def prepare_avatars(cls, value):
@@ -93,6 +100,12 @@ class LicenseSchema(LicenseBaseSchema):
         if value is None:
             return []
         return [ScreenTypeOut(id=screentype.id, name=screentype.name) for screentype in value.all()]
+    
+    @validator('buttontypes', pre=True, each_item=False)
+    def prepare_buttontypes(cls, value):
+        if value is None:
+            return []
+        return [ButtonTypeOut(id=buttontype.id, name=buttontype.name) for buttontype in value.all()]
     
     class Config:
         from_attributes = True
