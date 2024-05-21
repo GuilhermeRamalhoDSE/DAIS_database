@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonService', 'AuthService', '$state', '$stateParams', function($scope, ButtonService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonService', 'AuthService', 'LicenseService', '$state', '$stateParams', function($scope, ButtonService, AuthService, LicenseService, $state, $stateParams) {
     $scope.buttonList = [];
 
     $scope.clientId = $stateParams.clientId;
@@ -17,9 +17,7 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
     $scope.newButton = {
         touchscreeninteraction_id: touchscreeninteractionId,
         name: '',
-        number: null,
-        field_type: '',
-        required: false,
+        button_type_id: null,
     };
 
     $scope.loadButtons = function() {
@@ -30,12 +28,12 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
         });
     };
 
-    $scope.loadScreenType = function() {
+    $scope.loadButtonType = function() {
         if ($scope.licenseId) {
-            LicenseService.getScreenTypeByLicense($scope.licenseId).then(function(response) {
-                $scope.screenTypes = response.data;
+            LicenseService.getButtonTypeByLicense($scope.licenseId).then(function(response) {
+                $scope.buttonTypes = response.data;
             }).catch(function(error) {
-                console.error('Error loading screen types:', error);
+                console.error('Error loading button types:', error);
             });
         } else {
             console.error('License ID is undefined');
@@ -53,6 +51,28 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
     };
 
     $scope.createButton = function() {
+        if (!$scope.newButton.name || !$scope.newButton.field_type) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+    
+        if ($scope.newButton.field_type === 'Video' || $scope.newButton.field_type === 'Slideshow') {
+            if (!$scope.newButton.file) {
+                alert('A file is required for video or slideshows.');
+                return;
+            }
+        } else if ($scope.newButton.field_type === 'Web Page') {
+            if (!$scope.newButton.url) {
+                alert('A URL is required for web page type.');
+                return;
+            }
+        } else if ($scope.newButton.field_type === 'Form') {
+            if (!$scope.newButton.form) {
+                alert('A form is necessary for the FORM type.');
+                return;
+            }
+        }
+    
         ButtonService.create($scope.newButton).then(function(response) {
             alert('Field created successfully!');
             $scope.loadButtons();
@@ -61,12 +81,12 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
                 clientName: $scope.clientName,
                 clientmoduleId: $scope.clientmoduleId,
                 touchscreeninteractionId: touchscreeninteractionId,
-                touchscreeninteractionName: touchscreeninteractionName 
+                touchscreeninteractionName: touchscreeninteractionName
             });
         }).catch(function(error) {
             console.error('Error creating field:', error);
         });
-    };
+    };    
 
     $scope.editButton = function(buttonId, buttonName) {
         $state.go('base.button-update', { 
