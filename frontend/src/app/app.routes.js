@@ -424,6 +424,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.buttontype-new', {
+        url: '/buttontype/new',
+        templateUrl: 'app/buttontype/buttontype-new.html',
+        controller: 'ButtonTypeController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.buttontype-view', {
+        url: '/buttontypes',
+        templateUrl: 'app/buttontype/buttontype-view.html',
+        controller: 'ButtonTypeController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.buttontype-update', {
+        url: '/buttontype/update/:buttontypeId/:buttontypeName',
+        templateUrl: 'app/buttontype/buttontype-update.html',
+        controller: 'ButtonTypeUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
     .state('base.group-new', {
         url: '/:clientId/:clientName/group/new',
         templateUrl: 'app/group/group-new.html',
