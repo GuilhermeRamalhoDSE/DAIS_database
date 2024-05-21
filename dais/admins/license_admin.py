@@ -6,10 +6,10 @@ from dais.models.license_models import License
 class LicenseAdmin(admin.ModelAdmin):
     list_display = (
         'name', 'email', 'address', 'tel', 'license_code', 'active',
-        'start_date', 'end_date', 'list_avatars', 'list_voices', 'list_languages', 'list_modules', 'list_screentypes'  
+        'start_date', 'end_date', 'list_avatars', 'list_voices', 'list_languages', 'list_modules', 'list_screentypes', 'list_buttontypes'  
     )
     list_filter = ('active', 'start_date', 'end_date')
-    search_fields = ('name', 'email', 'license_code', 'avatars__name', 'voices__name', 'languages__name', 'modules__name', 'screentypes__name') 
+    search_fields = ('name', 'email', 'license_code', 'avatars__name', 'voices__name', 'languages__name', 'modules__name', 'screentypes__name', 'buttontypes__name') 
     ordering = ('-start_date',)
 
     def has_view_permission(self, request, obj=None):
@@ -43,3 +43,7 @@ class LicenseAdmin(admin.ModelAdmin):
     def list_screentypes(self, obj):
         return ", ".join([screentype.name for screentype in obj.screentypes.all()])
     list_screentypes.short_description = "Screen Types"
+
+    def list_buttontypes(self, obj):
+        return ", ".join([buttontype.name for buttontype in obj.buttontypes.all()])
+    list_buttontypes.short_description = "Button Types"
