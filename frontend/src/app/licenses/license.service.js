@@ -65,6 +65,14 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.post(`${baseUrl}${licenseId}/remove-screentype/`, { screentype_id: screentypeId });
     };
 
+    service.addButtonTypeToLicense = function(licenseId, buttontypeId) {
+        return $http.post(`${baseUrl}${licenseId}/add-buttontype/`, { buttontype_id: buttontypeId });
+    };
+
+    service.removeButtonTypeFromLicense = function(licenseId, buttontypeId) {
+        return $http.post(`${baseUrl}${licenseId}/remove-buttontype/`, { buttontype_id: buttontypeId });
+    };
+
     service.getAvatarsByLicense = function(licenseId) {
         return $http.get(baseUrl + licenseId + '/avatars/');
     };
@@ -83,6 +91,10 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
 
     service.getScreenTypeByLicense = function(licenseId) {
         return $http.get(baseUrl + licenseId + '/screentypes/');
+    };
+
+    service.getButtonTypeByLicense = function(licenseId) {
+        return $http.get(baseUrl + licenseId + '/buttontypes/');
     };
     
     return service;
