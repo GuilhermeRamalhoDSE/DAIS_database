@@ -58,7 +58,7 @@ angular.module('frontend').filter('formatTime', function() {
         return input; 
     };
 });
-app.directive('initFootable', function($timeout) {
+angular.module('frontend').directive('initFootable', function($timeout) {
     return {
         link: function(scope, element) {
             $timeout(function() {
@@ -67,3 +67,4 @@ app.directive('initFootable', function($timeout) {
         }
     };
 });
+
