@@ -275,7 +275,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.button-new', {
-        url: '/:clientId/:clientName/:clientmoduleId/:touchscreeninteractionId/button/new',
+        url: '/:clientId/:clientName/:clientmoduleId/:touchscreeninteractionId/:touchscreeninteractionName/button/new',
         templateUrl: 'app/button/button-new.html',
         controller: 'ButtonController',
         data: {
@@ -285,7 +285,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.button-view', {
-        url: '/:clientId/:clientName/:clientmoduleId/:touchscreeninteractionId/buttons',
+        url: '/:clientId/:clientName/:clientmoduleId/:touchscreeninteractionId/:touchscreeninteractionName/buttons',
         templateUrl: 'app/button/button-view.html',
         controller: 'ButtonController',
         data: {
@@ -295,7 +295,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.button-update', {
-        url: '/:clientId/:clientName/:clientmoduleId/:touchscreeninteractionId/button/update/:buttonId',
+        url: '/:clientId/:clientName/:clientmoduleId/:touchscreeninteractionId/:touchscreeninteractionName/button/update/:buttonId',
         templateUrl: 'app/button/button-update.html',
         controller: 'ButtonUpdateController',
         data: {

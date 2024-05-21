@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonService', 'AuthService', 'LicenseService', '$state', '$stateParams', function($scope, ButtonService, AuthService, LicenseService, $state, $stateParams) {
+angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonService', 'AuthService', 'LicenseService', '$state', '$stateParams', '$http', function($scope, ButtonService, AuthService, LicenseService, $state, $stateParams, $http) {
     $scope.buttonList = [];
 
     $scope.clientId = $stateParams.clientId;
@@ -15,7 +15,7 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
     $scope.touchscreeninteractionName = touchscreeninteractionName;
 
     $scope.newButton = {
-        touchscreeninteraction_id: touchscreeninteractionId,
+        interaction_id: touchscreeninteractionId,
         name: '',
         button_type_id: null,
     };
@@ -61,7 +61,7 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
                 alert('A file is required for video or slideshows.');
                 return;
             }
-        } else if ($scope.newButton.field_type === 'Web Page') {
+        } else if ($scope.newButton.field_type === 'Web page') {
             if (!$scope.newButton.url) {
                 alert('A URL is required for web page type.');
                 return;
@@ -136,6 +136,86 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
             clientmoduleId: $scope.clientmoduleId
         });
     };
+
+    $scope.isDownloadable = function(button) {
+        return button.button_type.name === 'Video' || button.button_type.name === 'Slideshow';
+    };
+    
+    $scope.isURL = function(button) {
+        return button.button_type.name === 'Web page';
+    };
+    
+    $scope.isForm = function(button) {
+        return button.button_type.name === 'Form';
+    };
+    
+
+    $scope.redirectToURL = function(url) {
+        window.open(url, '_blank');
+    };    
+
+    $scope.redirectToModule = function(button) {
+        let route = "";
+        switch(button.button_type.name) {
+            case 'Form':
+                route = 'base.formfield-view';
+                break;
+            case 'Touch Screen Interaction':
+                route = 'base.touchscreeninteraction-view';
+                break;
+            default:
+                console.error('Unknown module type');
+                return;
+        }
+        
+        $state.go(route, {
+            clientId: $stateParams.clientId,
+            clientName: $stateParams.clientName,
+            clientmoduleId: $stateParams.clientmoduleId,
+            formId: button.form.id,
+            formName: button.form.name,
+        });
+    };
+
+    $scope.downloadFile = function(buttonId) {
+        if (buttonId) {
+            var downloadUrl = 'http://127.0.0.1:8000/api/buttons/download/' + buttonId;
+            
+            $http({
+                url: downloadUrl,
+                method: 'GET',
+                responseType: 'blob', 
+            }).then(function (response) {
+                var blob = new Blob([response.data], {type: response.headers('Content-Type')});
+                var downloadLink = angular.element('<a></a>');
+                downloadLink.attr('href', window.URL.createObjectURL(blob));
+                downloadLink.attr('download', 'ButtonFile-' + buttonId );  
+                downloadLink[0].click();
+            }).catch(function (error) {
+                console.error("Download failed: ", error);
+            });
+        } else {
+            console.error("Download failed: Button ID is invalid.");
+        }
+    };
+    
+    $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+    
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+    
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+    
+        return deferred.promise; 
+    };  
     
     $scope.loadButtons();
+    $scope.loadButtonType();
 }])

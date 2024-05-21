@@ -1,0 +1,65 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="ButtonController">
+    <div class="box">
+        <div class="box-header">
+            <h2>Buttons for {{ touchscreeninteractionName }}</h2>
+            <small>Manage buttons for {{ clientName }}</small>
+        </div>
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <div class="col-sm-6">
+                    Search: <input id="filter" type="text" class="form-control input-sm w-auto inline m-r"
+                        ng-model="searchText" />
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-fw primary" ng-click="goToCreateButton()">
+                        <i class="fa fa-fw fa-plus text-muted"></i>
+                        <span>New Button</span>
+                    </button>
+                    <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="button in buttonList | filter:searchText">
+                        <td>{{ button.name }}</td>
+                        <td>{{ button.button_type.name }}</td>
+                        <td>
+                            <button class="btn btn-default btn-xs"
+                                ng-click="editButton(button.id, button.name)">Edit</button>
+                            <button class="btn btn-danger btn-xs" ng-click="deleteButton(button.id)">Delete</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-xs" ng-if="isDownloadable(button)" ng-click="downloadFile(button.id)">Download File</button>
+                            <button class="btn btn-primary btn-xs" ng-if="isURL(button)" ng-click="redirectToURL(button.url)">Go To URL</button>
+                            <button class="btn btn-primary btn-xs" ng-if="isForm(button)" ng-click="redirectToModule(button)">Go To Form</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="hide-if-no-paging">
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <ul class="pagination"></ul>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
