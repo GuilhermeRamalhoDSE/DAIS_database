@@ -274,6 +274,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.button-new', {
+        url: '/:clientId/:clientName/:clientmoduleId/:touchscreeninteractionId/button/new',
+        templateUrl: 'app/button/button-new.html',
+        controller: 'ButtonController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.button-view', {
+        url: '/:clientId/:clientName/:clientmoduleId/:touchscreeninteractionId/buttons',
+        templateUrl: 'app/button/button-view.html',
+        controller: 'ButtonController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
+    .state('base.button-update', {
+        url: '/:clientId/:clientName/:clientmoduleId/:touchscreeninteractionId/button/update/:buttonId',
+        templateUrl: 'app/button/button-update.html',
+        controller: 'ButtonUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser', 'staff'] 
+        }
+    })
+    $stateProvider
     .state('base.avatar-new', {
         url: '/avatar/new',
         templateUrl: 'app/avatar/avatar-new.html',
