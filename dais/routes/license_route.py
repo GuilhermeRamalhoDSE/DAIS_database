@@ -129,7 +129,7 @@ def add_buttontype_to_license(request, license_id: int, payload: ButtonTypeIdSch
     license = get_object_or_404(License, id=license_id)
     buttontype = get_object_or_404(ButtonType, id=payload.buttontype_id)
     
-    license.screentypes.add(buttontype)
+    license.buttontypes.add(buttontype)
     
     return LicenseSchema.from_orm(license)
 
