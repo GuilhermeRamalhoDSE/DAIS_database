@@ -48,6 +48,7 @@ def read_buttons(request, interaction_id: Optional[int] = None):
     query = Button.objects.all()
     if interaction_id is not None:
         query = query.filter(interaction_id=interaction_id)
+        
     buttons = [ButtonSchema.from_orm(button) for button in query]
     return buttons
 

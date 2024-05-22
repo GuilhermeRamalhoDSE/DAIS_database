@@ -1,0 +1,56 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="ButtonController">
+    <div class="box">
+        <div class="box-header">
+            <h2>Create New Button</h2>
+            <small>Manage buttons for {{ clientName }}</small>
+        </div>
+        <div class="box-body">
+            <form name="buttonForm" ng-submit="createButton()">
+                <div class="form-group">
+                    <label for="interactionName">Interaction Name:</label>
+                    <input type="text" id="interactionName" class="form-control" ng-model="touchscreeninteractionName"
+                        readonly>
+                </div>
+                <div class="form-group">
+                    <label for="buttonName">Name:</label>
+                    <input type="text" id="buttonName" class="form-control" ng-model="newButton.name" required>
+                </div>
+                <div class="form-group">
+                    <label for="buttonType">Button Type:</label>
+                    <select id="buttonType" class="form-control" ng-model="newButton.button_type_id"
+                        ng-options="type.id as type.name for type in buttonTypes" required>
+                        <option value="">--Select Button Type--</option>
+                    </select>
+                </div>
+                <div class="form-group" ng-if="isFileType()">
+                    <label for="buttonFile">File:</label>
+                    <input type="file" id="buttonFile" class="form-control" file-model="newButton.file" required>
+                </div>
+                <div class="form-group" ng-if="isURLType()">
+                    <label for="buttonURL">URL:</label>
+                    <input type="url" id="buttonURL" class="form-control" ng-model="newButton.url" required>
+                </div>
+                <div class="form-group" ng-if="isFormType()">
+                    <label for="buttonForm">Form:</label>
+                    <select id="buttonForm" class="form-control" ng-model="newButton.form_id"
+                        ng-options="form.id as form.name for form in forms" required>
+                        <option value="">--Select Form--</option>
+                    </select>
+                </div>
+                <div class="progress mb-2" ng-show="showProgress">
+                    <div class="progress-bar progress-bar-striped info" role="progressbar" 
+                         ng-style="{'width': loadingProgress + '%'}" 
+                         aria-valuenow="{{ loadingProgress }}" 
+                         aria-valuemin="0" 
+                         aria-valuemax="100">
+                        {{ loadingProgress }}%
+                    </div>
+                </div> 
+                <button type="submit" class="btn btn-primary">Create Button</button>
+                <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
