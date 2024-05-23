@@ -1,0 +1,53 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="ButtonUpdateController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Updating Button: {{ buttonName }}</h2>
+                    <small>Update button details for {{ touchscreeninteractionName }}</small>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="updateButton()" novalidate enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="buttonName">Name</label>
+                            <input type="text" class="form-control" id="buttonName" ng-model="buttonData.name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="buttonType">Button Type</label>
+                            <select class="form-control" id="buttonType" ng-model="buttonData.button_type_id" ng-options="type.id as type.name for type in buttonTypes" ng-disabled="true">
+                            </select>
+                        </div>                        
+                        <div class="form-group"
+                            ng-show="buttonData.button_type_id === 1 || buttonData.button_type_id === 3">
+                            <label for="file">File</label>
+                            <input type="file" class="form-control" id="file" file-model="file">
+                        </div>
+                        <div class="form-group" ng-show="buttonData.button_type_id === 2">
+                            <label for="buttonURL">URL</label>
+                            <input type="url" class="form-control" id="buttonURL" ng-model="buttonData.url">
+                        </div>
+                        <div class="form-group" ng-show="buttonData.button_type_id === 4">
+                            <label for="buttonForm">Form</label>
+                            <select class="form-control" id="buttonForm" ng-model="buttonData.form_id"
+                                ng-options="form.id as form.name for form in forms">
+                                <option value="">--Select Form--</option>
+                            </select>
+                        </div>
+                        <div class="progress mb-2" ng-show="showProgress">
+                            <div class="progress-bar progress-bar-striped info" role="progressbar"
+                                ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}"
+                                aria-valuemin="0" aria-valuemax="100">
+                                {{ loadingProgress }}%
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

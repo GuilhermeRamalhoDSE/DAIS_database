@@ -40,12 +40,12 @@ angular.module('frontend').directive('fileModel', ['$parse', function ($parse) {
             element.bind('change', function() {
                 scope.$apply(function() {
                     modelSetter(scope, element[0].files[0]);
-                    scope.upload(element[0].files[0]);
                 });
             });
         }
     };
-}]);
+}]);    
+
 angular.module('frontend').filter('formatTime', function() {
     return function(input) {
         if (!input) return ''; 

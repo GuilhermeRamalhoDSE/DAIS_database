@@ -12,6 +12,7 @@ from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
 from django.http import Http404, FileResponse
 import os
+from django.core.files.storage import default_storage
 
 button_router = Router(tags=['Buttons'])
 
@@ -86,7 +87,7 @@ def download_formation_file(request, button_id: int):
         raise Http404("No file associated with this button")    
 
 @button_router.put('/{button_id}', response=ButtonSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def update_button(request, button_id: int, button_in: ButtonUpdateSchema):
+def update_button(request, button_id: int, button_in: ButtonUpdateSchema, file: UploadedFile = File(None)):
     user_info = get_user_info_from_token(request)
     button = get_object_or_404(Button, id=button_id)
     interaction = get_object_or_404(TouchScreenInteractions, id=button.interaction_id)
@@ -98,6 +99,13 @@ def update_button(request, button_id: int, button_in: ButtonUpdateSchema):
     
     for attr, value in button_in.dict().items():
         setattr(button, attr, value)
+
+    if file and button.file:
+        if default_storage.exists(button.file.name):
+            default_storage.delete(button.file.name)
+
+    if file:
+        button.file = file
 
     button.save()
     return ButtonSchema.from_orm(button)
