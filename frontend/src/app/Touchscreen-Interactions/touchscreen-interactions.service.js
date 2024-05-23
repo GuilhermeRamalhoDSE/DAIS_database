@@ -23,4 +23,4 @@ angular.module('frontend').factory('TouchscreenInteractionService', ['$http', fu
     };
 
     return service;
-}])
+}]);
