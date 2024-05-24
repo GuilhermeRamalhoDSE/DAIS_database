@@ -61,21 +61,25 @@ angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'Scre
         if ($scope.background) {
             formData.append('background', $scope.background);
         }
-
+    
         formData.append('screen_in', JSON.stringify($scope.screenData));
-
-        ScreenService.update($scope.screenId, formData).then(function(response) {
-            alert('Screen updated successfully!');
-            $state.go('base.screen-view', { clientId: $scope.clientId,
-                clientName: $scope.clientName,
-                groupId: $scope.groupId,
-                groupName: $scope.groupName,
-                totemId: $scope.totemId,
-                totemName: $scope.totemName  });
-        }).catch(function(error) {
-            console.error('Error updating screen:', error);
+    
+        $scope.upload(formData).then(function() {
+            ScreenService.update($scope.screenId, formData).then(function(response) {
+                alert('Screen updated successfully!');
+                $state.go('base.screen-view', {
+                    clientId: $scope.clientId,
+                    clientName: $scope.clientName,
+                    groupId: $scope.groupId,
+                    groupName: $scope.groupName,
+                    totemId: $scope.totemId,
+                    totemName: $scope.totemName
+                });
+            }).catch(function(error) {
+                console.error('Error updating screen:', error);
+            });
         });
-    };
+    };    
 
     $scope.cancelUpdate = function() {
         $state.go('base.screen-view', {
