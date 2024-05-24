@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ClientController', ['$scope', 'ClientService', '$state', 'AuthService', function($scope, ClientService, $state, AuthService) {
+angular.module('frontend').controller('ClientController', ['$scope', 'ClientService', '$state', 'AuthService', '$location', function($scope, ClientService, $state, AuthService,$location) {
     $scope.clients = [];
     $scope.newClient = {
         name: "",
@@ -45,6 +45,10 @@ angular.module('frontend').controller('ClientController', ['$scope', 'ClientServ
 
     $scope.goToModules = function(clientId, clientName) {
         $state.go('base.clientmodule-view', { clientId: clientId, clientName: clientName });
+    };
+
+    $scope.isHomePage = function() {
+        return $location.path() === '/home';
     };
    
     $scope.deleteClient = function(clientId) {

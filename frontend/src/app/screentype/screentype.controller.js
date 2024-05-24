@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ScreenTypeController', ['$scope', 'ScreenTypeService', '$state', 'AuthService', function($scope, ScreenTypeService, $state, AuthService) {
+angular.module('frontend').controller('ScreenTypeController', ['$scope', 'ScreenTypeService', '$state', 'AuthService', '$location', function($scope, ScreenTypeService, $state, AuthService, $location) {
     $scope.screentypes = [];
     $scope.newScreenType = {
         name: "",
@@ -27,6 +27,10 @@ angular.module('frontend').controller('ScreenTypeController', ['$scope', 'Screen
 
     $scope.editScreenType = function(screentypeId) {
         $state.go('base.screentype-update', { screentypeId: screentypeId });
+    };
+
+    $scope.isHomePage = function() {
+        return $location.path() === '/home';
     };
 
     $scope.cancelCreate = function() {

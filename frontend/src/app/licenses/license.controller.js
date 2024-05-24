@@ -1,4 +1,4 @@
-angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', 'ScreenTypeService', 'ButtonTypeService', '$state', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, ScreenTypeService, ButtonTypeService, $state) {
+angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', 'ScreenTypeService', 'ButtonTypeService', '$state', '$location', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, ScreenTypeService, ButtonTypeService, $state, $location) {
     $scope.licenses = [];
     $scope.avatars = [];
     $scope.voices = [];
@@ -290,6 +290,10 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
 
     $scope.isButtonTypeAssignedToLicense = function(license, buttontypeId) {
         return license.buttontypes && license.buttontypes.some(buttontype => buttontype.id === buttontypeId);
+    };
+
+    $scope.isHomePage = function() {
+        return $location.path() === '/home';
     };
 
     $scope.getAllLicenses(); 

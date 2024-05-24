@@ -4,27 +4,29 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
-                    <h2>Atualizar Detalhes de {{ detailData.name }}</h2>
+                    <h2>Update Details of {{ detailData.name }}</h2>
                 </div>
                 <div class="box-divider m-0"></div>
                 <div class="box-body">
                     <form ng-submit="updateDetail()" enctype="multipart/form-data">
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" ng-model="detailData.name"
-                                placeholder="Detail Name" required>
+                            <input type="text" class="form-control" ng-model="detailData.name" placeholder="Detail Name"
+                                required>
                         </div>
                         <div class="form-group">
                             <label>File</label>
                             <input type="file" file-model="file" class="form-control" placeholder="Upload File">
-                        </div> 
+                        </div>
                         <div class="progress mb-2" ng-show="showProgress">
-                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-striped" role="progressbar"
+                                ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}"
+                                aria-valuemin="0" aria-valuemax="100">
                                 {{ loadingProgress }}%
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Atualizar</button>
-                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
                     </form>
                 </div>
             </div>

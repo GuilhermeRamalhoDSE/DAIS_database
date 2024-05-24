@@ -8,5 +8,8 @@ from dais.models.screen_models import Screen
 @receiver(post_delete, sender=Screen)
 def update_totem_last_update(sender, instance, **kwargs):
     current_time = now()
-    if hasattr(instance, 'totem'):
-        Totem.objects.filter(pk=instance.totem.pk).update(last_update=current_time)
+    try:
+        if instance.totem:
+            Totem.objects.filter(pk=instance.totem.pk).update(last_update=current_time)
+    except Totem.DoesNotExist:
+        pass
