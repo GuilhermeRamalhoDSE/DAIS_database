@@ -40,30 +40,35 @@ angular.module('frontend').controller('DetailUpdateController', ['$scope', 'Deta
     };
 
     $scope.updateDetail = function() {
+        var formData = new FormData();
+        
         if ($scope.file) {
-            $scope.upload($scope.file).then(function() {
-                var formData = new FormData();
-                formData.append('file', $scope.file);
-                formData.append('detail_in', JSON.stringify($scope.detailData));
-    
-                DetailService.update($scope.detailId, formData).then(function(response) {
-                    alert('Detail updated successfully!');
-                    $state.go('base.detail-view', {
-                        clientId: $scope.clientId,
-                        clientName: $scope.clientName,
-                        groupId: $scope.groupId,
-                        groupName: $scope.groupName,
-                        perioddsId: $scope.perioddsId,
-                        timeslotId: $scope.timeslotId,
-                        contributionId: $scope.contributionId
-                    });
-                }).catch(function(error) {
-                    console.error('Error updating detail:', error);
-                });
-            });
+            formData.append('file', $scope.file);
         } 
+    
+        formData.append('detail_in', JSON.stringify($scope.detailData));
+    
+        $scope.upload($scope.file).then(function() {
+            DetailService.update($scope.detailId, formData).then(function(response) {
+                alert('Detail updated successfully!');
+                $state.go('base.detail-view', {
+                    clientId: $scope.clientId,
+                    clientName: $scope.clientName,
+                    groupId: $scope.groupId,
+                    groupName: $scope.groupName,
+                    perioddsId: $scope.perioddsId,
+                    timeslotId: $scope.timeslotId,
+                    contributionId: $scope.contributionId
+                });
+            }).catch(function(error) {
+                console.error('Error updating detail:', error);
+            });
+        }).catch(function(error) {
+            console.error('Error uploading file:', error);
+            alert('Failed to upload file');
+        });
     };
-
+    
     $scope.cancelUpdate = function() {
         $state.go('base.detail-view', {
             clientId: $scope.clientId,
