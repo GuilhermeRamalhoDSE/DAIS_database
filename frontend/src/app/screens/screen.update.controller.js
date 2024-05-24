@@ -88,6 +88,23 @@ angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'Scre
         });
     };
 
+    $scope.upload = function(file) {
+        var deferred = $q.defer(); 
+    
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+    
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+    
+        return deferred.promise; 
+    };
+
     $scope.loadScreenDetails();
     $scope.loadScreenType();
 }]);
