@@ -50,6 +50,10 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
             alert('Error updating the last update date!');
         });
     };
+
+    $scope.editGroup = function(group) {
+        $state.go('base.group-update', { clientId: group.client_id, clientName: group.client_name, groupId: group.id, groupName: group.name  }); 
+    };
     
     $scope.detailGroup = function(group) {
         if (group.typology === 'Digital Signage') {
@@ -58,6 +62,18 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
             $state.go('base.periodia-view', { clientId: group.client_id, clientName: group.client_name, groupId: group.id, groupName: group.name });
         } else {
             alert('Unknown typology');
+        }
+    };
+
+    $scope.deleteGroup = function(groupId) {
+        var isConfirmed = confirm('Are you sure you want to delete this group?');
+        if (isConfirmed) {
+            GroupService.delete(groupId).then(function(response) {
+                alert('Group deleted successfully!');
+                $scope.loadAllGroups();
+            }).catch(function(error) {
+                console.error('Error deleting group:', error);
+            });
         }
     };
 
