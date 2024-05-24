@@ -136,6 +136,8 @@ def update_totem(request, totem_id: int, payload: TotemUpdate):
 @totem_router.delete("/{totem_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def delete_totem(request, totem_id: int):
     user_info = get_user_info_from_token(request)
+
+    print(f"Attempting to delete totem with ID: {totem_id}")
     totem = get_object_or_404(Totem, id=totem_id)
     group = get_object_or_404(Group, id=totem.group_id)
     client = get_object_or_404(Client, id=group.client_id)
