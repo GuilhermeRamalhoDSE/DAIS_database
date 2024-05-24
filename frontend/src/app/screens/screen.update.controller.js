@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'ScreenService', '$state', '$stateParams', 'AuthService', 'LicenseService', function($scope, ScreenService, $state, $stateParams, AuthService, LicenseService) {
+angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'ScreenService', '$state', '$stateParams', 'AuthService', 'LicenseService', '$q', '$interval', 'Upload', function($scope, ScreenService, $state, $stateParams, AuthService, LicenseService, $q, $interval, Upload) {
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
     $scope.clientId = $stateParams.clientId;
