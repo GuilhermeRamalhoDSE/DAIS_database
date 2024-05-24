@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ButtonTypeController', ['$scope', 'ButtonTypeService', '$state', 'AuthService', function($scope, ButtonTypeService, $state, AuthService) {
+angular.module('frontend').controller('ButtonTypeController', ['$scope', 'ButtonTypeService', '$state', 'AuthService', '$location', function($scope, ButtonTypeService, $state, AuthService, $location) {
     $scope.buttontypes = [];
     $scope.newButtonType = {
         name: "",
@@ -47,6 +47,10 @@ angular.module('frontend').controller('ButtonTypeController', ['$scope', 'Button
                 console.error('Error deleting button type:', error);
             });
         }
+    };
+
+    $scope.isHomePage = function() {
+        return $location.path() === '/home';
     };
 
     $scope.isSuperuser = function() {

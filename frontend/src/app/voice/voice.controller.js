@@ -1,4 +1,4 @@
-angular.module('frontend').controller('VoiceController', ['$scope', 'VoiceService', '$state', 'AuthService', function($scope, VoiceService, $state, AuthService) {
+angular.module('frontend').controller('VoiceController', ['$scope', 'VoiceService', '$state', 'AuthService', '$location', function($scope, VoiceService, $state, AuthService,$location) {
     $scope.voices = [];
     $scope.newVoice = {
         name: "",
@@ -14,6 +14,10 @@ angular.module('frontend').controller('VoiceController', ['$scope', 'VoiceServic
 
     $scope.goToNewVoice = function() {
         $state.go('base.voice-new');
+    };
+
+    $scope.isHomePage = function() {
+        return $location.path() === '/home';
     };
 
     $scope.createVoice = function() {

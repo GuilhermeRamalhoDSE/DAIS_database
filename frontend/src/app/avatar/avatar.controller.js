@@ -1,4 +1,4 @@
-angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'Upload', 'AvatarService', '$state', 'AuthService', '$q', '$interval', function($scope, $http, Upload, AvatarService, $state, AuthService, $q, $interval) {
+angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'Upload', 'AvatarService', '$state', 'AuthService', '$q', '$interval', '$location', function($scope, $http, Upload, AvatarService, $state, AuthService, $q, $interval, $location) {
     $scope.avatarList = [];
     $scope.isSuperuser = AuthService.isSuperuser();
 
@@ -56,6 +56,10 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
 
     $scope.editAvatar = function(avatarId) {
         $state.go('base.avatar-update', { avatarId: avatarId });
+    };
+
+    $scope.isHomePage = function() {
+        return $location.path() === '/home';
     };
 
     $scope.deleteAvatar = function(avatarId) {

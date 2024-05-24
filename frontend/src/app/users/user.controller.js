@@ -1,4 +1,4 @@
-angular.module('frontend').controller('UserController', ['$scope', 'UserService', '$state', 'AuthService', 'LicenseService', function($scope, UserService, $state, AuthService, LicenseService) {
+angular.module('frontend').controller('UserController', ['$scope', 'UserService', '$state', 'AuthService', 'LicenseService', '$location', function($scope, UserService, $state, AuthService, LicenseService, $location) {
     $scope.users = [];
     $scope.formUser = {};
     $scope.isEditing = false;
@@ -41,6 +41,10 @@ angular.module('frontend').controller('UserController', ['$scope', 'UserService'
                 console.error('Error fetching user details:', error);
             });
         }
+    };
+
+    $scope.isHomePage = function() {
+        return $location.path() === '/home';
     };
     
     $scope.togglePasswordVisibility = function() {

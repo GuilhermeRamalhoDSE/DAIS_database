@@ -1,4 +1,4 @@
-angular.module('frontend').controller('GroupGetAllController', ['$scope', '$state', 'GroupService', 'AuthService', function($scope, $state, GroupService, AuthService) {
+angular.module('frontend').controller('GroupGetAllController', ['$scope', '$state', 'GroupService', 'AuthService', '$location', function($scope, $state, GroupService, AuthService, $location) {
     $scope.groupList = [];
     $scope.moduleFormEnabled = false;
     $scope.modulesAvailable = AuthService.hasModules();
@@ -59,6 +59,10 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
         } else {
             alert('Unknown typology');
         }
+    };
+
+    $scope.isHomePage = function() {
+        return $location.path() === '/home';
     };
 
     $scope.goBack = function() {

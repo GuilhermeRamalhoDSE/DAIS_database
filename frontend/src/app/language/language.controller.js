@@ -1,4 +1,4 @@
-angular.module('frontend').controller('LanguageController', ['$scope', 'LanguageService', '$state', 'AuthService', function($scope, LanguageService, $state, AuthService) {
+angular.module('frontend').controller('LanguageController', ['$scope', 'LanguageService', '$state', 'AuthService', '$location', function($scope, LanguageService, $state, AuthService, $location) {
     $scope.languages = [];
     $scope.newLanguage = {
         name: "",
@@ -23,6 +23,10 @@ angular.module('frontend').controller('LanguageController', ['$scope', 'Language
         }).catch(function(error) {
             console.error('Error creating language:', error);
         });
+    };
+
+    $scope.isHomePage = function() {
+        return $location.path() === '/home';
     };
 
     $scope.editLanguage = function(languageId) {

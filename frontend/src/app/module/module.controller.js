@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ModuleController', ['$scope', 'ModuleService', '$state', 'AuthService', function($scope, ModuleService, $state, AuthService) {
+angular.module('frontend').controller('ModuleController', ['$scope', 'ModuleService', '$state', 'AuthService', '$location', function($scope, ModuleService, $state, AuthService,$location) {
     $scope.modules = [];
     $scope.newModule = {
         name: "",
@@ -23,6 +23,10 @@ angular.module('frontend').controller('ModuleController', ['$scope', 'ModuleServ
         }).catch(function(error) {
             console.error('Error creating module:', error);
         });
+    };
+
+    $scope.isHomePage = function() {
+        return $location.path() === '/home';
     };
 
     $scope.editModule = function(moduleId) {
