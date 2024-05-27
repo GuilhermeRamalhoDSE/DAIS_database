@@ -105,6 +105,20 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
             alert('Unknown typology');
         }
     };   
+
+    $scope.goToForm = function(group, form) {
+        if (!form) {
+            console.error('Form not provided');
+            return;
+        }
+        $state.go('base.formfield-view', {
+            clientId: group.client_id,
+            clientName: group.client_name,
+            clientmoduleId: form.client_module_id,
+            formId: form.id,
+            formName: form.name
+        });
+    };  
     
     $scope.goBack = function() {
         $state.go('base.client-view', { clientId: clientId, clientName: clientName });
