@@ -1,6 +1,6 @@
 angular.module('frontend').factory('ButtonService', ['$http', function($http){
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/buttons/';
+    var baseUrl = 'http://127.0.0.1:8000/api/buttons/';
 
     service.getAll = function(touchscreeninteractionId) {
         return $http.get(baseUrl, { params: { interaction_id: touchscreeninteractionId }});

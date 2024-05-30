@@ -218,7 +218,7 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
 
     $scope.downloadFile = function(buttonId) {
         if (buttonId) {
-            var downloadUrl = 'https://daisdatabasedse.it/api/buttons/download/' + buttonId;
+            var downloadUrl = 'http://127.0.0.1:8000/api/buttons/download/' + buttonId;
 
             $http({
                 url: downloadUrl,
