@@ -67,6 +67,16 @@ angular.module('frontend').controller('TotemUpdateController', ['$scope', 'Totem
         $state.go('base.totem-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
     };
 
+    $scope.isGroupDigitalSignage = function() {
+        if ($scope.totemData.group_id && $scope.groups.length > 0) {
+            var selectedGroup = $scope.groups.find(function(group) {
+                return group.id === $scope.totemData.group_id;
+            });
+            return selectedGroup && selectedGroup.typology === "Digital Signage";
+        }
+        return false;
+    };
+    
     $scope.loadTotemDetails();
     $scope.loadGroups();
 }]);
