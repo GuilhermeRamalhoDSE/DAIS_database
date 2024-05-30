@@ -9,6 +9,9 @@ from .module_schema import ModuleOut
 from .screentype_schema import ScreenTypeOut
 from .buttontype_schema import ButtonTypeOut
 
+class UpdateTotemsSchema(BaseModel):
+    total_totem: int
+
 class AvatarIdSchema(BaseModel):
     avatar_id: int
 
@@ -42,6 +45,7 @@ class LicenseBaseSchema(BaseModel):
     modules_id: List[int] = []
     screentypes_id: List[int] = []
     buttontypes_id: List[int] = []
+    total_totem: int
 
 class LicenseCreateSchema(LicenseBaseSchema):
     pass
@@ -61,6 +65,7 @@ class LicenseUpdateSchema(BaseModel):
     module_ids: Optional[List[int]] = None
     screentype_ids: Optional[List[int]] = None
     buttontype_ids: Optional[List[int]] = None
+    total_totem: Optional[int]
 
 class LicenseSchema(LicenseBaseSchema):
     id: int
@@ -70,6 +75,7 @@ class LicenseSchema(LicenseBaseSchema):
     modules: List[ModuleOut]
     screentypes: List[ScreenTypeOut]
     buttontypes: List[ButtonTypeOut]
+    total_totem: int
 
     @validator('avatars', pre=True, each_item=False)
     def prepare_avatars(cls, value):

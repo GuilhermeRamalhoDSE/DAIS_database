@@ -22,6 +22,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         modules_ids: [],
         screentypes_ids: [],
         buttontypes_ids: [],
+        total_totem: null
     };
 
     $scope.getAllLicenses = function() {
@@ -112,6 +113,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
                 modules_ids: [],
                 screentypes_ids: [],
                 buttontypes_ids: [],
+                total_totem: null
             };
             $state.go('base.licenses-view'); 
         }).catch(function(error) {
@@ -295,6 +297,17 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
     $scope.isHomePage = function() {
         return $location.path() === '/home';
     };
+
+    $scope.updateTotalTotem = function(licenseId, newTotalTotem) {
+        LicenseService.updateTotems(licenseId, newTotalTotem)
+            .then(function(response) {
+                $scope.getAllLicenses(); 
+            })
+            .catch(function(error) {
+                alert('Error updating total totem:', error);
+            });
+    };
+    
 
     $scope.getAllLicenses(); 
     $scope.loadAvatars();

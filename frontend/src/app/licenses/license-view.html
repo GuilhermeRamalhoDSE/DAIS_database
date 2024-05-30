@@ -56,6 +56,7 @@
             <th>Modules</th>
             <th>Screen Types</th>
             <th>Button Types</th>
+            <th>Total Totem</th> <!-- Adicionando a coluna para Total Totem -->
             <th>Actions</th>
           </tr>
         </thead>
@@ -126,6 +127,11 @@
                 </label>
               </div>
             </td>
+            <td>
+              <div class="form-group">
+                <input type="number" class="form-control" ng-model="license.total_totem" ng-change="updateTotalTotem(license.id, license.total_totem)" min="0">
+              </div>
+            </td> <!-- Adicionando o campo para atualização do Total Totem -->
             <td>
               <button class="btn btn-default btn-xs" ng-click="editLicense(license.id)">Edit</button>
               <button class="btn btn-danger btn-xs" ng-click="deleteLicense(license.id)">Delete</button>

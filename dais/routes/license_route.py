@@ -16,7 +16,7 @@ from dais.schemas.voice_schema import VoiceOut
 from dais.schemas.module_schema import ModuleOut
 from dais.schemas.screentype_schema import ScreenTypeOut
 from dais.schemas.buttontype_schema import ButtonTypeOut
-from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarIdSchema, VoiceIdSchema, LanguageIdSchema, ModuleIdSchema, ScreenTypeIdSchema, ButtonTypeIdSchema
+from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarIdSchema, VoiceIdSchema, LanguageIdSchema, ModuleIdSchema, ScreenTypeIdSchema, ButtonTypeIdSchema, UpdateTotemsSchema
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 
 
@@ -143,6 +143,13 @@ def remove_buttontype_from_license(request, license_id: int, payload: ButtonType
     
     return LicenseSchema.from_orm(license)
 
+@license_router.put("/{license_id}/update-totems/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def update_totems(request, license_id: int, payload: UpdateTotemsSchema):
+    license_obj = get_object_or_404(License, id=license_id)
+    license_obj.total_totem = payload.total_totem
+    license_obj.save()
+    return LicenseSchema.from_orm(license_obj)
+
 @license_router.get("/", response=List[LicenseSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_licenses(request, license_id: int = Query(None), name: str = Query(None)):
     filters = {}
@@ -151,7 +158,7 @@ def read_licenses(request, license_id: int = Query(None), name: str = Query(None
     if name:
         filters['name__icontains'] = name
 
-    licenses = License.objects.filter(**filters)
+    licenses = License.objects.filter(**filters).order_by('id')
     return [LicenseSchema.from_orm(license) for license in licenses]
 
 @license_router.get("/{license_id}/groups/", response=List[GroupOut])

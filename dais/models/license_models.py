@@ -21,6 +21,7 @@ class License(models.Model):
     modules = models.ManyToManyField(Module, blank=True)
     screentypes = models.ManyToManyField(ScreenType, blank=True)
     buttontypes = models.ManyToManyField(ButtonType, blank=True)
+    total_totem = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
