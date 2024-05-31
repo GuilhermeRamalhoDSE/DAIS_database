@@ -58,7 +58,6 @@ angular.module('frontend').controller('FormDataController', ['$scope', 'FormData
     
     $scope.getFormData = function() {
         FormDataService.getAll(formId).then(function(response) {
-            console.log(response.data);
             $scope.formDataList = response.data; 
         }).catch(function(error) {
             console.error('Error fetching form data:', error);
@@ -83,6 +82,35 @@ angular.module('frontend').controller('FormDataController', ['$scope', 'FormData
             formId: formId,
             formName: formName 
         });
+    };
+
+    $scope.exportToCSV = function() {
+        var csvContent = "data:text/csv;charset=utf-8,";
+    
+        var headers = $scope.formFields.map(function(field) {
+            return field.name;
+        });
+        csvContent += headers.join(",") + "\n";
+    
+        $scope.formDataList.forEach(function(data) {
+            var row = [];
+            $scope.formFields.forEach(function(field) {
+                var value = data.data[field.name];
+                if (field.field_type === 'date') {
+                    value = $filter('date')(value, 'dd/MM/yyyy');
+                }
+                row.push(value);
+            });
+            csvContent += row.join(",") + "\n";
+        });
+    
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", $scope.formName + ".csv");
+        document.body.appendChild(link);
+    
+        link.click();
     };
 
     $scope.goBack = function() {
