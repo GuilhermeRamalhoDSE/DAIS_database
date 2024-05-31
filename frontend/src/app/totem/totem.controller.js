@@ -65,24 +65,29 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
     };
 
     $scope.createTotem = function() {
-        if(!groupId){
+        if (!groupId) {
             return;
         }
-
+    
         var totemData = angular.copy($scope.newTotem);
-        
+    
         if (totemData.installation_date) {
             totemData.installation_date = moment(totemData.installation_date, "DD/MM/YYYY").format('YYYY-MM-DD');
         }
-
+    
         TotemService.createTotem(totemData).then(function(response) {
             alert('Totem created successfully!');
             $scope.loadTotems();
             $state.go('base.totem-view', {clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName});
         }).catch(function(error) {
-            console.error('Error creating totem:', error);
-            alert('Error creating totem: Check console for details.');
+            if (error.data && error.data.includes("Limit of totems reached for this license.")) {
+                alert('Cannot create totem: Limit of totems reached for this license.');
+            } else {
+                console.error('Error creating totem:', error);
+                alert('Error creating totem: Check console for details.');
+            }
         });
+           
     };
 
     $scope.cancelCreate = function(){
@@ -122,13 +127,16 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
 
     $scope.duplicateTotem = function(totemId) {
         TotemService.duplicateTotem(totemId).then(function(response) {
-            alert('Totem duplicated successfully!');
             $scope.loadTotems(); 
         }).catch(function(error) {
-            console.error('Error duplicating totem:', error);
-            alert('Error duplicating totem: Check console for details.');
+            if (error.data && error.data.includes("Limit of totems reached for this license.")) {
+                alert('Cannot duplicate totem: Limit of totems reached for this license.');
+            } else {
+                console.error('Error duplicating totem:', error);
+                alert('Error duplicating totem: Check console for details.');
+            }
         });
-    };
+    };   
 
     $scope.toggleActive = function(totem) {
         if (totem.active) {

@@ -2,14 +2,15 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import now
 from .group_models import Group
+from django.core.exceptions import ValidationError
 
 class Totem(models.Model):
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name=_("Gruppo"))
-    name = models.CharField(max_length=255, null=True, verbose_name=_("nome"))
-    installation_date = models.DateField(verbose_name=_("Data di installazione"))
-    active = models.BooleanField(default=False, verbose_name=_("Attivo"))
-    comments = models.TextField(blank=True, null=True, verbose_name=_("Commenti"))
-    last_update = models.DateTimeField(default=now, verbose_name=_("Data dell'ultimo aggiornamento"))
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, null=True)
+    installation_date = models.DateField()
+    active = models.BooleanField(default=False)
+    comments = models.TextField(blank=True, null=True)
+    last_update = models.DateTimeField(default=now)
 
     def __str__(self):
         return self.name
@@ -18,8 +19,20 @@ class Totem(models.Model):
     def screen_count(self):
         return self.screen_set.count()
     
-    class Meta:
-        verbose_name = _("Totem")
-        verbose_name_plural = _("Totems")
+    def clean(self):
+        """
+        Custom validation method for the model.
+        Here, we'll check if adding this totem exceeds the limit defined in the license.
+        """
+        total_totems = self.group.client.license.total_totem
+        if total_totems:
+            current_totems_count = Totem.objects.exclude(id=self.id).filter(group__client=self.group.client).count()
+            if current_totems_count >= total_totems:
+                raise ValidationError("Limit of totems reached for this license.")
 
-    
+    def save(self, *args, **kwargs):
+        """
+        Overriding the save method to perform custom validation before saving the object.
+        """
+        self.clean()
+        super().save(*args, **kwargs)
