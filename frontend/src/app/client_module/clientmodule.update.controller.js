@@ -1,11 +1,24 @@
-angular.module('frontend').controller('ClientModuleUpdateController', ['$scope', 'ClientModuleService','AuthService', '$state', '$stateParams', function($scope, ClientModuleService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('ClientModuleUpdateController', ['$scope', 'ClientModuleService', 'LicenseService','AuthService', '$state', '$stateParams', function($scope, ClientModuleService, LicenseService, AuthService, $state, $stateParams) {
     $scope.isSuperuser = AuthService.isSuperuser();
+    $scope.licenseId = AuthService.getLicenseId();
     $scope.clientId = $stateParams.clientId;
     $scope.clientName = $stateParams.clientName;
-    $scope.clientmoduleName = $stateParams.clientmoduleName;
     $scope.clientmoduleId = $stateParams.clientmoduleId;
 
+    $scope.modules = [];
     $scope.clientmoduleData = {};
+
+    $scope.loadModules = function() {
+        if ($scope.licenseId) {
+            LicenseService.getModulesByLicense($scope.licenseId).then(function(response) {
+                $scope.modules = response.data;
+            }).catch(function(error) {
+                console.error('Error loading modules:', error);
+            });
+        } else {
+            console.error('License ID is undefined');
+        }
+    }; 
 
     $scope.loadClientModule = function() {
         if(!$scope.clientmoduleId){
@@ -52,5 +65,6 @@ angular.module('frontend').controller('ClientModuleUpdateController', ['$scope',
         });
     };
 
+    $scope.loadModules();
     $scope.loadClientModule();
 }])

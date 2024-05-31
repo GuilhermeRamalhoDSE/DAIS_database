@@ -21,7 +21,6 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
 
     $scope.newClientModule = {
         client_id: clientId,
-        name: '',
         module_id: null,
         groups_ids: []
     };
@@ -74,12 +73,11 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
         });
     };
 
-    $scope.editClientModule = function(clientmoduleId, clientmoduleName) {
+    $scope.editClientModule = function(clientmoduleId) {
         $state.go('base.clientmodule-update', {
             clientId: clientId,
             clientName: clientName,
             clientmoduleId: clientmoduleId,
-            clientmoduleName: clientmoduleName
         });
     };
 
@@ -101,7 +99,6 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
             clientId: clientId,
             clientName: clientName,
             clientmoduleId: clientModule.id,
-            clientmoduleName: clientModule.name
         });
     };
 

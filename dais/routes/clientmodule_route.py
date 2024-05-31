@@ -62,8 +62,12 @@ def read_client_module(request, client_id: Optional[int] = None):
     if client_id is not None:
         query = query.filter(client_id=client_id)
     
-    client_modules = [ClientModuleSchema.from_orm(cm) for cm in query]
+    client_modules = []
+    for cm in query:
+        print(cm)  # Imprimir o objeto ClientModule para depuração
+        client_modules.append(ClientModuleSchema.from_orm(cm))
     return client_modules
+
 
 @client_module_router.get('/{client_module_id}', response=ClientModuleSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_client_module_by_id(request, client_module_id: int):

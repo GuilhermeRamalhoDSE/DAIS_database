@@ -1,30 +1,33 @@
 from pydantic import BaseModel, validator
 from typing import Optional, List
 from dais.schemas.module_schema import ModuleOut
-from .group_schema import GroupOut
+from dais.schemas.group_schema import GroupOut
 
 class GroupIdSchema(BaseModel):
     group_id: int
 
 class ClientModuleCreateSchema(BaseModel):
     client_id: int
-    name: str
     module_id: int
     groups_id: List[int] = []
 
 class ClientModuleUpdateSchema(BaseModel):
     client_id: Optional[int] = None
-    name: Optional[str] = None
     module_id: Optional[int] = None
     group_ids: Optional[List[int]] = None
 
 class ClientModuleSchema(BaseModel):
     id: int
     client_id: int
-    name: str
-    module: ModuleOut
+    module: Optional[ModuleOut]
     form_count: int
     groups: List[GroupOut]
+
+    @validator('module')
+    def validate_module(cls, value):
+        if value is None:
+            return "No module assigned"
+        return value
 
     @validator('groups', pre=True, each_item=False)
     def prepare_groups(cls, value):
@@ -44,6 +47,6 @@ class ClientModuleSchema(BaseModel):
             ) for group in value.all()
         ]
 
-
     class Config:
         from_attributes = True
+

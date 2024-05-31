@@ -2,9 +2,9 @@ from django.contrib import admin
 from dais.models.clientmodule_models import ClientModule
 
 class ClientModuleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'module', 'form_count', 'list_groups')
-    list_filter = ('id', 'name', 'module')
-    search_fields = ('name', 'module', 'groups__name')
+    list_display = ('id', 'module', 'form_count', 'list_groups')
+    list_filter = ('id', 'module')
+    search_fields = ('module', 'groups__name')
     ordering = ('id',)
     readonly_fields = ('id', 'form_count',)
 
