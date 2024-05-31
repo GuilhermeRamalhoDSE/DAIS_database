@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 class Totem(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=True)
-    installation_date = models.DateField()
+    installation_date = models.DateField(null=True)
     active = models.BooleanField(default=False)
     comments = models.TextField(blank=True, null=True)
     last_update = models.DateTimeField(default=now)

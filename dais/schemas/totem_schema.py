@@ -5,8 +5,6 @@ from datetime import date, datetime
 class TotemCreate(Schema):
     group_id: int
     name: str
-    installation_date: date
-    active: bool
     comments: Optional[str] = None
 
 class TotemUpdate(Schema):
@@ -20,7 +18,7 @@ class TotemOut(Schema):
     id: int
     group_id: int
     name: str
-    installation_date: date
+    installation_date: Optional[date] = None
     active: bool
     screen_count: int 
     comments: Optional[str] = None

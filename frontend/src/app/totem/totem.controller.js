@@ -40,8 +40,6 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
     $scope.newTotem = {
         name: "",
         group_id: groupId,
-        installation_date: "",
-        active: false,
         comments: ""
     };
 

@@ -9,6 +9,7 @@ from dais.models.form_models import Form
 from dais.schemas.setup_schema import SetupResponseSchema, ScreenDetails, TotemDetails, GroupDetails, ErrorResponse, FormSchema
 import json
 from django.db.models import Prefetch
+from django.utils.timezone import now
 
 setup_router = Router()
 
@@ -20,6 +21,7 @@ def setup_totem(request, totem_id: int):
         return ErrorResponse(message="NO - Totem already registered")
 
     totem.active = True
+    totem.installation_date = now()
     totem.save()
 
     group = get_object_or_404(Group.objects.prefetch_related(Prefetch('forms', queryset=Form.objects.all())), id=totem.group_id)
