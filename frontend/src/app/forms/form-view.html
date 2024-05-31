@@ -30,9 +30,9 @@
                         <th>
                             Last Update
                         </th>
-                        <th>
+                        <!-- <th>
                             API
-                        </th>
+                        </th> -->
                         <th>
                             Actions
                         </th>
@@ -42,9 +42,9 @@
                     <tr ng-repeat="form in formList | filter:searchText">
                         <td>{{ form.name }}</td>
                         <td>{{ form.last_update | date:'medium' }}</td>
-                        <td>
+                        <!-- <td>
                             <input type="checkbox" ng-checked="form.api" ng-click="toggleActive(form)">
-                        </td>
+                        </td> -->
                         <td>
                             <button class="btn btn-default btn-xs" ng-click="editForm(form.id, form.name)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteForm(form.id)">Delete</button>

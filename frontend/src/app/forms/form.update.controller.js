@@ -9,7 +9,7 @@ angular.module('frontend').controller('FormUpdateController', ['$scope', 'FormSe
     
     $scope.formData = {
         name: '',
-        api: false
+        // api: false
     };
 
     $scope.loadFormDetails = function() {
