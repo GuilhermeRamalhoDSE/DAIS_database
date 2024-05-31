@@ -7,30 +7,27 @@ from dais.models.client_models import Client
 from dais.schemas.formdata_schema import FormDataSchema, FormDataCreateSchema
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
-from ninja.errors import HttpError, ValidationError
 from django.http import Http404
 from typing import Optional, List
+from django.http import HttpRequest, JsonResponse
 
 formdata_router = Router(tags=['FormData'])
 
-@formdata_router.post("/", response={201: FormDataSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def create_form_data(request, payload: FormDataCreateSchema):
+@formdata_router.get("/{form_id}", response={201: FormDataSchema})
+def create_form_data(request: HttpRequest, form_id: int):
     try:
-        user_info = get_user_info_from_token(request)
-        form = get_object_or_404(Form, id=payload.form_id)
-        client_module = get_object_or_404(ClientModule, id=form.client_module_id)
-        client = get_object_or_404(Client, id=client_module.client_id)
+        form = get_object_or_404(Form, id=form_id)
         
-        if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
-            raise HttpError(status=403, detail='You do not have permission to add data to this form')
-
-        form_data = FormData.objects.create(form=form, data=payload.data)
-
-        return 201, FormDataSchema.from_orm(form_data)
-    except ValidationError as ve:
-        raise HttpError(status=422, detail=f"Validation error: {ve.errors()}")
+        query_params = dict(request.GET.items())  
+        
+        form_data = FormData.objects.create(
+            form=form,
+            data=query_params
+        )
+        
+        return JsonResponse(FormDataSchema.from_orm(form_data).dict(), status=201)
     except Exception as e:
-        raise HttpError(status=500, detail=f"Server error: {str(e)}")
+        return JsonResponse({'error': str(e)}, status=500)
 
 @formdata_router.get("/", response=List[FormDataSchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def get_form_data(request,  form_id: Optional[int] = None):

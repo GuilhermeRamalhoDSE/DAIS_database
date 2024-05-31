@@ -18,11 +18,22 @@ angular.module('frontend').controller('FormDataController', ['$scope', 'FormData
     $scope.loadFormFields = function() {
         FormFieldService.getAll(formId).then(function(response) {
             $scope.formFields = response.data;
+            console.log("Dados dos campos do formulário:", $scope.formFields);
             $scope.getFormData();
         }).catch(function(error) {
-            console.error('Failed to fetch form fields:', error);
+            console.error('Falha ao buscar os campos do formulário:', error);
         });
     };
+    
+    $scope.getFormData = function() {
+        FormDataService.getAll(formId).then(function(response) {
+            $scope.formDataList = response.data; 
+            console.log("Dados do formulário:", $scope.formDataList);
+        }).catch(function(error) {
+            console.error('Falha ao buscar os dados do formulário:', error);
+        });
+    };
+    
 
     $scope.goToCreateFormData = function() {
         $state.go('base.formdata-new', {
@@ -56,14 +67,6 @@ angular.module('frontend').controller('FormDataController', ['$scope', 'FormData
         });
     };
     
-    $scope.getFormData = function() {
-        FormDataService.getAll(formId).then(function(response) {
-            $scope.formDataList = response.data; 
-        }).catch(function(error) {
-            console.error('Error fetching form data:', error);
-        });
-    };
-
     $scope.deleteFormData = function(form_data_id) {
         FormDataService.delete(form_data_id).then(function(response) {
             alert('Data deleted successfully!');
