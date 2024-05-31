@@ -15,8 +15,8 @@ def duplicate_totem_and_screens(totem_id):
         totem_copy = Totem.objects.create(
             group=original_totem.group,
             name=f"Copy of {original_totem.name}",
-            installation_date=original_totem.installation_date,
-            active=original_totem.active,
+            installation_date=None,
+            active=False,
             comments=original_totem.comments
         )
 
