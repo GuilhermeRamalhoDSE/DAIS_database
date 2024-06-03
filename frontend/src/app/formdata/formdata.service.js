@@ -11,7 +11,7 @@ angular.module('frontend').factory('FormDataService', ['$http', function($http){
     };    
 
     service.delete = function(formdataId) {
-        return $http.delete(baseUrl + formdataId);
+        return $http.delete(baseUrl + 'delete/' + formdataId);
     };
 
     return service;

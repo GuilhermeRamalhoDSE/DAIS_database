@@ -44,10 +44,10 @@ def get_form_data(request,  form_id: Optional[int] = None):
         query = query.filter(form_id=form_id)
     return [FormDataSchema.from_orm(data) for data in query]
 
-@formdata_router.delete("/{form_data_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def delete_form_data(request, form_data_id: int):
+@formdata_router.delete("/delete/{formdata_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def delete_form_data(request, formdata_id: int):
     user_info = get_user_info_from_token(request)
-    form_data = get_object_or_404(FormData, id=form_data_id)
+    form_data = get_object_or_404(FormData, id=formdata_id)
     form = get_object_or_404(Form, id=form_data.form_id)
     client_module = get_object_or_404(ClientModule, id=form.client_module_id)
     client = get_object_or_404(Client, id=client_module.client_id)
