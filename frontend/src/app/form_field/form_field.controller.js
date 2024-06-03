@@ -1,4 +1,4 @@
-angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFieldService', 'AuthService', '$state', '$stateParams', function($scope, FormFieldService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFieldService', 'AuthService', '$state', '$stateParams', '$window', function($scope, FormFieldService, AuthService, $state, $stateParams, $window) {
     $scope.formfieldList = [];
 
     $scope.clientId = $stateParams.clientId;
@@ -97,11 +97,8 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
     };
 
     $scope.goBack = function() {
-        $state.go('base.form-view',{
-            clientId: $scope.clientId,
-            clientName: $scope.clientName,
-            clientmoduleId: $scope.clientmoduleId
-        });
+        // Voltar para a página anterior no histórico de navegação
+        $window.history.back();
     };
     
     $scope.loadFormFields();
