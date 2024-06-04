@@ -1,55 +1,21 @@
-angular.module('frontend').controller('LogsController', ['$scope', 'LogsService', 'AuthService', '$state', '$stateParams', function($scope, LogsService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('LogsController', ['$scope', 'LogsService', 'AuthService', '$state', '$stateParams', '$filter', function($scope, LogsService, AuthService, $state, $stateParams, $filter) {
     $scope.logs = [];
     $scope.isSuperuser = AuthService.isSuperuser();
-
-    let totemId = $stateParams.totemId;
-    let totemName = $stateParams.totemName;
-    $scope.totemName = totemName;
-
-    let groupId = $stateParams.groupId;
-    let groupName = $stateParams.groupName;
-    $scope.groupName = groupName;
-
-    let clientId = $stateParams.clientId;
-    let clientName = $stateParams.clientName;
-    $scope.clientName = clientName;
-
-    $scope.newLog = {
-        totem_id: totemId,
-        information: ""
-    };
+    $scope.from = new Date();
+    $scope.from.setMonth($scope.from.getMonth()-1);
+    $scope.to = new Date();
 
     $scope.loadLogs = function() {
-        if (!totemId) {
+        var licenseId = AuthService.getLicenseId();
+        if (!licenseId) {
             return;
         }
-        LogsService.getLogsByTotem(totemId).then(function(response) {
+        LogsService.getLogsByLicense(licenseId).then(function(response) {
             $scope.logs = response.data;
         }).catch(function(error) {
             console.error('Error loading logs:', error);
         });
-    };
-
-    $scope.goToCreateLog = function() {
-        $state.go('base.logs-new', {clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, totemId: totemId, totemName: totemName});
-    };
-
-    $scope.createLog = function() {
-        var logData = angular.copy($scope.newLog);
-        console.log("Creating log with data:", logData);
-        LogsService.createLog(logData).then(function(response) {
-            alert('Log created successfully!');
-            $scope.loadLogs();
-            $state.go('base.logs-view', {clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, totemId: totemId, totemName: totemName});
-        }).catch(function(error) {
-            console.error('Error creating log:', error);
-            alert('Error creating log: Check console for details.');
-        });
-    };
-
-    $scope.cancelCreate = function() {
-        $state.go('base.logs-view', {clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, totemId: totemId, totemName: totemName});
-    };
+    };    
 
     $scope.deleteLog = function(logId) {
         if (!logId) {
@@ -66,15 +32,36 @@ angular.module('frontend').controller('LogsController', ['$scope', 'LogsService'
         }
     };
 
-    $scope.goBack = function() {
-        $state.go('base.totem-view', {clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, totemId: totemId, totemName: totemName});
+    $scope.exportToCSV = function() {
+        var csvContent = "data:text/csv;charset=utf-8,";
+
+        var headers = ["Date", "Totem ID", "Client", "Campaign", "Totem Type", "Log Type", "Information"];
+        csvContent += headers.join(",") + "\n";
+
+        $scope.logs.forEach(function(log) {
+            var row = [
+                $filter('date')(log.date, 'medium'),
+                log.totem_id,
+                log.client,
+                log.campaign,
+                log.typology,
+                log.logtype,
+                log.information
+            ];
+            csvContent += row.join(",") + "\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "logs.csv");
+        document.body.appendChild(link);
+
+        link.click();
     };
 
-    $scope.resetForm = function() {
-        $scope.newLog = {
-            totem_id: totemId,
-            information: ""
-        };
+    $scope.goBack = function() {
+        $state.go('base.totem-view', {clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, totemId: totemId, totemName: totemName});
     };
 
     $scope.loadLogs();

@@ -31,6 +31,7 @@ angular.module('frontend', ['ui.router', 'ngFileUpload'])
         }
     });
 }]);
+
 angular.module('frontend').directive('fileModel', ['$parse', function ($parse) {
     return {
         restrict: 'A',
@@ -58,6 +59,7 @@ angular.module('frontend').filter('formatTime', function() {
         return input; 
     };
 });
+
 angular.module('frontend').directive('initFootable', function($timeout) {
     return {
         link: function(scope, element) {
@@ -68,3 +70,27 @@ angular.module('frontend').directive('initFootable', function($timeout) {
     };
 });
 
+angular.module('frontend').filter('customTotemIdFilter', function() {
+    return function(logs, searchText) {
+        var filteredLogs = [];
+        for (var i = 0; i < logs.length; i++) {
+            var log = logs[i];
+            if (!searchText || log.totem_id === parseInt(searchText)) {
+                filteredLogs.push(log);
+            }
+        }
+        return filteredLogs;
+    };
+});
+
+angular.module('frontend').filter("dateFilter", function() {
+    return function datefilter(items, from, to) {
+    var result = [];
+    angular.forEach(items, function(value){
+        if (Date.parse(value.date) >= Date.parse(from) && Date.parse(to) >= Date.parse(value.date))  {
+            result.push(value);
+         }
+     });
+     return result;
+     };
+ });

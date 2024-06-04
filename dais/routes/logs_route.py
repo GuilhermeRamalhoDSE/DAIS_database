@@ -11,50 +11,46 @@ from datetime import datetime
 
 log_router = Router(tags=["Log"])
 
-@log_router.post("/", response={201: LogOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def create_log(request, payload: LogCreate):
-    if not check_user_permission(request):
-        raise HttpError(403, "You do not have permission to create logs.")
-
-    totem = get_object_or_404(Totem, id=payload.totem_id)
-    user_info = get_user_info_from_token(request)
-    if not (totem.group.client.license_id == user_info.get('license_id') or user_info.get('is_superuser')):
-        raise HttpError(403, "You do not have permission to access this totem.")
-
-    log = Log.objects.create(**payload.dict(), typology=totem.group.typology, date=datetime.now())
-    return 201, log
-
 @log_router.get("/create-log/", response={201: LogCreateOut})
-def create_log_from_url(request, totem_id: int, information: str):
+def create_log_from_url(request, license_id: int, totem_id: int, client: str, typology: str, campaign: str, logtype: str, information: str):
     totem = get_object_or_404(Totem, id=totem_id)
     log = Log.objects.create(
+        license_id=license_id,
         totem=totem,
+        client=client,
+        typology=typology,
+        campaign=campaign,
+        logtype=logtype,
         information=information,
         date=datetime.now(),
-        typology=totem.group.typology
     )
 
     log_output = LogCreateOut(
         id=log.id,
+        license_id=log.license_id,
         totem_id=log.totem_id,
-        totem_name=totem.name if totem and totem.name else "Totem Deleted",
         date=log.date,
         typology=log.typology,
-        information=log.information
+        information=log.information,
+        client=log.client,  
+        campaign=log.campaign,
+        logtype=log.logtype
     )
     return 201, log_output
 
-@log_router.get("/totem/{totem_id}", response=List[LogOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def read_logs_by_totem(request, totem_id: int):
-    if not check_user_permission(request):
+
+@log_router.get("/", response=List[LogOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def read_logs_by_license(request, license_id: int):
+    user_info = get_user_info_from_token(request)
+    if not user_info.get('is_superuser') and str(license_id) != str(user_info.get('license_id')):
         raise HttpError(403, "You do not have permission to view these logs.")
 
-    totem = get_object_or_404(Totem, id=totem_id)
-    user_info = get_user_info_from_token(request)
-    if not (totem.group.client.license_id == user_info.get('license_id') or user_info.get('is_superuser')):
-        raise HttpError(403, "You do not have permission to access these logs.")
+    query = Log.objects.all()
+    if license_id is not None:
+        query = query.filter(license_id=license_id)
+    
+    logs = [LogOut.from_orm(log) for log in query]
 
-    logs = Log.objects.filter(totem=totem)
     return logs
 
 @log_router.get("/{log_id}", response=LogOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
