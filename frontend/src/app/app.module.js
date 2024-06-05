@@ -85,12 +85,18 @@ angular.module('frontend').filter('customTotemIdFilter', function() {
 
 angular.module('frontend').filter("dateFilter", function() {
     return function datefilter(items, from, to) {
-    var result = [];
-    angular.forEach(items, function(value){
-        if (Date.parse(value.date) >= Date.parse(from) && Date.parse(to) >= Date.parse(value.date))  {
-            result.push(value);
-         }
-     });
-     return result;
-     };
- });
+        var result = [];
+        angular.forEach(items, function(value) {
+            var logDate = new Date(value.date);
+            var startDate = new Date(from);
+            startDate.setHours(0, 0, 0, 0); 
+            var endDate = new Date(to);
+            endDate.setHours(23, 59, 59, 999);
+
+            if (logDate >= startDate && logDate <= endDate) {
+                result.push(value);
+            }
+        });
+        return result;
+    };
+});
