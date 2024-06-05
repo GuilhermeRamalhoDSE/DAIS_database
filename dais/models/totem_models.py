@@ -1,7 +1,7 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import now
 from .group_models import Group
+from dais.models.screentype_models import ScreenType
 from django.core.exceptions import ValidationError
 
 class Totem(models.Model):
@@ -11,6 +11,7 @@ class Totem(models.Model):
     active = models.BooleanField(default=False)
     comments = models.TextField(blank=True, null=True)
     last_update = models.DateTimeField(default=now)
+    typology = models.ForeignKey(ScreenType,on_delete=models.CASCADE())
 
     def __str__(self):
         return self.name

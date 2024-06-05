@@ -1,71 +1,147 @@
-from ninja import Router
 from typing import List, Optional
+from ninja import Router, File
+from ninja.files import UploadedFile
+from django.http import HttpRequest, FileResponse, Http404
 from django.shortcuts import get_object_or_404
 from dais.models.campaignds_models import CampaignDS
 from dais.models.group_models import Group
+from dais.models.client_models import Client
 from dais.schemas.campaignds_schema import CampaignDSCreate, CampaignDSUpdate, CampaignDSOut
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
-from dais.utils import get_user_info_from_token, check_user_permission
-from ninja.errors import HttpError
+from dais.utils import get_user_info_from_token
+import os
+from django.core.files.storage import default_storage
 
-periodds_router = Router(tags=["CampaignDS"])
+campaignds_router = Router(tags=["CampaignDS"])
 
-@periodds_router.post("/", response={201: CampaignDSOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def create_periodds(request, payload: CampaignDSCreate):
+@campaignds_router.post("/", response={201: CampaignDSOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def create_campaignds(request: HttpRequest, campaign_in: CampaignDSCreate, logo: UploadedFile = File(None), background: UploadedFile = File(None)):
     user_info = get_user_info_from_token(request)
-    is_superuser = check_user_permission(request)
+    group = get_object_or_404(Group, id=campaign_in.group_id)
+    client = get_object_or_404(Client, id=group.client_id)
 
-    if not is_superuser:
-        raise HttpError(403, "You do not have permission to create a periodds.")
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+       raise Http404("You do not have permission to add campaigns.")
     
-    group = get_object_or_404(Group, id=payload.group_id)
+    campaign_data = {
+        **campaign_in.dict(exclude={'background_path', 'logo_path'}),
+        'background': background,
+        'logo': logo
+    }
 
-    periodds = CampaignDS.objects.create(**payload.dict())
+    campaignds = CampaignDS.objects.create(**campaign_data)
 
-    return 201, periodds
+    campaign_schema = CampaignDSOut.from_orm(campaignds)
 
-@periodds_router.get("/", response=List[CampaignDSOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def read_perioddss(request, group_id: Optional[int] = None):
-    if not check_user_permission(request):
-        raise HttpError(403, "You do not have permission to view these perioddss.")
+    return 201, campaign_schema
 
-    if group_id:
-        periods_query = CampaignDS.objects.filter(group_id=group_id)
-    else:
-        periods_query = CampaignDS.objects.all()
+@campaignds_router.get("/", response=List[CampaignDSOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def read_campaignds(request, group_id: Optional[int] = None):
+    user_info = get_user_info_from_token(request)
+    group = get_object_or_404(Group, id=group_id)
+    client = get_object_or_404(Client, id=group.client_id)
+
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+       raise Http404("You do not have permission to view campaigns.")
+
+    query = CampaignDS.objects.all()
+    if group_id is not None:
+        query = query.filter(group_id=group_id)
+
+    campaigns = [CampaignDSOut.from_orm(campaign) for campaign in query]
+    return campaigns
+
+@campaignds_router.get("/{campaignds_id}", response= CampaignDSOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_campaignds_by_id(request, campaignds_id: int):
+    user_info = get_user_info_from_token(request)
+    campaignds = get_object_or_404(CampaignDS, id=campaignds_id)
+    group = get_object_or_404(Group, id=campaignds.group_id)
+    client = get_object_or_404(Client, id=group.client_id)
+
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+       raise Http404("You do not have permission to view this campaign.")
+
+    return CampaignDSOut.from_orm(campaignds)
+
+@campaignds_router.get('/download/logo/{campaignds_id}', auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def download_campaignds_logofile(request, campaignds_id: int):
+    user_info = get_user_info_from_token(request)
+    campaignds = get_object_or_404(CampaignDS, id=campaignds_id)
+    group = get_object_or_404(Group, id=campaignds.group_id)
+    client = get_object_or_404(Client, id=group.client_id)
+
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+       raise Http404("You do not have permission to download this logo from this campaign.")
     
-    periods = [CampaignDSOut.from_orm(period) for period in periods_query]
+    if campaignds.logo and hasattr(campaignds.logo, 'path'):
+        logo_path = campaignds.logo.path
+        if os.path.exists(logo_path):
+            return FileResponse(open(logo_path, 'rb'), as_attachment=True, filename=os.path.basename(logo_path))
+        else:
+            raise Http404('No logo file associated with this campaign')
 
-    return periods
+@campaignds_router.get('/download/background/{campaignds_id}', auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def download_campaignds_backgroundfile(request, campaignds_id: int):
+    user_info = get_user_info_from_token(request)
+    campaignds = get_object_or_404(CampaignDS, id=campaignds_id)
+    group = get_object_or_404(Group, id=campaignds.group_id)
+    client = get_object_or_404(Client, id=group.client_id)
 
-@periodds_router.get("/{periodds_id}", response={200: CampaignDSOut, 404: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def get_periodds_by_id(request, periodds_id: int):
-    if not check_user_permission(request):
-        raise HttpError(403, "You do not have permission to view this periodds.")
-
-    periodds = get_object_or_404(CampaignDS, id=periodds_id)
-
-    return periodds
-
-@periodds_router.put("/{periodds_id}", response=CampaignDSOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def update_periodds(request, periodds_id: int, payload: CampaignDSUpdate):
-    if not check_user_permission(request):
-        raise HttpError(403, "You do not have permission to update this periodds.")
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+       raise Http404("You do not have permission to download this background from this campaign.")
     
-    periodds = get_object_or_404(CampaignDS, id=periodds_id)
+    if campaignds.background and hasattr(campaignds.background, 'path'):
+        background_path = campaignds.background.path
+        if os.path.exists(background_path):
+            return FileResponse(open(background_path, 'rb'), as_attachment=True, filename=os.path.basename(background_path))
+        else:
+            raise Http404('No logo file associated with this campaign')       
 
-    for attribute, value in payload.dict(exclude_none=True).items():
-        setattr(periodds, attribute, value)
+@campaignds_router.put("/{campaignds_id}", response=CampaignDSOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def update_campaignds(request, campaignds_id: int, campaignds_in: CampaignDSUpdate, logo: UploadedFile = File(None), background: UploadedFile = File(None)):
+    user_info = get_user_info_from_token(request)
+    campaignds = get_object_or_404(CampaignDS, id=campaignds_id)
+    group = get_object_or_404(Group, id=campaignds.group_id)
+    client = get_object_or_404(Client, id=group.client_id)
 
-    periodds.save()
-    return periodds
-
-@periodds_router.delete("/{periodds_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def delete_periodds(request, periodds_id: int):
-    if not check_user_permission(request):
-        raise HttpError(403, "You do not have permission to delete this periodds.")
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+       raise Http404("You do not have permission to update this campaign.")
     
-    periodds = get_object_or_404(CampaignDS, id=periodds_id)
+    for attr, value in campaignds_in.dict(exclude_none=True).items():
+        setattr(campaignds, attr, value)
 
-    periodds.delete()
+    if logo:
+        if campaignds.logo and default_storage.exists(campaignds.logo.name):
+            default_storage.delete(campaignds.logo.name)
+        campaignds.logo = logo
+
+    if background:
+        if campaignds.background and default_storage.exists(campaignds.background.name):
+            default_storage.delete(campaignds.background.name)
+        campaignds.background = background
+
+    campaignds.save()
+    return campaignds
+
+@campaignds_router.delete("/{campaignds_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def delete_campaignds(request, campaignds_id: int):
+    user_info = get_user_info_from_token(request)
+    campaignds = get_object_or_404(CampaignDS, id=campaignds_id)
+    group = get_object_or_404(Group, id=campaignds.group_id)
+    client = get_object_or_404(Client, id=group.client_id)
+
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+       raise Http404("You do not have permission to delete this campaign.")
+    
+    if campaignds.logo:
+        logo_path = campaignds.logo.path
+        if os.path.exists(logo_path):
+            os.remove(logo_path)
+
+    if campaignds.background:
+        background_path = campaignds.background.path
+        if os.path.exists(background_path):
+            os.remove(background_path)
+
+    campaignds.delete()
     return 204, None

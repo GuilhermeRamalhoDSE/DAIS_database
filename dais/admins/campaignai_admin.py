@@ -4,7 +4,7 @@ from dais.models.campaignai_models import CampaignAI
 @admin.register(CampaignAI)
 class PeriodIAAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 'group', 'start_date', 'end_date', 'last_update', 'active', 'duration'
+        'name', 'group', 'start_date', 'end_date', 'last_update', 'active', 'duration', 'logo', 'background', 'footer', 'created_at'
     )
     list_filter = ('name', 'group', 'start_date', 'end_date', 'active')  
     search_fields = ('name', 'start_date', 'end_date')  
