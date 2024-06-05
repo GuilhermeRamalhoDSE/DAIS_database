@@ -1,7 +1,7 @@
 from ninja import Router
 from dais.models.campaignds_models import CampaignDS
 from dais.models.timeslot_models import TimeSlot
-from dais.models.contribution_models import Contribution
+from dais.models.contributionds_models import Contribution
 from dais.models.detail_models import Detail
 from dais.schemas.detail_schema import DetailSchema
 

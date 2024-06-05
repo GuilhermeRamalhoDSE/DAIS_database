@@ -21,11 +21,10 @@ from .routes.group_route import group_router
 from .routes.totem_route import totem_router
 from .routes.screen_route import screen_router
 from .routes.logs_route import log_router
-from .routes.campaignds_route import periodds_router
-from .routes.campaignai_route import periodia_router
+from .routes.campaignds_route import campaignds_router
+from .routes.campaignai_route import campaignai_router
 from .routes.timeslots_route import timeslot_router
-from .routes.contribution_route import contribution_router
-from .routes.detail_route import detail_router
+from .routes.contributionds_route import contributionds_router
 from .routes.layer_route import layer_router
 from .routes.contributionia_route import contributionia_router
 from .routes.formation_route import formation_router
@@ -57,18 +56,17 @@ api.add_router("/groups", group_router)
 api.add_router("/totem", totem_router)
 api.add_router("/screens", screen_router)
 api.add_router("/logs", log_router)
-api.add_router("/periodds", periodds_router)
+api.add_router("/campaignds", campaignds_router)
 api.add_router("/timeslot", timeslot_router)
-api.add_router("/contributionsDS", contribution_router)
-api.add_router("/details", detail_router)
-api.add_router("/periodia", periodia_router)
+api.add_router("/contributionsDS", contributionds_router)
+api.add_router("/campaignai", campaignai_router)
 api.add_router("/layers", layer_router)
 api.add_router("/contributionsIA", contributionia_router)
 api.add_router("/formations", formation_router)
 api.add_router("/setup", setup_router)
 api.add_router("/get-totem", get_totem_router)
 api.add_router("/period/DS/", perioddsout_router)
-api.add_router("/period/IA/", periodiaout_router)
+api.add_router("/period/AI/", periodiaout_router)
 
 urlpatterns = [
     path("api/", api.urls),
