@@ -19,8 +19,8 @@ contributionds_router = Router(tags=["Contributions"])
 def create_contribution(request, contributionds_in: ContributionDSCreateSchema, file: UploadedFile = File(...)):
     user_info = get_user_info_from_token(request)
     time_slot = get_object_or_404(TimeSlot, id=contributionds_in.time_slot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
-    group = get_object_or_404(Group, id=campagn.group_id)
+    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
@@ -38,8 +38,8 @@ def create_contribution(request, contributionds_in: ContributionDSCreateSchema, 
 def read_contributionds(request, time_slot_id: Optional[int] = None):
     user_info = get_user_info_from_token(request)
     time_slot = get_object_or_404(TimeSlot, id=time_slot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
-    group = get_object_or_404(Group, id=campagn.group_id)
+    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
@@ -58,8 +58,8 @@ def read_contributionds_by_id(request, contributionds_id: int):
     user_info = get_user_info_from_token(request)
     contributionds = get_object_or_404(ContributionDS, id=contributionds_id)
     time_slot = get_object_or_404(TimeSlot, id=contributionds.time_slot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
-    group = get_object_or_404(Group, id=campagn.group_id)
+    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
@@ -72,8 +72,8 @@ def download_contributionds_file(request, contributionds_id: int):
     user_info = get_user_info_from_token(request)
     contributionds = get_object_or_404(ContributionDS, id=contributionds_id)
     time_slot = get_object_or_404(TimeSlot, id=contributionds.time_slot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
-    group = get_object_or_404(Group, id=campagn.group_id)
+    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
@@ -93,8 +93,8 @@ def update_contribution(request, contributionds_id: int, contributionds_in: Cont
     user_info = get_user_info_from_token(request)
     contributionds = get_object_or_404(ContributionDS, id=contributionds_id)
     time_slot = get_object_or_404(TimeSlot, id=contributionds.time_slot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
-    group = get_object_or_404(Group, id=campagn.group_id)
+    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
@@ -116,8 +116,8 @@ def delete_contribution(request, contributionds_id: int):
     user_info = get_user_info_from_token(request)
     contributionds = get_object_or_404(ContributionDS, id=contributionds_id)
     time_slot = get_object_or_404(TimeSlot, id=contributionds.time_slot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
-    group = get_object_or_404(Group, id=campagn.group_id)
+    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
