@@ -1,6 +1,6 @@
 from ninja import Schema
 from datetime import time
-from dais.schemas.periodds_schema import PeriodDSOut
+from dais.schemas.campaignds_schema import CampaignDSOut
 
 class TimeSlotIn(Schema):
     period_id: int
@@ -9,6 +9,6 @@ class TimeSlotIn(Schema):
 
 class TimeSlotOut(Schema):
     id: int
-    period: PeriodDSOut
+    period: CampaignDSOut
     start_time: time
     end_time: time

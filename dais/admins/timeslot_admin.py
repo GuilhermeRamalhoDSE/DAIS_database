@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 from dais.models.timeslot_models import TimeSlot
-from dais.models.periodds_models import PeriodDS
+from dais.models.campaignds_models import CampaignDS
 
 class TimeSlotAdminForm(forms.ModelForm):
     class Meta:
@@ -19,7 +19,7 @@ class TimeSlotAdmin(admin.ModelAdmin):
         if db_field.name == "period":
             if not request.user.is_superuser:
                 group_ids = request.user.groups.values_list('id', flat=True)
-                kwargs["queryset"] = PeriodDS.objects.filter(group__id__in=group_ids)
+                kwargs["queryset"] = CampaignDS.objects.filter(group__id__in=group_ids)
             else:
-                kwargs["queryset"] = PeriodDS.objects.all()
+                kwargs["queryset"] = CampaignDS.objects.all()
         return super().formfield_for_foreignkey(db_field, request, **kwargs)

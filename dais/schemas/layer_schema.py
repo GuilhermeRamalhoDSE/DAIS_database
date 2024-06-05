@@ -2,7 +2,7 @@ from datetime import datetime
 from ninja import Schema
 from typing import Optional, List
 from dais.schemas.avatar_schema import AvatarSchema
-from dais.schemas.periodia_schema import PeriodIAOut
+
 
 class LayerCreate(Schema):
     period_id: int

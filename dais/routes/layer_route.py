@@ -2,7 +2,7 @@ from ninja import Router
 from typing import List, Optional
 from django.shortcuts import get_object_or_404
 from dais.models.layer_models import Layer
-from dais.models.periodia_models import PeriodIA
+from dais.models.campaignai_models import CampaignAI
 from dais.schemas.layer_schema import LayerCreate, LayerUpdate, LayerOut
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
@@ -24,7 +24,7 @@ def has_permission(request, periodia):
 
 @layer_router.post("/", response={201: LayerOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_layer(request, payload: LayerCreate):
-    periodia = get_object_or_404(PeriodIA, id=payload.period_id)
+    periodia = get_object_or_404(CampaignAI, id=payload.period_id)
     if not has_permission(request, periodia):
         raise HttpError(403, "You do not have permission to create a layer.")
 
@@ -52,7 +52,7 @@ def create_layer(request, payload: LayerCreate):
 
 @layer_router.get("/{period_id}", response={200: List[LayerOut]}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def get_layers_by_period(request, period_id: int):
-    periodia = get_object_or_404(PeriodIA, id=period_id)
+    periodia = get_object_or_404(CampaignAI, id=period_id)
     if not has_permission(request, periodia):
         raise HttpError(403, "You do not have permission to view layers for this period.")
     
@@ -64,7 +64,7 @@ def get_layers_by_period(request, period_id: int):
 @layer_router.get("/layer/{layer_id}", response={200: LayerOut, 404: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def get_layer_by_id(request, layer_id: int):
     layer = get_object_or_404(Layer, id=layer_id)
-    periodia = get_object_or_404(PeriodIA, id=layer.period_id)
+    periodia = get_object_or_404(CampaignAI, id=layer.period_id)
     if not has_permission(request, periodia):
         raise HttpError(403, "You do not have permission to view this layer.")
 
@@ -74,7 +74,7 @@ def get_layer_by_id(request, layer_id: int):
 def update_layer(request, layer_id: int, payload: LayerUpdate):
     layer = get_object_or_404(Layer, id=layer_id)
     
-    periodia = get_object_or_404(PeriodIA, id=layer.period_id)
+    periodia = get_object_or_404(CampaignAI, id=layer.period_id)
     if not has_permission(request, periodia):
         raise HttpError(403, "You do not have permission to update a layer.")
 
@@ -99,7 +99,7 @@ def update_layer(request, layer_id: int, payload: LayerUpdate):
 @layer_router.delete("/delete/{layer_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def delete_layer(request, layer_id: int):
     layer = get_object_or_404(Layer, id=layer_id)
-    periodia = get_object_or_404(PeriodIA, id=layer.period_id)
+    periodia = get_object_or_404(CampaignAI, id=layer.period_id)
     if not has_permission(request, periodia):
         raise HttpError(403, "You do not have permission to delete a layer.")
 

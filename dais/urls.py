@@ -21,8 +21,8 @@ from .routes.group_route import group_router
 from .routes.totem_route import totem_router
 from .routes.screen_route import screen_router
 from .routes.logs_route import log_router
-from .routes.periodds_route import periodds_router
-from .routes.periodia_route import periodia_router
+from .routes.campaignds_route import periodds_router
+from .routes.campaignai_route import periodia_router
 from .routes.timeslots_route import timeslot_router
 from .routes.contribution_route import contribution_router
 from .routes.detail_route import detail_router
@@ -31,8 +31,8 @@ from .routes.contributionia_route import contributionia_router
 from .routes.formation_route import formation_router
 from .routes.setup_route import setup_router
 from .routes.get_totem_route import get_totem_router
-from .routes.periodds_out_route import perioddsout_router
-from .routes.periodia_out_route import periodiaout_router
+from .routes.campaignds_out_route import perioddsout_router
+from .routes.campaignai_out_route import periodiaout_router
 
 api = NinjaAPI()
 

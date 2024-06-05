@@ -1,6 +1,6 @@
 from ninja import Router
 from typing import List
-from dais.models.periodia_models import PeriodIA
+from dais.models.campaignai_models import CampaignAI
 from dais.models.layer_models import Layer
 from dais.models.contributionia_models import ContributionIA
 from dais.models.formation_models import Formation
@@ -12,7 +12,7 @@ periodiaout_router = Router()
 
 @periodiaout_router.get("/{group_id}", response=List[dict])
 def get_ia_overview(request, group_id: int):
-    periods = PeriodIA.objects.filter(group=group_id, active=True)
+    periods = CampaignAI.objects.filter(group=group_id, active=True)
     period_data = []
     for period in periods:
         layers = Layer.objects.filter(period=period).prefetch_related('children', 'avatar')

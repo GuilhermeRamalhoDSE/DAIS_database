@@ -1,10 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from dais.models.periodia_models import PeriodIA
+from dais.models.campaignai_models import CampaignAI
 from dais.models.avatar_models import Avatar
 
 class Layer(models.Model):
-    period = models.ForeignKey(PeriodIA, on_delete=models.CASCADE, verbose_name=_("Id periodoia"))
+    period = models.ForeignKey(CampaignAI, on_delete=models.CASCADE, verbose_name=_("Id periodoia"))
     layer_number = models.IntegerField(verbose_name=_("Numero del layer"))
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children', verbose_name=_("Parente"))
     avatar = models.ForeignKey(Avatar, on_delete=models.CASCADE, verbose_name=_("Id avatar"))

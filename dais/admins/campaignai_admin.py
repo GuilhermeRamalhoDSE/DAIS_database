@@ -1,13 +1,13 @@
 from django.contrib import admin
-from dais.models.periodds_models import PeriodDS  
+from dais.models.campaignai_models import CampaignAI 
 
-@admin.register(PeriodDS)
-class PeriodDSAdmin(admin.ModelAdmin):
+@admin.register(CampaignAI)
+class PeriodIAAdmin(admin.ModelAdmin):
     list_display = (
-        'group', 'start_date', 'end_date', 'last_update', 'active', 'duration'
+        'name', 'group', 'start_date', 'end_date', 'last_update', 'active', 'duration'
     )
-    list_filter = ('group', 'start_date', 'end_date', 'active')  
-    search_fields = ('group__name', 'start_date', 'end_date')  
+    list_filter = ('name', 'group', 'start_date', 'end_date', 'active')  
+    search_fields = ('name', 'start_date', 'end_date')  
     ordering = ('-start_date',)
 
     def has_view_permission(self, request, obj=None):

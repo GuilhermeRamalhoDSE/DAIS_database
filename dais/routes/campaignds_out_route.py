@@ -1,5 +1,5 @@
 from ninja import Router
-from dais.models.periodds_models import PeriodDS
+from dais.models.campaignds_models import CampaignDS
 from dais.models.timeslot_models import TimeSlot
 from dais.models.contribution_models import Contribution
 from dais.models.detail_models import Detail
@@ -9,7 +9,7 @@ perioddsout_router = Router()
 
 @perioddsout_router.get("/{group_id}", response=dict)
 def get_overview(request, group_id: int):
-    periods = PeriodDS.objects.filter(group_id=group_id, active=True)
+    periods = CampaignDS.objects.filter(group_id=group_id, active=True)
     period_data = []
     for period in periods:
         time_slots = TimeSlot.objects.filter(period_id=period.id)
