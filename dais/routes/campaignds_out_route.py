@@ -1,38 +1,37 @@
 from ninja import Router
 from dais.models.campaignds_models import CampaignDS
 from dais.models.timeslot_models import TimeSlot
-from dais.models.contributionds_models import Contribution
-from dais.models.detail_models import Detail
-from dais.schemas.detail_schema import DetailSchema
+from dais.models.contributionds_models import ContributionDS
 
-perioddsout_router = Router()
+campaigndsout_router = Router()
 
-@perioddsout_router.get("/{group_id}", response=dict)
+@campaigndsout_router.get("/{group_id}", response=dict)
 def get_overview(request, group_id: int):
-    periods = CampaignDS.objects.filter(group_id=group_id, active=True)
-    period_data = []
-    for period in periods:
-        time_slots = TimeSlot.objects.filter(period_id=period.id)
+    campaigns = CampaignDS.objects.filter(group_id=group_id, active=True)
+    campaign_data = []
+    for campaign in campaigns:
+        time_slots = TimeSlot.objects.filter(campaign_id=campaign.id)
         time_slot_data = []
         for time_slot in time_slots:
-            contributions = Contribution.objects.filter(time_slot_id=time_slot.id)
+            contributions = ContributionDS.objects.filter(time_slot_id=time_slot.id)
             contribution_data = []
             for contribution in contributions:
-                details = Detail.objects.filter(contribution_id=contribution.id)
-                detail_data = [DetailSchema.from_orm(detail).dict() for detail in details]
                 contribution_data.append({
-                    "is_random": contribution.is_random,  
-                    "details": detail_data
+                    "name": contribution.name,
+                    "file_url": contribution.file.url,  
+                    "created_at": contribution.created_at.strftime('%d-%m-%Y %H:%M:%S'),
                 })
             time_slot_data.append({
-                "start": time_slot.start_time.strftime('%H:%M'),
-                "end": time_slot.end_time.strftime('%H:%M'),
+                "start_time": time_slot.start_time.strftime('%H:%M'),
+                "end_time": time_slot.end_time.strftime('%H:%M'),
+                "is_random": time_slot.is_random,
                 "contributions": contribution_data
             })
-        period_data.append({
-            "start": period.start_date.strftime('%d-%m-%Y'),
-            "end": period.end_date.strftime('%d-%m-%Y'),
-            "last_updated": period.last_update.strftime('%d-%m-%Y'),
+        campaign_data.append({
+            "name": campaign.name,
+            "start_date": campaign.start_date.strftime('%d-%m-%Y'),
+            "end_date": campaign.end_date.strftime('%d-%m-%Y'),
+            "last_update": campaign.last_update.strftime('%d-%m-%Y %H:%M:%S'),
             "time_slots": time_slot_data
         })
-    return {"periods": period_data}
+    return {"campaigns": campaign_data}

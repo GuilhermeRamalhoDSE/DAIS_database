@@ -30,8 +30,8 @@ from .routes.contributionai_route import contributionai_router
 from .routes.formation_route import formation_router
 from .routes.setup_route import setup_router
 from .routes.get_totem_route import get_totem_router
-from .routes.campaignds_out_route import perioddsout_router
-from .routes.campaignai_out_route import periodiaout_router
+from .routes.campaignds_out_route import campaigndsout_router
+from .routes.campaignai_out_route import campaigniaout_router
 
 api = NinjaAPI()
 
@@ -65,8 +65,8 @@ api.add_router("/contributionsAI", contributionai_router)
 api.add_router("/formations", formation_router)
 api.add_router("/setup", setup_router)
 api.add_router("/get-totem", get_totem_router)
-api.add_router("/period/DS/", perioddsout_router)
-api.add_router("/period/AI/", periodiaout_router)
+api.add_router("/campaign/DS/", campaigndsout_router)
+api.add_router("/campaign/AI/", campaigniaout_router)
 
 urlpatterns = [
     path("api/", api.urls),

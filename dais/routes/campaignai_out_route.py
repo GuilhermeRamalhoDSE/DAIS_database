@@ -4,22 +4,22 @@ from dais.models.campaignai_models import CampaignAI
 from dais.models.layer_models import Layer
 from dais.models.contributionai_models import ContributionAI
 from dais.models.formation_models import Formation
-from dais.schemas.contributionai_schema import ContributionIASchema
+from dais.schemas.contributionai_schema import ContributionAISchema
 from dais.schemas.formation_schema import FormationSchema
 from dais.schemas.layer_schema import LayerOut  
 
-periodiaout_router = Router()
+campaigniaout_router = Router()
 
-@periodiaout_router.get("/{group_id}", response=List[dict])
+@campaigniaout_router.get("/{group_id}", response=List[dict])
 def get_ia_overview(request, group_id: int):
-    periods = CampaignAI.objects.filter(group=group_id, active=True)
-    period_data = []
-    for period in periods:
-        layers = Layer.objects.filter(period=period).prefetch_related('children', 'avatar')
+    campaigns = CampaignAI.objects.filter(group=group_id, active=True)
+    campaign_data = []
+    for campaign in campaigns:
+        layers = Layer.objects.filter(campaign=campaign).prefetch_related('children', 'avatar')
         layer_data = []
         for layer in layers:
             contributions = ContributionAI.objects.filter(layer=layer).select_related('language')
-            contribution_data = [ContributionIASchema.from_orm(contribution).dict() for contribution in contributions]
+            contribution_data = [ContributionAISchema.from_orm(contribution).dict() for contribution in contributions]
 
             formations = Formation.objects.filter(layer=layer).select_related('voice', 'language')
             formation_data = [FormationSchema.from_orm(formation).dict() for formation in formations]
@@ -32,12 +32,12 @@ def get_ia_overview(request, group_id: int):
             layer_data.append(layer_serialized)
 
 
-        period_data.append({
-            "id": period.id,
-            "start": period.start_date.strftime('%d-%m-%Y'),
-            "end": period.end_date.strftime('%d-%m-%Y'),
-            "last_updated": period.last_update.strftime('%d-%m-%Y'),
+        campaign_data.append({
+            "id": campaign.id,
+            "start": campaign.start_date.strftime('%d-%m-%Y'),
+            "end": campaign.end_date.strftime('%d-%m-%Y'),
+            "last_updated": campaign.last_update.strftime('%d-%m-%Y'),
             "layers": layer_data
         })
 
-    return period_data
+    return campaign_data

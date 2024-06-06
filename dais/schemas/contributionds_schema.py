@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, validator
 from typing import Optional
-from dais.schemas.timeslot_schema import TimeSlotOut
+from dais.schemas.timeslot_schema import TimeSlotOutSchema
 from django.db.models.fields.files import FieldFile
 
 class ContributionDSCreateSchema(BaseModel):
@@ -15,7 +15,7 @@ class ContributionDSUpdateSchema(BaseModel):
 
 class ContributionDSOutSchema(BaseModel):
     id: int
-    time_slot: TimeSlotOut
+    time_slot: TimeSlotOutSchema
     name: str
     file_path: Optional[str] = Field(None, alias='file')
 
