@@ -22,5 +22,5 @@ from dais.admins.campaignai_admin import PeriodIAAdmin
 from dais.admins.timeslot_admin import TimeSlotAdmin
 from dais.admins.contributionds_admin import ContributionDSAdmin
 from dais.admins.layer_admin import LayerAdmin
-from dais.admins.contributionia_admin import ContributionIAAdmin
+from dais.admins.contributionai_admin import ContributionAIAdmin
 from dais.admins.formation_admin import FormationAdmin

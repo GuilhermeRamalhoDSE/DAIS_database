@@ -17,7 +17,7 @@ class LayerOut(BaseModel):
     class Config:
         from_attributes = True
 
-class ContributionIABaseSchema(BaseModel):
+class ContributionAIBaseSchema(BaseModel):
     name: str
     file_path: Optional[str] = Field(None, alias='file')
     language_id: int
@@ -26,10 +26,10 @@ class ContributionIABaseSchema(BaseModel):
     trigger: str
     detail: Optional[str] = None
 
-class ContributionIACreateSchema(ContributionIABaseSchema):
+class ContributionAICreateSchema(ContributionAIBaseSchema):
     pass
 
-class ContributionIAUpdateSchema(BaseModel):
+class ContributionAIUpdateSchema(BaseModel):
     name: Optional[str] = None
     file_path: Optional[str] = Field(None, alias='file')
     language_id: Optional[int] = None
@@ -38,7 +38,7 @@ class ContributionIAUpdateSchema(BaseModel):
     trigger: Optional[str] = None
     detail: Optional[str] = None
 
-class ContributionIASchema(BaseModel):
+class ContributionAISchema(BaseModel):
     id: int
     name: str
     file_path: Optional[str] = Field(None, alias='file')

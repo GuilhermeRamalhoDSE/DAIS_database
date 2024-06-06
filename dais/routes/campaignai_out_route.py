@@ -2,9 +2,9 @@ from ninja import Router
 from typing import List
 from dais.models.campaignai_models import CampaignAI
 from dais.models.layer_models import Layer
-from dais.models.contributionia_models import ContributionIA
+from dais.models.contributionai_models import ContributionAI
 from dais.models.formation_models import Formation
-from dais.schemas.contributionia_schema import ContributionIASchema
+from dais.schemas.contributionai_schema import ContributionIASchema
 from dais.schemas.formation_schema import FormationSchema
 from dais.schemas.layer_schema import LayerOut  
 
@@ -18,7 +18,7 @@ def get_ia_overview(request, group_id: int):
         layers = Layer.objects.filter(period=period).prefetch_related('children', 'avatar')
         layer_data = []
         for layer in layers:
-            contributions = ContributionIA.objects.filter(layer=layer).select_related('language')
+            contributions = ContributionAI.objects.filter(layer=layer).select_related('language')
             contribution_data = [ContributionIASchema.from_orm(contribution).dict() for contribution in contributions]
 
             formations = Formation.objects.filter(layer=layer).select_related('voice', 'language')

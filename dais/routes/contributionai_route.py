@@ -2,8 +2,8 @@ from ninja import Router, UploadedFile, File
 from django.shortcuts import get_object_or_404
 from typing import List, Optional
 from ninja.errors import HttpError
-from dais.schemas.contributionia_schema import ContributionIACreateSchema, ContributionIAUpdateSchema, ContributionIASchema, LanguageOut, LayerOut
-from dais.models.contributionia_models import ContributionIA
+from dais.schemas.contributionai_schema import ContributionAICreateSchema, ContributionAIUpdateSchema, ContributionAISchema, LanguageOut, LayerOut
+from dais.models.contributionai_models import ContributionAI
 from dais.models.layer_models import Layer
 from dais.models.campaignai_models import CampaignAI
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
@@ -12,10 +12,10 @@ from django.http import Http404, FileResponse
 import os
 from django.core.files.storage import default_storage
 
-contributionia_router = Router(tags=["ContributionIA"])
+contributionai_router = Router(tags=["ContributionAI"])
 
-@contributionia_router.post("/", response={201: ContributionIASchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def create_contribution(request, contribution_in: ContributionIACreateSchema, file: UploadedFile = File(...)):
+@contributionai_router.post("/", response={201: ContributionAISchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def create_contribution(request, contribution_in: ContributionAICreateSchema, file: UploadedFile = File(...)):
     user_info = get_user_info_from_token(request)
     if not check_user_permission(request):
         raise HttpError(403, "You do not have permission to add a contribution.")
@@ -26,39 +26,39 @@ def create_contribution(request, contribution_in: ContributionIACreateSchema, fi
     
     contribution_data = {**contribution_in.dict(exclude={'file_path'}), 'file': file}
 
-    contribution = ContributionIA.objects.create(**contribution_data)
+    contribution = ContributionAI.objects.create(**contribution_data)
     
     language_out = LanguageOut.from_orm(contribution.language)
     layer_out = LayerOut.from_orm(contribution.layer)
     
-    contribution_schema = ContributionIASchema.from_orm(contribution)
+    contribution_schema = ContributionAISchema.from_orm(contribution)
     contribution_schema.language = language_out
     
     return 201, contribution_schema
 
-@contributionia_router.get("/", response=List[ContributionIASchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+@contributionai_router.get("/", response=List[ContributionAISchema], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_contributions(request, layer_id: Optional[int] = None):
     if not check_user_permission(request):
         raise HttpError(403, "You do not have permission to view these contributions.")
     
-    query = ContributionIA.objects.all()
+    query = ContributionAI.objects.all()
     if layer_id is not None:
         query = query.filter(layer_id=layer_id)
     
-    contributions = [ContributionIASchema.from_orm(contribution) for contribution in query]
+    contributions = [ContributionAISchema.from_orm(contribution) for contribution in query]
     return contributions
 
-@contributionia_router.get("/{contributionia_id}", response=ContributionIASchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def read_contribution_by_id(request, contributionia_id: int):
+@contributionai_router.get("/{contributionai_id}", response=ContributionAISchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def read_contribution_by_id(request, contributionai_id: int):
     if not check_user_permission(request):
         raise HttpError(403, "You do not have permission to view this contribution.")
 
-    contribution = get_object_or_404(ContributionIA, id=contributionia_id)
-    return ContributionIASchema.from_orm(contribution)
+    contribution = get_object_or_404(ContributionAI, id=contributionai_id)
+    return ContributionAISchema.from_orm(contribution)
 
-@contributionia_router.get("/download/{contribution_id}", auth=[QueryTokenAuth(), HeaderTokenAuth()])
+@contributionai_router.get("/download/{contribution_id}", auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def download_contribution_file(request, contribution_id: int):
-    contribution = get_object_or_404(ContributionIA, id=contribution_id)
+    contribution = get_object_or_404(ContributionAI, id=contribution_id)
     if contribution.file and hasattr(contribution.file, 'path'):
         file_path = contribution.file.path
         if os.path.exists(file_path):
@@ -68,10 +68,10 @@ def download_contribution_file(request, contribution_id: int):
     else:
         raise Http404("No file associated with this contribution.")
 
-@contributionia_router.put("/{contributionia_id}", response=ContributionIASchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def update_contribution(request, contributionia_id: int, data: ContributionIAUpdateSchema, file: UploadedFile = File(None)):
+@contributionai_router.put("/{contributionai_id}", response=ContributionAISchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def update_contribution(request, contributionai_id: int, data: ContributionAIUpdateSchema, file: UploadedFile = File(None)):
     user_info = get_user_info_from_token(request)
-    contribution = get_object_or_404(ContributionIA, id=contributionia_id)
+    contribution = get_object_or_404(ContributionAI, id=contributionai_id)
     layer = get_object_or_404(Layer, id=contribution.layer_id)
     period = get_object_or_404(CampaignAI, id=layer.period_id)
 
@@ -91,10 +91,10 @@ def update_contribution(request, contributionia_id: int, data: ContributionIAUpd
     contribution.save()
     return contribution
 
-@contributionia_router.delete("/{contributionia_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def delete_contribution(request, contributionia_id: int):
+@contributionai_router.delete("/{contributionai_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def delete_contribution(request, contributionai_id: int):
     user_info = get_user_info_from_token(request)
-    contribution = get_object_or_404(ContributionIA, id=contributionia_id)
+    contribution = get_object_or_404(ContributionAI, id=contributionai_id)
     layer = get_object_or_404(Layer, id=contribution.layer_id)
     period = get_object_or_404(CampaignAI, id=layer.period_id)
 

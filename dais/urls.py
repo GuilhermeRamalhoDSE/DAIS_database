@@ -26,7 +26,7 @@ from .routes.campaignai_route import campaignai_router
 from .routes.timeslots_route import timeslot_router
 from .routes.contributionds_route import contributionds_router
 from .routes.layer_route import layer_router
-from .routes.contributionia_route import contributionia_router
+from .routes.contributionai_route import contributionai_router
 from .routes.formation_route import formation_router
 from .routes.setup_route import setup_router
 from .routes.get_totem_route import get_totem_router
@@ -61,7 +61,7 @@ api.add_router("/timeslot", timeslot_router)
 api.add_router("/contributionsDS", contributionds_router)
 api.add_router("/campaignai", campaignai_router)
 api.add_router("/layers", layer_router)
-api.add_router("/contributionsIA", contributionia_router)
+api.add_router("/contributionsAI", contributionai_router)
 api.add_router("/formations", formation_router)
 api.add_router("/setup", setup_router)
 api.add_router("/get-totem", get_totem_router)
