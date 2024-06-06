@@ -97,7 +97,6 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
     };
 
     $scope.goBack = function() {
-        // Voltar para a página anterior no histórico de navegação
         $window.history.back();
     };
     
