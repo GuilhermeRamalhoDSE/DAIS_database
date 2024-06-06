@@ -1,4 +1,4 @@
-angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', 'ScreenTypeService', 'ButtonTypeService', '$state', '$location', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, ScreenTypeService, ButtonTypeService, $state, $location) {
+angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', 'ScreenTypeService', 'ButtonTypeService', '$state', '$stateParams', '$location', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, ScreenTypeService, ButtonTypeService, $state, $stateParams, $location) {
     $scope.licenses = [];
     $scope.avatars = [];
     $scope.voices = [];
@@ -6,6 +6,8 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
     $scope.modules = [];
     $scope.screentypes = [];
     $scope.buttontypes = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 5;
  
     $scope.newLicense = {
         name: "",
@@ -84,6 +86,31 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
     $scope.goToCreateLicense = function() {
         $state.go('base.licenses-new');
     };
+
+    
+    $scope.getPaginatedData = function() {
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, $scope.licenses.length);
+        return $scope.licenses.slice(startIndex, endIndex);
+    };
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.licenses.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
+    };   
 
     $scope.createLicense = function() {
         var licenseData = angular.copy($scope.newLicense);
