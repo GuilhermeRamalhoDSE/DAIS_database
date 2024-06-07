@@ -1,0 +1,115 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="CampaignDSController">
+    <div class="box">
+        <div class="box-header">
+            <h2>Campaigns for {{ groupName }}</h2>
+            <small>View and manage campaigns associated with the group</small>
+        </div>
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <div class="col-sm-6">
+                    Search: <input id="filter" type="text" class="form-control input-sm w-auto inline m-r"
+                        ng-model="searchText" />
+                </div>
+                <div class="col-sm-6">
+                    <button class="md-btn md-raised m-b-sm w-md green" ng-click="goToCreateCampaign()">
+                        <i class="fa fa-fw fa-plus text-muted"></i>
+                        <span>New Campaign</span>
+                    </button>
+                    <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right"
+                        ng-click="goBack()">Back</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        <th>
+                            Start Date
+                        </th>
+                        <th>
+                            End Date
+                        </th>
+                        <th>
+                            Logo
+                        </th>
+                        <th>
+                            Background
+                        </th>
+                        <th>
+                            Footer
+                        </th>
+                        <th>
+                            Last Update
+                        </th>
+                        <th>Active</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="campaign in getPaginatedData() | filter:searchText" ng-class-even="'footable-even'"
+                        ng-class-odd="'footable-odd'">
+                        <td>{{ campaign.name }}</td>
+                        <td>{{ campaign.start_date | date:'mediumDate' }}</td>
+                        <td>{{ campaign.end_date | date:'mediumDate' }}</td>
+                        <td>
+                            <button class="md-btn md-raised m-b-sm w-xs indigo"
+                                ng-click="downloadLogoFile(campaign.id)">Download</button>
+                            <button class="md-btn md-flat m-b-sm w-xs"
+                                ng-click="viewLogo(campaign.logo_path)">View</button>
+                        </td>
+                        <td>
+                            <button class="md-btn md-raised m-b-sm w-xs indigo"
+                                ng-click="downloadBackgroundFile(campaign.id)">Download</button>
+                            <button class="md-btn md-flat m-b-sm w-xs"
+                                ng-click="viewBackground(campaign.background_path)">View</button>
+                        </td>
+                        <td>{{ campaign.footer }}</td>
+                        <td>{{ campaign.last_update | date:'mediumDate' }}</td>
+                        <td>
+                            <i class="fa fa-check text-success" ng-show="campaign.active"></i>
+                            <i class="fa fa-times text-danger" ng-show="!campaign.active"></i>
+                        </td>
+                        <td>
+                            <button class="md-btn md-raised m-b-sm w-xs white"
+                                ng-click="editCampaign(campaign.id)">Edit</button>
+                            <button class="md-btn md-raised m-b-sm w-xs red"
+                                ng-click="deleteCampaign(campaign.id)">Delete</button>
+                        </td>
+                        <td>
+                            <button class="md-btn md-raised m-b-sm w-xs white" ng-click="goToTimeSlot(campaign.id)">Time
+                                Slots</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10" class="text-center">
+                            <ul class="pagination">
+                                <li ng-class="{ disabled: currentPage === 0 }">
+                                    <a ng-click="setCurrentPage(0)">«</a>
+                                </li>
+                                <li ng-class="{ disabled: currentPage === 0 }">
+                                    <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
+                                </li>
+                                <li ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                    <a ng-click="setCurrentPage(page)">{{ page + 1 }}</a>
+                                </li>
+                                <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                    <a ng-click="setCurrentPage(currentPage + 1)">›</a>
+                                </li>
+                                <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                    <a ng-click="setCurrentPage(totalPages() - 1)">»</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

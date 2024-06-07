@@ -594,30 +594,30 @@ angular.module('frontend')
         }
     })
     $stateProvider
-    .state('base.periodds-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/periodds/new',
-        templateUrl: 'app/periodDS/periodds-new.html',
-        controller: 'PeriodDSController',
+    .state('base.campaignds-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/campaignds/new',
+        templateUrl: 'app/campaignDS/campaignds-new.html',
+        controller: 'CampaignDSController',
         data: {
             requireLogin: true, 
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
     $stateProvider
-    .state('base.periodds-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/periodds',
-        templateUrl: 'app/periodDS/periodds-view.html',
-        controller: 'PeriodDSController',
+    .state('base.campaignds-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/campaignds',
+        templateUrl: 'app/campaignDS/campaignds-view.html',
+        controller: 'CampaignDSController',
         data: {
             requireLogin: true, 
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
     $stateProvider
-    .state('base.periodds-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/periodds/updade/:perioddsId',
-        templateUrl: 'app/periodDS/periodds-update.html',
-        controller: 'PeriodDSUpdateController',
+    .state('base.campaignds-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/campaignds/updade/:campaigndsId',
+        templateUrl: 'app/campaignDS/campaignds-update.html',
+        controller: 'CampaignDSUpdateController',
         data: {
             requireLogin: true, 
             requiredPermissions: ['superuser', 'staff'] 
@@ -625,7 +625,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.timeslot-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/timeslot/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/timeslot/new',
         templateUrl: 'app/timeslots/timeslot-new.html',
         controller: 'TimeSlotController',
         data: {
@@ -635,7 +635,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.timeslot-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/timeslots',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/timeslots',
         templateUrl: 'app/timeslots/timeslot-view.html',
         controller: 'TimeSlotController',
         data: {
@@ -645,7 +645,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.timeslot-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/timeslot/update/:timeslotId',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/timeslot/update/:timeslotId',
         templateUrl: 'app/timeslots/timeslot-update.html',
         controller: 'TimeSlotUpdateController',
         data: {
@@ -655,7 +655,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.contribution-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/contribution/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/contribution/new',
         templateUrl: 'app/contributions/contribution-new.html',
         controller: 'ContributionController',
         data: {
@@ -665,7 +665,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.contribution-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/contributions',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/contributions',
         templateUrl: 'app/contributions/contribution-view.html',
         controller: 'ContributionController',
         data: {
@@ -675,7 +675,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.contribution-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/contribution/update/:contributionId',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/contribution/update/:contributionId',
         templateUrl: 'app/contribution/contribution-update.html',
         controller: 'ContributionUpdateController',
         data: {
@@ -685,7 +685,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.detail-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/:contributionId/detail/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/:contributionId/detail/new',
         templateUrl: 'app/detail/detail-new.html',
         controller: 'DetailController',
         data: {
@@ -695,7 +695,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.detail-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/:contributionId/details',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/:contributionId/details',
         templateUrl: 'app/detail/detail-view.html',
         controller: 'DetailController',
         data: {
@@ -705,7 +705,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.detail-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:perioddsId/:timeslotId/:contributionId/detail/update/:detailId',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/:contributionId/detail/update/:detailId',
         templateUrl: 'app/detail/detail-update.html',
         controller: 'DetailUpdateController',
         data: {
@@ -714,20 +714,20 @@ angular.module('frontend')
         }
     })
     $stateProvider
-    .state('base.periodia-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/periodia/new',
-        templateUrl: 'app/periodIA/periodia-new.html',
-        controller: 'PeriodIAController',
+    .state('base.campaignia-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/campaignia/new',
+        templateUrl: 'app/campaignIA/campaignia-new.html',
+        controller: 'CampaignIAController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']
         }
     });
     $stateProvider
-    .state('base.periodia-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/periodia',
-        templateUrl: 'app/periodIA/periodia-view.html',
-        controller: 'PeriodIAController',
+    .state('base.campaignia-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/campaignia',
+        templateUrl: 'app/campaignIA/campaignia-view.html',
+        controller: 'CampaignIAController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']
@@ -735,10 +735,10 @@ angular.module('frontend')
     });
 
     $stateProvider
-    .state('base.periodia-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/periodia/update/:periodiaId',
-        templateUrl: 'app/periodIA/periodia-update.html',
-        controller: 'PeriodIAUpdateController',
+    .state('base.campaignia-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/campaignia/update/:campaigniaId',
+        templateUrl: 'app/campaignIA/campaignia-update.html',
+        controller: 'CampaignIAUpdateController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']
@@ -746,7 +746,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.layer-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/layers/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/layers/new',
         templateUrl: 'app/layers/layer-new.html',
         controller: 'LayerController',
         data: {
@@ -756,7 +756,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.layer-new-children', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/layers/new/:layerNumber',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/layers/new/:layerNumber',
         templateUrl: 'app/layers/layer-new-children.html',
         controller: 'LayerController',
         data: {
@@ -767,7 +767,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.layer-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/layers',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/layers',
         templateUrl: 'app/layers/layer-view.html',
         controller: 'LayerController',
         data: {
@@ -778,7 +778,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.layer-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/update/:layerId',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/update/:layerId',
         templateUrl: 'app/layers/layer-update.html',
         controller: 'LayerUpdateController',
         data: {
@@ -788,7 +788,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.contributionia-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/contributionIA/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/contributionIA/new',
         templateUrl: 'app/contributionsIA/contributionia-new.html',
         controller: 'ContributionIAController',
         data: {
@@ -799,7 +799,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.contributionia-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/contributionsIA',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/contributionsIA',
         templateUrl: 'app/contributionsIA/contributionia-view.html',
         controller: 'ContributionIAController',
         data: {
@@ -810,7 +810,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.contributionia-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/contributionIA/update/:contributioniaId/:contributioniaName',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/contributionIA/update/:contributioniaId/:contributioniaName',
         templateUrl: 'app/contributionsIA/contributionia-update.html',
         controller: 'ContributionIAUpdateController',
         data: {
@@ -820,7 +820,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.formation-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/formation/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/formation/new',
         templateUrl: 'app/formations/formation-new.html',
         controller: 'FormationController',
         data: {
@@ -831,7 +831,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.formation-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/formations',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/formations',
         templateUrl: 'app/formations/formation-view.html',
         controller: 'FormationController',
         data: {
@@ -842,7 +842,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.formation-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:periodiaId/:layerId/:layerName/formation/update/:formationId/:formationName',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/formation/update/:formationId/:formationName',
         templateUrl: 'app/formations/formation-update.html',
         controller: 'FormationUpdateController',
         data: {
