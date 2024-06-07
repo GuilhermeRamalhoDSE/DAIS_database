@@ -4,18 +4,18 @@ from typing import Optional
 from dais.schemas.campaignds_schema import CampaignDSOut
 
 class TimeSlotCreateSchema(BaseModel):
-    campaign_id: int
+    campaignds_id: int
     start_time: time
     end_time: time
 
 class TimeSlotUpdateSchema(BaseModel):
-    campaign_id: Optional[int] = None
+    campaignds_id: Optional[int] = None
     start_time: Optional[time] = None
     end_time: Optional[time] = None
 
 class TimeSlotOutSchema(BaseModel):
     id: int
-    campaign: CampaignDSOut
+    campaignds: CampaignDSOut
     start_time: time
     end_time: time
     contributionds_count: int
@@ -24,3 +24,6 @@ class TimeSlotOutSchema(BaseModel):
     @staticmethod
     def resolve_contributionds_count(obj):
         return obj.contributionds_count
+
+    class Config:
+        from_attributes = True

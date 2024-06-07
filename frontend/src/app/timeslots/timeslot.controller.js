@@ -6,8 +6,8 @@ function($scope, TimeslotService, $state, $stateParams) {
     $scope.groupId = $stateParams.groupId;
     $scope.groupName = $stateParams.groupName;
 
-    let perioddsId = parseInt($stateParams.perioddsId || sessionStorage.getItem('lastPerioddsId'), 10);
-    sessionStorage.setItem('lastPerioddsId', perioddsId.toString());
+    let campaigndsId = parseInt($stateParams.campaigndsId || sessionStorage.getItem('lastPerioddsId'), 10);
+    sessionStorage.setItem('lastPerioddsId', campaigndsId.toString());
 
     function formatTimeForInput(date) {
         var localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
@@ -17,11 +17,11 @@ function($scope, TimeslotService, $state, $stateParams) {
     $scope.newTimeslot = {
         start_time: '',
         end_time: '',
-        period_id: perioddsId
+        campaignds_id: campaigndsId
     };
 
     $scope.loadTimeslots = function() {
-        TimeslotService.getAllTimeslots(perioddsId).then(function(response) {
+        TimeslotService.getAllTimeslots(campaigndsId).then(function(response) {
             $scope.timeslots = response.data;
         }).catch(function(error) {
             console.error('Error loading timeslots:', error);
@@ -33,9 +33,9 @@ function($scope, TimeslotService, $state, $stateParams) {
         var endTime = moment($scope.newTimeslot.end_time).tz('Europe/Rome', true);
 
         var timeslotData = {
-            period_id: perioddsId,
-            start_time: startTime.format('HH:mm'),
-            end_time: endTime.format('HH:mm')
+            campaignds_id: campaigndsId,
+            start_time: startTime.format('HH:mm:ss'),
+            end_time: endTime.format('HH:mm:ss')
         };
     
         TimeslotService.createTimeslot(timeslotData).then(function(response) {
@@ -46,7 +46,7 @@ function($scope, TimeslotService, $state, $stateParams) {
                 clientName: $scope.clientName,
                 groupId: $scope.groupId,
                 groupName: $scope.groupName,
-                perioddsId: perioddsId
+                campaigndsId: campaigndsId
             });
         }).catch(function(error) {
             console.error('Error creating timeslot:', error);
@@ -60,7 +60,7 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            perioddsId: perioddsId,
+            campaigndsId: campaigndsId,
             timeslotId: timeslotId
         });
     };
@@ -77,12 +77,12 @@ function($scope, TimeslotService, $state, $stateParams) {
     };
 
     $scope.goBack = function() {
-        $state.go('base.periodds-view', {
+        $state.go('base.campaignds-view', {
             clientId: $scope.clientId,
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            perioddsId: perioddsId
+            campaigndsId: campaigndsId
         });
     };
 
@@ -92,7 +92,7 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            perioddsId: perioddsId,
+            campaigndsId: campaigndsId,
             timeslotId: timeslotId
         });
     };
@@ -103,7 +103,7 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            perioddsId: perioddsId
+            campaigndsId: campaigndsId
         });
     };
 
@@ -113,7 +113,7 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            perioddsId: perioddsId
+            campaigndsId: campaigndsId
         });
     };
 
@@ -121,8 +121,30 @@ function($scope, TimeslotService, $state, $stateParams) {
         $scope.newTimeslot = {
             start_time: '',
             end_time: '', 
-            period_id: perioddsId
+            campaignds_id: campaigndsId
         };
+    };
+
+    $scope.toggleRandomOrder = function(timeslot) {
+        if (timeslot.is_random) {
+            TimeslotService.unsetRandomOrder(timeslot.id)
+                .then(function(response) {
+                    timeslot.is_random = false;
+                    $scope.loadTimeslots();
+                })
+                .catch(function(error) {
+                    console.error('Error setting time slot to sequential order:', error);
+                });
+        } else {
+            TimeslotService.setRandomOrder(timeslot.id)
+                .then(function(response) {
+                    timeslot.is_random = true;
+                    $scope.loadTimeslots();  
+                })
+                .catch(function(error) {
+                    console.error('Error setting time slot to random order:', error);
+                });
+        }
     };
 
     $scope.loadTimeslots();

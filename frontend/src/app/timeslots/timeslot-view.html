@@ -30,6 +30,8 @@
                         <th data-hide="phone,tablet">
                             End Time
                         </th>
+                        <th>Contributions Count</th>
+                        <th>Random</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -37,6 +39,11 @@
                     <tr ng-repeat="timeslot in timeslots | filter:searchText">
                         <td>{{ timeslot.start_time | formatTime }}</td>
                         <td>{{ timeslot.end_time | formatTime }}</td>
+                        <td>{{ timeslot.contributionds_count }}</td>
+                        <td>
+                            <input type="checkbox" ng-checked="timeslot.is_random"  ng-click="toggleRandomOrder(timeslot)">
+
+                        </td>
                         <td>
                             <button class="btn btn-default btn-xs" ng-click="editTimeslot(timeslot.id)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteTimeslot(timeslot.id)">Delete</button>

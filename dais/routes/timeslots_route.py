@@ -15,8 +15,8 @@ timeslot_router = Router(tags=["TimeSlots"])
 @timeslot_router.post("/", response={201: TimeSlotOutSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_timeslot(request, timeslot_in: TimeSlotCreateSchema):
     user_info = get_user_info_from_token(request)
-    campaign = get_object_or_404(CampaignDS, id=timeslot_in.campaign_id) 
-    group = get_object_or_404(Group, id=campaign.group_id)
+    campaignds = get_object_or_404(CampaignDS, id=timeslot_in.campaignds_id) 
+    group = get_object_or_404(Group, id=campaignds.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
@@ -34,12 +34,12 @@ def create_timeslot(request, timeslot_in: TimeSlotCreateSchema):
 def set_random(request, timeslot_id: int):
     user_info = get_user_info_from_token(request)
     time_slot = get_object_or_404(TimeSlot, id=timeslot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    campagn = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
     group = get_object_or_404(Group, id=campagn.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
-       raise Http404("You do not have permission to set contributions random.")
+       raise Http404("You do not have permission to set time slots random.")
     
     time_slot.is_random = True
     time_slot.save()
@@ -49,12 +49,12 @@ def set_random(request, timeslot_id: int):
 def unset_random(request, timeslot_id: int):
     user_info = get_user_info_from_token(request)
     time_slot = get_object_or_404(TimeSlot, id=timeslot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
-    group = get_object_or_404(Group, id=campagn.group_id)
+    campaignds = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
+    group = get_object_or_404(Group, id=campaignds.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
-       raise Http404("You do not have permission to unset contributions random.")
+       raise Http404("You do not have permission to unset time slots random.")
     
     time_slot.is_random = False
     time_slot.save()
@@ -81,7 +81,7 @@ def read_timeslots(request, campaignds_id: Optional[int] = None):
 def read_timeslot(request, timeslot_id: int):
     user_info = get_user_info_from_token(request)
     time_slot = get_object_or_404(TimeSlot, id=timeslot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    campagn = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
     group = get_object_or_404(Group, id=campagn.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
@@ -91,10 +91,10 @@ def read_timeslot(request, timeslot_id: int):
     return TimeSlotOutSchema.from_orm(time_slot)
 
 @timeslot_router.put("/{timeslot_id}", response=TimeSlotOutSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def update_timeslot(request, timeslot_id: int, timeslot_in: TimeSlotCreateSchema):
+def update_timeslot(request, timeslot_id: int, timeslot_in: TimeSlotUpdateSchema):
     user_info = get_user_info_from_token(request)
     time_slot = get_object_or_404(TimeSlot, id=timeslot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    campagn = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
     group = get_object_or_404(Group, id=campagn.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
@@ -111,7 +111,7 @@ def update_timeslot(request, timeslot_id: int, timeslot_in: TimeSlotCreateSchema
 def delete_timeslot(request, timeslot_id: int):
     user_info = get_user_info_from_token(request)
     time_slot = get_object_or_404(TimeSlot, id=timeslot_id)
-    campagn = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    campagn = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
     group = get_object_or_404(Group, id=campagn.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 

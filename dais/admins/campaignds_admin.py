@@ -4,10 +4,10 @@ from dais.models.campaignds_models import CampaignDS
 @admin.register(CampaignDS)
 class CampaignDSAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 'group', 'start_date', 'end_date', 'last_update', 'active', 'duration', 'logo', 'background', 'footer', 'created_at'
+        'id', 'name', 'group', 'start_date', 'end_date', 'last_update', 'active', 'duration', 'logo', 'background', 'footer', 'created_at'
     )
-    list_filter = ('name', 'group', 'start_date', 'end_date', 'active')  
-    search_fields = ('name', 'start_date', 'end_date')  
+    list_filter = ('id', 'name', 'group', 'start_date', 'end_date', 'active')  
+    search_fields = ('id','name', 'start_date', 'end_date')  
     ordering = ('-start_date',)
 
     def has_view_permission(self, request, obj=None):

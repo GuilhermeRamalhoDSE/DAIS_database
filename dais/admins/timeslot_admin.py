@@ -11,9 +11,9 @@ class TimeSlotAdminForm(forms.ModelForm):
 @admin.register(TimeSlot)
 class TimeSlotAdmin(admin.ModelAdmin):
     form = TimeSlotAdminForm
-    list_display = ['id', 'period', 'start_time', 'end_time', 'contributionds_count', 'is_random']
-    list_filter = ['period__group__name', 'start_time', 'end_time']  
-    search_fields = ['period__group__name', 'start_time', 'end_time']
+    list_display = ['id', 'campaignds', 'start_time', 'end_time', 'contributionds_count', 'is_random']
+    list_filter = ['campaignds__group__name', 'start_time', 'end_time']  
+    search_fields = ['campaignds__group__name', 'start_time', 'end_time']
 
     def total_contributionds(self, obj):
         return obj.total_contributionds

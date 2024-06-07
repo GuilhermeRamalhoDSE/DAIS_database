@@ -6,8 +6,8 @@ angular.module('frontend').factory('TimeslotService', ['$http', function($http) 
             return $http.post(baseUrl, timeslotData);
         };
 
-        service.getAllTimeslots= function(perioddsId) {
-            return $http.get(baseUrl, { params:{ periodds_id: perioddsId } });
+        service.getAllTimeslots= function(campaigndsId) {
+            return $http.get(baseUrl, { params:{ campaignds_id: campaigndsId } });
         };
         service.getTimeslotById= function(timeslotId) {
             return $http.get(baseUrl + timeslotId);
@@ -17,6 +17,13 @@ angular.module('frontend').factory('TimeslotService', ['$http', function($http) 
         };
         service.deleteTimeslot= function(timeslotId) {
             return $http.delete(baseUrl + timeslotId);
+        };
+        service.setRandomOrder = function(timeslotId) {
+            return $http.post(`${baseUrl}${timeslotId}/set-random/`);
+        };
+    
+        service.unsetRandomOrder = function(timeslotId) {
+            return $http.post(`${baseUrl}${timeslotId}/unset-random/`);
         };
 
         return service;
