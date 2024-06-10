@@ -1,9 +1,9 @@
 <!-- ############ PAGE START-->
-<div class="padding" ng-controller="ContributionController">
+<div class="padding" ng-controller="ContributionDSController">
     <div class="box">
         <div class="box-header">
             <h2>Contributions</h2>
-            <small>Details of contributions</small>
+            <small>Details of contributiondss</small>
         </div>
         <div class="p-a white lt box-shadow">
             <div class="row">
@@ -12,7 +12,7 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="goToCreateContribution()">
+                    <button class="btn btn-fw primary" ng-click="goToCreateContributionDS()">
                         <i class="fa fa-fw fa-plus text-muted"></i>
                         <span>New Contribution</span>
                     </button>
@@ -24,26 +24,27 @@
             <table class="table m-b-none" ui-jp="footable" data-filter="#filter" data-page-size="5">
                 <thead>
                     <tr>
-                        <th>Time Slot</th>
-                        <th data-hide="phone,tablet">Detail Count</th>
-                        <th>Random</th>
+                        <th>Campaign</th>
+                        <th>Name</th>
+                        <th>File</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="contribution in contributionList | filter:searchText">
-                        <td>{{ contribution.time_slot.start_time | formatTime }} - {{ contribution.time_slot.end_time |
-                            formatTime }}</td>
-                        <td>{{ contribution.detail_count }}</td>
+                    <tr ng-repeat="contributionds in contributiondsList | filter:searchText">
+                        <td>{{ campaigndsName }}</td>
+                        <td>{{ contributionds.name }}</td>
                         <td>
-                            <input type="checkbox" ng-checked="contribution.is_random"  ng-click="toggleRandomOrder(contribution)">
-
+                            <button class="md-btn md-raised m-b-sm w-xs indigo"
+                                ng-click="downloadFile(contributionds.id)">Download</button>
+                            <button class="md-btn md-flat m-b-sm w-xs"
+                                ng-click="viewFile(contributionds.file_path)">View</button>
                         </td>
                         <td>
-                            <button class="btn btn-danger btn-xs"
-                                ng-click="deleteContribution(contribution.id)">Delete</button>
                             <button class="btn btn-default btn-xs"
-                                ng-click="detailContribution(contribution.id)">Details</button>
+                                ng-click="editContributionDS(contributionds.id)">Edit</button>
+                            <button class="btn btn-danger btn-xs"
+                                ng-click="deleteContributionDS(contributionds.id)">Delete</button>
                         </td>
                     </tr>
                 </tbody>

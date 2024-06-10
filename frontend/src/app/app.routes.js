@@ -625,7 +625,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.timeslot-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/timeslot/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:campaigndsName/timeslot/new',
         templateUrl: 'app/timeslots/timeslot-new.html',
         controller: 'TimeSlotController',
         data: {
@@ -635,7 +635,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.timeslot-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/timeslots',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:campaigndsName/timeslots',
         templateUrl: 'app/timeslots/timeslot-view.html',
         controller: 'TimeSlotController',
         data: {
@@ -645,7 +645,7 @@ angular.module('frontend')
     })
     $stateProvider
     .state('base.timeslot-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/timeslot/update/:timeslotId',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:campaigndsName/timeslot/update/:timeslotId',
         templateUrl: 'app/timeslots/timeslot-update.html',
         controller: 'TimeSlotUpdateController',
         data: {
@@ -654,30 +654,30 @@ angular.module('frontend')
         }
     })
     $stateProvider
-    .state('base.contribution-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/contribution/new',
-        templateUrl: 'app/contributions/contribution-new.html',
-        controller: 'ContributionController',
+    .state('base.contributionds-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:campaigndsName/:timeslotId/contribution/new',
+        templateUrl: 'app/contributionsDS/contributionds-new.html',
+        controller: 'ContributionDSController',
         data: {
             requireLogin: true, 
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
     $stateProvider
-    .state('base.contribution-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/contributions',
-        templateUrl: 'app/contributions/contribution-view.html',
-        controller: 'ContributionController',
+    .state('base.contributionds-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:campaigndsName/:timeslotId/contributions',
+        templateUrl: 'app/contributionsDS/contributionds-view.html',
+        controller: 'ContributionDSController',
         data: {
             requireLogin: true, 
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
     $stateProvider
-    .state('base.contribution-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/contribution/update/:contributionId',
-        templateUrl: 'app/contribution/contribution-update.html',
-        controller: 'ContributionUpdateController',
+    .state('base.contributionds-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:campaigndsName/:timeslotId/contribution/update/:contributiondsId',
+        templateUrl: 'app/contributionsDS/contributionds-update.html',
+        controller: 'ContributionDSUpdateController',
         data: {
             requireLogin: true, 
             requiredPermissions: ['superuser', 'staff'] 

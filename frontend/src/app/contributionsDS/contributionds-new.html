@@ -1,0 +1,32 @@
+<div class="padding" ng-controller="ContributionDSController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Contribution</h2>
+                </div>
+                <div class="box-divider m-0"></div>
+                <div class="box-body">
+                    <form ng-submit="createContributionDS()" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" ng-model="newContributionDS.name"
+                                placeholder="Contribution Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="file">File Upload</label>
+                            <input type="file" class="form-control" id="file" file-model="file" required>
+                        </div>
+                        <div class="progress mb-2" ng-show="showProgress">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
+                                {{ loadingProgress }}%
+                            </div>
+                        </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -9,6 +9,14 @@ function($scope, TimeslotService, $state, $stateParams) {
     let campaigndsId = parseInt($stateParams.campaigndsId || sessionStorage.getItem('lastPerioddsId'), 10);
     sessionStorage.setItem('lastPerioddsId', campaigndsId.toString());
 
+    let campaigndsName = $stateParams.campaigndsName || sessionStorage.getItem('lastCampaignName');
+    if (campaigndsName) {
+        sessionStorage.setItem('lastCampaigndsName', campaigndsName);
+    } else {
+        campaigndsName = sessionStorage.getItem('lastCampaigndsName');
+    }
+    $scope.campaigndsName = campaigndsName;
+
     function formatTimeForInput(date) {
         var localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
         return localDate.toISOString().substring(11, 16); 
@@ -46,7 +54,8 @@ function($scope, TimeslotService, $state, $stateParams) {
                 clientName: $scope.clientName,
                 groupId: $scope.groupId,
                 groupName: $scope.groupName,
-                campaigndsId: campaigndsId
+                campaigndsId: campaigndsId,
+                campaigndsName: campaigndsName
             });
         }).catch(function(error) {
             console.error('Error creating timeslot:', error);
@@ -61,6 +70,7 @@ function($scope, TimeslotService, $state, $stateParams) {
             groupId: $scope.groupId,
             groupName: $scope.groupName,
             campaigndsId: campaigndsId,
+            campaigndsName: campaigndsName,
             timeslotId: timeslotId
         });
     };
@@ -82,17 +92,19 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            campaigndsId: campaigndsId
+            campaigndsId: campaigndsId,
+            campaigndsName: campaigndsName
         });
     };
 
     $scope.goToContribution = function(timeslotId) {
-        $state.go('base.contribution-view', {
+        $state.go('base.contributionds-view', {
             clientId: $scope.clientId,
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
             campaigndsId: campaigndsId,
+            campaigndsName: campaigndsName,
             timeslotId: timeslotId
         });
     };
@@ -103,7 +115,8 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            campaigndsId: campaigndsId
+            campaigndsId: campaigndsId,
+            campaigndsName: campaigndsName
         });
     };
 
@@ -113,7 +126,8 @@ function($scope, TimeslotService, $state, $stateParams) {
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            campaigndsId: campaigndsId
+            campaigndsId: campaigndsId,
+            campaigndsName: campaigndsName
         });
     };
 

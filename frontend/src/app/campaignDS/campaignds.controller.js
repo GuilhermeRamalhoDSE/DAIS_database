@@ -129,8 +129,8 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
         $state.go('base.group-view', { clientId: clientId, clientName: clientName,groupId: groupId, groupName: groupName });
     };
 
-    $scope.goToTimeSlot = function(campaignId) {
-        $state.go('base.timeslot-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaigndsId: campaignId });
+    $scope.goToTimeSlot = function(campaignId, campaignName) {
+        $state.go('base.timeslot-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaigndsId: campaignId, campaigndsName: campaignName });
     };
 
     $scope.resetForm = function() {

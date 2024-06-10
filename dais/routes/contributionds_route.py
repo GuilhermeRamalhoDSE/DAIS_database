@@ -10,16 +10,16 @@ from dais.models.client_models import Client
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
 from django.http import Http404, FileResponse
-import os
+import os, random
 from django.core.files.storage import default_storage
 
-contributionds_router = Router(tags=["Contributions"])
+contributionds_router = Router(tags=["Contribution DS"])
 
 @contributionds_router.post("/", response={201: ContributionDSOutSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_contribution(request, contributionds_in: ContributionDSCreateSchema, file: UploadedFile = File(...)):
     user_info = get_user_info_from_token(request)
     time_slot = get_object_or_404(TimeSlot, id=contributionds_in.time_slot_id)
-    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    campaign = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
     group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
@@ -38,7 +38,7 @@ def create_contribution(request, contributionds_in: ContributionDSCreateSchema, 
 def read_contributionds(request, time_slot_id: Optional[int] = None):
     user_info = get_user_info_from_token(request)
     time_slot = get_object_or_404(TimeSlot, id=time_slot_id)
-    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    campaign = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
     group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
@@ -48,17 +48,20 @@ def read_contributionds(request, time_slot_id: Optional[int] = None):
     query = ContributionDS.objects.all()
     if time_slot_id is not None:
         query = query.filter(time_slot_id=time_slot_id)
-    
-    contributions = [ContributionDSOutSchema.from_orm(contribution) for contribution in query]
-
-    return contributions
+        if time_slot.is_random:
+            contributions = list(query)
+            random.shuffle(contributions)
+        else:
+            contributions = query.order_by('id')
+          
+    return [ContributionDSOutSchema.from_orm(contribution) for contribution in contributions]
 
 @contributionds_router.get('/{contributionds_id}', response=ContributionDSOutSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_contributionds_by_id(request, contributionds_id: int):
     user_info = get_user_info_from_token(request)
     contributionds = get_object_or_404(ContributionDS, id=contributionds_id)
     time_slot = get_object_or_404(TimeSlot, id=contributionds.time_slot_id)
-    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    campaign = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
     group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
@@ -72,7 +75,7 @@ def download_contributionds_file(request, contributionds_id: int):
     user_info = get_user_info_from_token(request)
     contributionds = get_object_or_404(ContributionDS, id=contributionds_id)
     time_slot = get_object_or_404(TimeSlot, id=contributionds.time_slot_id)
-    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    campaign = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
     group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
@@ -89,11 +92,11 @@ def download_contributionds_file(request, contributionds_id: int):
         raise Http404("No file associated with this contribution")    
 
 @contributionds_router.put("/{contributionds_id}", response=ContributionDSOutSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def update_contribution(request, contributionds_id: int, contributionds_in: ContributionDSCreateSchema, file: UploadedFile = File(None)):
+def update_contribution(request, contributionds_id: int, contributionds_in: ContributionDSUpdateSchema, file: UploadedFile = File(None)):
     user_info = get_user_info_from_token(request)
     contributionds = get_object_or_404(ContributionDS, id=contributionds_id)
     time_slot = get_object_or_404(TimeSlot, id=contributionds.time_slot_id)
-    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    campaign = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
     group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
@@ -105,7 +108,7 @@ def update_contribution(request, contributionds_id: int, contributionds_in: Cont
     
     if file:
         if contributionds.file and default_storage.exists(contributionds.file.name):
-            default_storage.delete(contributionds.logo.name)
+            default_storage.delete(contributionds.file.name)
         contributionds.file = file
 
     contributionds.save()
@@ -116,7 +119,7 @@ def delete_contribution(request, contributionds_id: int):
     user_info = get_user_info_from_token(request)
     contributionds = get_object_or_404(ContributionDS, id=contributionds_id)
     time_slot = get_object_or_404(TimeSlot, id=contributionds.time_slot_id)
-    campaign = get_object_or_404(CampaignDS, id=time_slot.period_id) 
+    campaign = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
     group = get_object_or_404(Group, id=campaign.group_id)
     client = get_object_or_404(Client, id=group.client_id)
 
