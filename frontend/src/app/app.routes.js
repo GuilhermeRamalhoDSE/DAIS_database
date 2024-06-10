@@ -684,36 +684,6 @@ angular.module('frontend')
         }
     })
     $stateProvider
-    .state('base.detail-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/:contributionId/detail/new',
-        templateUrl: 'app/detail/detail-new.html',
-        controller: 'DetailController',
-        data: {
-            requireLogin: true, 
-            requiredPermissions: ['superuser', 'staff'] 
-        }
-    })
-    $stateProvider
-    .state('base.detail-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/:contributionId/details',
-        templateUrl: 'app/detail/detail-view.html',
-        controller: 'DetailController',
-        data: {
-            requireLogin: true, 
-            requiredPermissions: ['superuser', 'staff'] 
-        }
-    })
-    $stateProvider
-    .state('base.detail-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigndsId/:timeslotId/:contributionId/detail/update/:detailId',
-        templateUrl: 'app/detail/detail-update.html',
-        controller: 'DetailUpdateController',
-        data: {
-            requireLogin: true, 
-            requiredPermissions: ['superuser', 'staff'] 
-        }
-    })
-    $stateProvider
     .state('base.campaignia-new', {
         url: '/:clientId/:clientName/:groupId/:groupName/campaignia/new',
         templateUrl: 'app/campaignIA/campaignia-new.html',
