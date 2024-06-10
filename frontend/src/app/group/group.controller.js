@@ -100,7 +100,7 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
         if (typology === 'Digital Signage') {
             $state.go('base.campaignds-view', { clientId: clientId, clientName: clientName,groupId: groupId, groupName: groupName });
         } else if (typology === 'Artificial Intelligence') {
-            $state.go('base.campaignia-view', { clientId: clientId, clientName: clientName,groupId: groupId, groupName: groupName });
+            $state.go('base.campaignai-view', { clientId: clientId, clientName: clientName,groupId: groupId, groupName: groupName });
         } else {
             alert('Unknown typology');
         }

@@ -3,7 +3,7 @@ from dais.models.group_models import Group
 from django.utils.timezone import now
 
 def campaign_file_path(instance, filename):
-    return f'CampaignAI_{instance.totem_id}/{instance.created_at.strftime("%Y/%m/%d")}/{filename}'
+    return f'CampaignAI_{instance.id}/{instance.created_at.strftime("%Y/%m/%d")}/{filename}'
 
 class CampaignAI(models.Model):
     name = models.CharField(max_length=255)

@@ -5,28 +5,28 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
     $scope.licenseId = AuthService.getLicenseId();
 
 
-    let periodiaId = parseInt($stateParams.periodiaId, 10);
+    let campaignaiId = parseInt($stateParams.campaignaiId, 10);
     let clientId = parseInt($stateParams.clientId, 10);
     let groupId = parseInt($stateParams.groupId, 10);
     let groupName = $stateParams.groupName;
     let clientName = $stateParams.clientName;
     
 
-    if (isNaN(periodiaId) || isNaN(clientId) || isNaN(groupId)) {
+    if (isNaN(campaignaiId) || isNaN(clientId) || isNaN(groupId)) {
         alert('Invalid or missing IDs');
         $state.go('base.client-view');
         return;
     }
 
     $scope.newLayer = {
-        period_id: periodiaId,
+        campaign_id: campaignaiId,
         avatar_id: null,
         name: "",
         trigger: ""
     };
 
     $scope.loadLayers = function() {
-        LayerService.getLayersByPeriod(periodiaId).then(function(response) {
+        LayerService.getLayersByPeriod(campaignaiId).then(function(response) {
             $scope.layerList = response.data;
         }).catch(function(error) {
             console.error('Error loading layers:', error);
@@ -46,18 +46,18 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
     };       
 
     $scope.goToCreateLayer = function() {
-        $state.go('base.layer-new', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+        $state.go('base.layer-new', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId });
     };
 
     $scope.goToNewChildren = function(layerNumber) {
-        $state.go('base.layer-new-children', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId,  layerNumber: layerNumber});
+        $state.go('base.layer-new-children', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId,  layerNumber: layerNumber});
     };
 
     $scope.createLayer = function() {
         LayerService.createLayer($scope.newLayer).then(function(response) {
             alert('Layer created successfully!');
             $scope.loadLayers();
-            $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+            $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId });
         }).catch(function(error) {
             console.error('Error creating layer:', error);
             alert('Error creating layer: Check console for details.');
@@ -65,15 +65,15 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
     };
 
     $scope.editLayer = function(layerId) {
-        $state.go('base.layer-update', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId, layerId: layerId });
+        $state.go('base.layer-update', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId, layerId: layerId });
     };
 
     $scope.goBack = function() {
-        $state.go('base.periodia-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+        $state.go('base.campaignai-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId });
     };
 
     $scope.cancelCreate = function() {
-        $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+        $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId });
     };
 
     $scope.goToContribution = function(layerId, layerName) {
@@ -82,7 +82,7 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
             clientName: clientName, 
             groupId: groupId, 
             groupName: groupName, 
-            periodiaId: periodiaId,
+            campaignaiId: campaignaiId,
             layerName: layerName,
             layerId: layerId
         });
@@ -94,7 +94,7 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
             clientName: clientName, 
             groupId: groupId, 
             groupName: groupName, 
-            periodiaId: periodiaId,
+            campaignaiId: campaignaiId,
             layerName: layerName,
             layerId: layerId
         });
@@ -125,7 +125,7 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
     
     $scope.resetForm = function() {
         $scope.newLayer = {
-            period_id: periodiaId,
+            campaign_id: campaignaiId,
             parent_layer_number: null,
             avatar_id: null,
             name: "",

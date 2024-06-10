@@ -697,7 +697,7 @@ angular.module('frontend')
     .state('base.campaignai-view', {
         url: '/:clientId/:clientName/:groupId/:groupName/campaignai',
         templateUrl: 'app/campaignAI/campaignai-view.html',
-        controller: 'CampaignIAController',
+        controller: 'CampaignAIController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']
@@ -715,7 +715,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.layer-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/layers/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaigniaName/layers/new',
         templateUrl: 'app/layers/layer-new.html',
         controller: 'LayerController',
         data: {
@@ -725,7 +725,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.layer-new-children', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/layers/new/:layerNumber',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaigniaName/layers/new/:layerNumber',
         templateUrl: 'app/layers/layer-new-children.html',
         controller: 'LayerController',
         data: {
@@ -736,7 +736,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.layer-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/layers',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaigniaName/layers',
         templateUrl: 'app/layers/layer-view.html',
         controller: 'LayerController',
         data: {
@@ -744,10 +744,9 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff']
         }
     });
-
     $stateProvider
     .state('base.layer-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/update/:layerId',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaigniaName/update/:layerId',
         templateUrl: 'app/layers/layer-update.html',
         controller: 'LayerUpdateController',
         data: {
@@ -756,10 +755,10 @@ angular.module('frontend')
         }
     });
     $stateProvider
-    .state('base.contributionia-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/contributionIA/new',
-        templateUrl: 'app/contributionsIA/contributionia-new.html',
-        controller: 'ContributionIAController',
+    .state('base.contributionai-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/contributionAI/new',
+        templateUrl: 'app/contributionsAI/contributionai-new.html',
+        controller: 'ContributionAIController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']
@@ -767,21 +766,20 @@ angular.module('frontend')
     });
 
     $stateProvider
-    .state('base.contributionia-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/contributionsIA',
-        templateUrl: 'app/contributionsIA/contributionia-view.html',
-        controller: 'ContributionIAController',
+    .state('base.contributionai-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/contributionsIA',
+        templateUrl: 'app/contributionsAI/contributionai-view.html',
+        controller: 'ContributionAIController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']
         }
     });
-
     $stateProvider
-    .state('base.contributionia-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/contributionIA/update/:contributioniaId/:contributioniaName',
-        templateUrl: 'app/contributionsIA/contributionia-update.html',
-        controller: 'ContributionIAUpdateController',
+    .state('base.contributionai-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/contributionIA/update/:contributioniaId/:contributioniaName',
+        templateUrl: 'app/contributionsAI/contributionai-update.html',
+        controller: 'ContributionAIUpdateController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']
@@ -789,7 +787,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.formation-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/formation/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/formation/new',
         templateUrl: 'app/formations/formation-new.html',
         controller: 'FormationController',
         data: {
@@ -800,7 +798,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.formation-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/formations',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/formations',
         templateUrl: 'app/formations/formation-view.html',
         controller: 'FormationController',
         data: {
@@ -811,7 +809,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.formation-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:layerId/:layerName/formation/update/:formationId/:formationName',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/formation/update/:formationId/:formationName',
         templateUrl: 'app/formations/formation-update.html',
         controller: 'FormationUpdateController',
         data: {

@@ -6,8 +6,8 @@ angular.module('frontend').factory('LayerService', ['$http', function($http) {
         return $http.post(baseUrl, layerData);
     };
 
-    service.getLayersByPeriod = function(periodId) {
-        return $http.get(baseUrl + periodId); 
+    service.getLayersByPeriod = function(campaignaiId) {
+        return $http.get(baseUrl + campaignaiId); 
     };
 
     service.getLayerById = function(layerId) {

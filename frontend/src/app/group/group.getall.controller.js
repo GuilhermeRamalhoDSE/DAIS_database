@@ -59,7 +59,7 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
         if (group.typology === 'Digital Signage') {
             $state.go('base.campaignds-view', { clientId: group.client_id, clientName: group.client_name, groupId: group.id, groupName: group.name });
         } else if (group.typology === 'Artificial Intelligence') {
-            $state.go('base.campaignia-view', { clientId: group.client_id, clientName: group.client_name, groupId: group.id, groupName: group.name });
+            $state.go('base.campaignai-view', { clientId: group.client_id, clientName: group.client_name, groupId: group.id, groupName: group.name });
         } else {
             alert('Unknown typology');
         }

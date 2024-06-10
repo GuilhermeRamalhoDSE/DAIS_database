@@ -1,4 +1,4 @@
-angular.module('frontend').controller('CampaignDSController', ['$scope', 'CampaignDSService', 'AuthService', '$state', '$stateParams', '$http', '$filter','$q', '$interval', function($scope, CampaignDSService, AuthService, $state, $stateParams, $http, $filter, $q, $interval) {
+angular.module('frontend').controller('CampaignAIController', ['$scope', 'CampaignAIService', 'AuthService', '$state', '$stateParams', '$http', '$filter','$q', '$interval', function($scope, CampaignAIService, AuthService, $state, $stateParams, $http, $filter, $q, $interval) {
     $scope.campaignList = [];
     $scope.isSuperuser = AuthService.isSuperuser(); 
     $scope.currentPage = 0;
@@ -72,7 +72,7 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
         if (!groupId) {
             return;
         }
-        CampaignDSService.getAllCampaignDS(groupId).then(function(response) {
+        CampaignAIService.getAllCampaignAI(groupId).then(function(response) {
             $scope.campaignList = response.data;
             if ($scope.currentPage >= $scope.totalPages()) {
                 $scope.currentPage = $scope.totalPages() - 1;
@@ -83,7 +83,7 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
     };
 
     $scope.goToCreateCampaign = function() {
-        $state.go('base.campaignds-new', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
+        $state.go('base.campaignai-new', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
     };
     
     $scope.createCampaign = function() {
@@ -106,10 +106,10 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
         
 
         $scope.upload($scope.newCampaign.background).then(function() {
-            CampaignDSService.createCampaignDS(formData).then(function(response) {
+            CampaignAIService.createCampaignAI(formData).then(function(response) {
                 alert('Campaign created successfully!');
                 $scope.loadCampaigns();
-                $state.go('base.campaignds-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
+                $state.go('base.campaignai-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
             }).catch(function(error) {
                 console.error('Error creating campaign:', error);
                 alert('Error creating campaign: Check console for details.');
@@ -118,19 +118,19 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
     };      
 
     $scope.editCampaign = function(campaignId) {
-        $state.go('base.campaignds-update', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaigndsId: campaignId });
+        $state.go('base.campaignai-update', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignId });
     };
 
     $scope.cancelCreate = function() {
-        $state.go('base.campaignds-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
+        $state.go('base.campaignai-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
     };
 
     $scope.goBack = function() {
         $state.go('base.group-view', { clientId: clientId, clientName: clientName,groupId: groupId, groupName: groupName });
     };
 
-    $scope.goToTimeSlot = function(campaignId, campaignName) {
-        $state.go('base.timeslot-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaigndsId: campaignId, campaigndsName: campaignName });
+    $scope.goToLayers = function(campaignId, campaignName) {
+        $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignId, campaignaiName: campaignName });
     };
 
     $scope.resetForm = function() {
@@ -144,7 +144,7 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
 
     $scope.downloadLogoFile = function(campaignId) {
         if (campaignId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/campaignds/download/logo/' + campaignId;
+            var downloadUrl = 'http://127.0.0.1:8000/api/campaignai/download/logo/' + campaignId;
     
             $http({
                 url: downloadUrl,
@@ -178,7 +178,7 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
     
     $scope.downloadBackgroundFile = function(campaignId) {
         if (campaignId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/campaignds/download/background/' + campaignId;
+            var downloadUrl = 'http://127.0.0.1:8000/api/campaignai/download/background/' + campaignId;
     
             $http({
                 url: downloadUrl,
@@ -209,9 +209,9 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
         }
     };
 
-    $scope.deleteCampaign = function(campaignDSId) {
+    $scope.deleteCampaign = function(campaignAIId) {
         if (confirm('Are you sure you want to delete this campaign?')) {
-            CampaignDSService.deleteCampaignDS(campaignDSId).then(function(response) {
+            CampaignAIService.deleteCampaignAI(campaignAIId).then(function(response) {
                 alert('Campaign deleted successfully!');
                 $scope.loadCampaigns(); 
             }).catch(function(error) {

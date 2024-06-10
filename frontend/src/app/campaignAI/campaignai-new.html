@@ -1,0 +1,54 @@
+<!-- ############ PAGE START-->
+<div class="padding" ng-controller="CampaignAIController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create Campaign for {{ groupName }}</h2>
+                </div>
+                <div class="box-body">
+                    <form ng-submit="createCampaign()" novalidate>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" ng-model="newCampaign.name"
+                                placeholder="Campaign Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="start_date">Start Date</label>
+                            <input type="date" class="form-control" ng-model="newCampaign.start_date" id="start_date"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_date">End Date</label>
+                            <input type="date" class="form-control" ng-model="newCampaign.end_date" id="end_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Logo Upload</label>
+                            <input type="file" class="form-control" file-model="logo" placeholder="Upload Logo">
+                        </div>
+                        <div class="form-group">
+                            <label>Background Upload</label>
+                            <input type="file" class="form-control" file-model="background" placeholder="Upload Background">
+                        </div>
+                        <div class="form-group">
+                            <label>Footer</label>
+                            <input type="text" class="form-control" ng-model="newCampaign.footer" placeholder="Footer Text">
+                        </div>
+                        <div class="form-group">
+                            <label for="active">Active</label>
+                            <input type="checkbox" ng-model="newCampaign.active" id="active" checked>
+                        </div>
+                        <div class="progress mb-2" ng-show="showProgress">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
+                                {{ loadingProgress }}%
+                            </div>
+                        </div>
+                        <button type="submit" class="md-btn md-raised m-b-sm w-xs green">Create</button>
+                        <button type="button" class="md-btn md-raised m-b-sm w-xs red" ng-click="cancelCreate()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->

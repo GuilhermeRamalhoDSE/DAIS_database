@@ -9,7 +9,7 @@ angular.module('frontend').factory('CampaignDSService', ['$http', function($http
         });
     };
 
-    service.getAllCampaignDSs = function(groupId) {
+    service.getAllCampaignDS = function(groupId) {
         return $http.get(baseUrl, { params: { group_id: groupId } });
     };
 
