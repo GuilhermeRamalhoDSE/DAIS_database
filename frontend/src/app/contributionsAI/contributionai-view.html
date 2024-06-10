@@ -1,5 +1,5 @@
 <!-- ############ PAGE START-->
-<div class="padding" ng-controller="ContributionIAController">
+<div class="padding" ng-controller="ContributionAIController">
     <div class="box">
         <div class="box-header">
             <h2>Contributions for {{ layerName }}</h2>
@@ -12,7 +12,7 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="goToCreateContributionIA()">
+                    <button class="btn btn-fw primary" ng-click="goToCreateContributionAI()">
                         <i class="fa fa-fw fa-plus text-muted"></i>
                         <span>New Contribution</span>
                     </button>
@@ -64,7 +64,7 @@
                         <td>{{ contribution.last_update_date | date:'medium' }}</td>
                         <td>
                             <button class="btn btn-default btn-xs"
-                                ng-click="editContributionIA(contribution.id, contribution.name)">Edit</button>
+                                ng-click="editContributionAI(contribution.id, contribution.name)">Edit</button>
                             <button class="btn btn-danger btn-xs"
                                 ng-click="deleteContribution(contribution.id)">Delete</button>
                         </td>

@@ -1,29 +1,30 @@
 <!-- ############ PAGE START-->
-<div class="padding" ng-controller="ContributionIAUpdateController">
+<div class="padding" ng-controller="ContributionAIController">
     <div class="row">
         <div class="col-md-6">
             <div class="box">
                 <div class="box-header">
-                    <h2>Updating {{ contributioniaName }} </h2>
-                    <small>Update the selected contribution details.</small>
+                    <h2>Create Contribution</h2>
+                    <small>Add a new contribution to the selected layer</small>
                 </div>
                 <div class="box-divider m-0"></div>
                 <div class="box-body">
-                    <form ng-submit="updateContribution()" novalidate enctype="multipart/form-data">
+                    <form ng-submit="createContribution()" novalidate enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" ng-model="contributionData.name" required>
+                            <label for="layerName">Layer Name</label>
+                            <input type="text" class="form-control" id="layerName" ng-model="layerName" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="language">Language</label>
-                            <select id="language" class="form-control" ng-model="contributionData.language_id"
-                                ng-options="language.id as language.name for language in languages" required>
-                                <option value="">--Choose a Language--</option>
-                            </select>
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" ng-model="newContribution.name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="file">File Upload</label>
+                            <input type="file" class="form-control" id="file" file-model="file" required>
                         </div>
                         <div class="form-group">
                             <label for="type">Type</label>
-                            <select id="type" class="form-control" ng-model="contributionData.type" required>
+                            <select id="type" class="form-control" ng-model="newContribution.type" required>
                                 <option value="VIDEO">Video</option>
                                 <option value="IMAGE">Image</option>
                                 <option value="3D">3D</option>
@@ -31,23 +32,25 @@
                         </div>
                         <div class="form-group">
                             <label for="trigger">Trigger</label>
-                            <input type="text" class="form-control" id="trigger" ng-model="contributionData.trigger">
+                            <input type="text" class="form-control" id="trigger" ng-model="newContribution.trigger">
+                        </div>
+                        <div class="form-group">
+                            <label for="language_id">Language</label>
+                            <select id="language_id" class="form-control" ng-model="newContribution.language_id" ng-options="language.id as language.name for language in languages" required>
+                                <option value="">--Select Language--</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="detail">Detail</label>
-                            <textarea class="form-control" id="detail" ng-model="contributionData.detail"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="file">File</label>
-                            <input type="file" class="form-control" id="file" file-model="file">
+                            <textarea class="form-control" id="detail" ng-model="newContribution.detail"></textarea>
                         </div>
                         <div class="progress mb-2" ng-show="showProgress">
                             <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
                                 {{ loadingProgress }}%
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                        <button type="button" class="btn btn-primary" ng-click="createContribution()">Create</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
                     </form>
                 </div>
             </div>

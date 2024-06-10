@@ -684,9 +684,19 @@ angular.module('frontend')
         }
     })
     $stateProvider
-    .state('base.campaignia-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/campaignia/new',
-        templateUrl: 'app/campaignIA/campaignia-new.html',
+    .state('base.campaignai-new', {
+        url: '/:clientId/:clientName/:groupId/:groupName/campaignai/new',
+        templateUrl: 'app/campaignAI/campaignai-new.html',
+        controller: 'CampaignAIController',
+        data: {
+            requireLogin: true,
+            requiredPermissions: ['superuser', 'staff']
+        }
+    });
+    $stateProvider
+    .state('base.campaignai-view', {
+        url: '/:clientId/:clientName/:groupId/:groupName/campaignai',
+        templateUrl: 'app/campaignAI/campaignai-view.html',
         controller: 'CampaignIAController',
         data: {
             requireLogin: true,
@@ -694,21 +704,10 @@ angular.module('frontend')
         }
     });
     $stateProvider
-    .state('base.campaignia-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/campaignia',
-        templateUrl: 'app/campaignIA/campaignia-view.html',
-        controller: 'CampaignIAController',
-        data: {
-            requireLogin: true,
-            requiredPermissions: ['superuser', 'staff']
-        }
-    });
-
-    $stateProvider
-    .state('base.campaignia-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/campaignia/update/:campaigniaId',
-        templateUrl: 'app/campaignIA/campaignia-update.html',
-        controller: 'CampaignIAUpdateController',
+    .state('base.campaignai-update', {
+        url: '/:clientId/:clientName/:groupId/:groupName/campaignai/update/:campaignaiId',
+        templateUrl: 'app/campaignAI/campaignai-update.html',
+        controller: 'CampaignAIUpdateController',
         data: {
             requireLogin: true,
             requiredPermissions: ['superuser', 'staff']

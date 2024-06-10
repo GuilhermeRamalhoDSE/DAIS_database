@@ -1,4 +1,4 @@
-angular.module('frontend').factory('ContributionIAService', ['$http', function($http) {
+angular.module('frontend').factory('ContributionAIService', ['$http', function($http) {
     var service = {};
     var baseUrl = 'http://127.0.0.1:8000/api/contributionsIA/';
 

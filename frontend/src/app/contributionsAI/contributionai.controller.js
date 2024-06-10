@@ -1,20 +1,39 @@
-angular.module('frontend').controller('ContributionIAUpdateController', ['$scope', 'ContributionIAService', 'LicenseService', 'AuthService', '$state', '$stateParams', 'Upload', '$q', '$interval', function($scope, ContributionIAService, LicenseService, AuthService, $state, $stateParams, Upload, $q, $interval) {
-    $scope.isSuperuser = AuthService.isSuperuser();
-    $scope.licenseId = AuthService.getLicenseId();
+angular.module('frontend').controller('ContributionAIController', ['$scope', 'ContributionAIService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$http', 'Upload', '$q', '$interval', function($scope, ContributionAIService, LicenseService, AuthService, $state, $stateParams, $http, Upload, $q, $interval) {
+    $scope.contributionList = [];
+    $scope.file = null;
+
     $scope.clientId = $stateParams.clientId;
     $scope.clientName = $stateParams.clientName;
     $scope.groupId = $stateParams.groupId;
     $scope.groupName = $stateParams.groupName;
     $scope.periodiaId = $stateParams.periodiaId;
-    $scope.layerName = $stateParams.layerName;
-    $scope.layerId = $stateParams.layerId;
-    
-    $scope.contributioniaId = $stateParams.contributioniaId;
-    $scope.contributioniaName = $stateParams.contributioniaName;
-    
-    $scope.contributionData = {};
-    $scope.file = null;
+    $scope.isSuperuser = AuthService.isSuperuser();
+    $scope.licenseId = AuthService.getLicenseId();
     $scope.languages = [];
+
+    let layerId = parseInt($stateParams.layerId || sessionStorage.getItem('lastLayerId'), 10);
+    sessionStorage.setItem('lastLayerId', layerId.toString());
+
+    let layerName = $stateParams.layerName || sessionStorage.getItem('lastLayerName');
+    sessionStorage.setItem('lastLayerName', layerName);
+    $scope.layerName = layerName;
+
+    $scope.newContribution = {
+        layer_id: layerId,
+        name: '',
+        type: '',
+        trigger: '',
+        detail: '',
+        language_id: null
+    };
+
+    $scope.loadContributions = function() {
+        ContributionAIService.getAll(layerId).then(function(response) {
+            $scope.contributionList = response.data;
+        }).catch(function(error) {
+            console.error('Error loading contributions:', error);
+        });
+    };
 
     $scope.loadLanguages = function() {
         if ($scope.licenseId) {
@@ -26,83 +45,127 @@ angular.module('frontend').controller('ContributionIAUpdateController', ['$scope
         } else {
             console.error('License ID is undefined');
         }
-    }; 
+    };  
 
-    $scope.loadContributionDetails = function() {
-        if(!$scope.contributioniaId){
-            console.log('No contribution ID provided.');
-            alert('No contribution ID provided.')
-            $state.go('base.contributionia-view', { 
+    $scope.goToCreateContributionAI = function() {
+        $state.go('base.contributionai-new', {
+            clientId: $scope.clientId,
+            clientName: $scope.clientName,
+            groupId: $scope.groupId,
+            groupName: $scope.groupName,
+            periodiaId: $scope.periodiaId, 
+            layerId: layerId,
+            layerName: layerName });
+    };
+
+    $scope.createContribution = function() {
+        if (!layerId || !$scope.file) {
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append('file', $scope.file);
+
+        var contributionData = { ...$scope.newContribution };
+        formData.append('contribution_in', JSON.stringify(contributionData));
+
+        ContributionAIService.create(formData).then(function(response) {
+            alert('Contribution created successfully!');
+            $scope.loadContributions();
+            $state.go('base.contributionai-view',{
                 clientId: $scope.clientId,
                 clientName: $scope.clientName,
                 groupId: $scope.groupId,
                 groupName: $scope.groupName,
-                periodiaId: $scope.periodiaId,
-                layerId: $scope.layerId,
-                layerName: $scope.layerName,
-             });
-             return;
-        }
-        ContributionIAService.getById($scope.contributioniaId).then(function(response) {
-            if (response.data) {
-                $scope.contributionData = response.data;
-                $scope.contributionData.language_id = response.data.language.id; 
-            } else {
-                console.error('Contribution not found');
-                alert('Contribution not found.');
-                $state.go('base.contributionia-view', { 
-                    clientId: $scope.clientId,
-                    clientName: $scope.clientName,
-                    groupId: $scope.groupId,
-                    groupName: $scope.groupName,
-                    periodiaId: $scope.periodiaId,
-                    layerId: $scope.layerId,
-                    layerName: $scope.layerName,
-                });
-            }
+                periodiaId: $scope.periodiaId, 
+                layerId: layerId,
+                layerName: layerName });
         }).catch(function(error) {
-            console.error('Error fetching contribution details:', error);
-        });
-    }; 
-
-    $scope.updateContribution = function() {
-        var formData = new FormData();
-    
-        if ($scope.file) {
-            formData.append('file', $scope.file);
-        }
-    
-        formData.append('data', JSON.stringify($scope.contributionData));
-    
-        $scope.upload($scope.file).then(function() {
-            ContributionIAService.update($scope.contributioniaId, formData).then(function(response) {
-                alert('Contribution updated successfully!');
-                $state.go('base.contributionia-view', { 
-                    clientId: $scope.clientId,
-                    clientName: $scope.clientName,
-                    groupId: $scope.groupId,
-                    groupName: $scope.groupName,
-                    periodiaId: $scope.periodiaId,
-                    layerId: $scope.layerId,
-                    layerName: $scope.layerName,
-                });
-            }).catch(function(error) {
-                console.error('Error updating contribution:', error);
-            });
-        }).catch(function(error) {
-            console.error('Error uploading file:', error);
+            console.error('Error creating contribution:', error);
         });
     };
+
+    $scope.editContributionAI = function(contributionaiId, contributionaiName) {
+        $state.go('base.contributionai-update', { 
+            clientId: $scope.clientId,
+            clientName: $scope.clientName,
+            groupId: $scope.groupId,
+            groupName: $scope.groupName,
+            periodiaId: $scope.periodiaId, 
+            layerId: layerId,
+            layerName: layerName,
+            contributionaiId: contributionaiId,
+            contributionaiName: contributionaiName,
+            });
+    };
+
+    $scope.deleteContribution = function(contributionId) {
+        var isConfirmed = confirm('Are you sure you want to delete this contribution?');
+        if (isConfirmed) {
+            ContributionAIService.delete(contributionId).then(function(response) {
+                alert('Contribution deleted successfully!');
+                $scope.loadContributions();
+                $state.go('base.contributionai-view', {
+                    clientId: $scope.clientId,
+                    clientName: $scope.clientName,
+                    groupId: $scope.groupId,
+                    groupName: $scope.groupName,
+                    periodiaId: $scope.periodiaId, 
+                    layerId: layerId,
+                    layerName: layerName
+                });
+            }).catch(function(error) {
+                console.error('Error deleting contribution:', error);
+            });
+        }
+    };
+
+    $scope.downloadFile = function(contributionId) {
+        if (contributionId) {
+            var downloadUrl = 'http://127.0.0.1:8000/api/contributionsIA/download/' + contributionId;
     
-    $scope.cancelUpdate = function() {
-        $state.go('base.contributionia-view', {
+            $http({
+                url: downloadUrl,
+                method: 'GET',
+                responseType: 'blob',
+            }).then(function(response) {
+                var blob = new Blob([response.data], { type: response.headers('Content-Type') });
+                var downloadLink = angular.element('<a></a>');
+                downloadLink.attr('href', window.URL.createObjectURL(blob));
+                downloadLink.attr('download', 'ContributionFile-' + contributionId);
+    
+                document.body.appendChild(downloadLink[0]);
+                downloadLink[0].click();
+                document.body.removeChild(downloadLink[0]);
+            }).catch(function(error) {
+                console.error('Error downloading file:', error);
+            });
+        } else {
+            alert('Invalid Contribution ID');
+        }
+    };
+
+    $scope.cancelCreate = function() {
+        $state.go('base.contributionai-view', {
             clientId: $scope.clientId,
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
             periodiaId: $scope.periodiaId,
-            layerId: $scope.layerId,
-            layerName: $scope.layerName
+            layerId: layerId,
+            layerName: layerName
+        });
+    };
+
+    $scope.goBack = function() {
+        $state.go('base.layer-view', {
+            clientId: $scope.clientId,
+            clientName: $scope.clientName,
+            groupId: $scope.groupId,
+            groupName: $scope.groupName,
+            periodiaId: $scope.periodiaId,
+            layerId: layerId,
+            layerName: layerName
         });
     };
 
@@ -206,7 +269,7 @@ angular.module('frontend').controller('ContributionIAUpdateController', ['$scope
             }
         }
     });
-
-    $scope.loadContributionDetails();
+    
     $scope.loadLanguages();
+    $scope.loadContributions();
 }]);
