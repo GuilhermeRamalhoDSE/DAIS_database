@@ -3,7 +3,7 @@ from dais.models.campaignai_models import CampaignAI
 from dais.models.avatar_models import Avatar
 
 class Layer(models.Model):
-    period = models.ForeignKey(CampaignAI, on_delete=models.CASCADE)
+    campaignai = models.ForeignKey(CampaignAI, on_delete=models.CASCADE)
     layer_number = models.IntegerField()
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     avatar = models.ForeignKey(Avatar, on_delete=models.CASCADE)

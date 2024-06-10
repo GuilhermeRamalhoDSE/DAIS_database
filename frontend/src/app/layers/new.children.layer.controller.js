@@ -2,7 +2,8 @@ angular.module('frontend').controller('NewChildrenLayerController', [
     '$scope', 'LayerService', 'LicenseService', 'AuthService', '$state', '$stateParams', 
     function($scope, LayerService, LicenseService, AuthService, $state, $stateParams) {
     let layerNumber = parseInt($stateParams.layerNumber, 10);
-    let periodiaId = parseInt($stateParams.periodiaId, 10);
+    let campaignaiId = parseInt($stateParams.campaignaiId, 10);
+    var campaignaiName = $stateParams.campaignaiName;
     let clientId = parseInt($stateParams.clientId, 10);
     let groupId = parseInt($stateParams.groupId, 10);
     let groupName = $stateParams.groupName;
@@ -16,7 +17,7 @@ angular.module('frontend').controller('NewChildrenLayerController', [
     }
 
     $scope.newLayerChildren = {
-        period_id: periodiaId,
+        campaignai_id: campaignaiId,
         parent_layer_number: layerNumber,
         avatar_id: null,
         name: "",
@@ -43,7 +44,7 @@ angular.module('frontend').controller('NewChildrenLayerController', [
 
         LayerService.createLayer($scope.newLayerChildren).then(function(response) {
             alert('Child layer created successfully!');
-            $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+            $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId, campaignaiName: campaignaiName });
         }).catch(function(error) {
             console.error('Error creating child layer:', error);
             alert('Error creating child layer: Check console for details.');
@@ -51,12 +52,12 @@ angular.module('frontend').controller('NewChildrenLayerController', [
     };
 
     $scope.cancelCreate = function() {
-        $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+        $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId, campaignaiName: campaignaiName });
     };
 
     $scope.resetForm = function() {
         $scope.newLayerChildren = {
-            period_id: periodiaId,
+            campaignai_id: campaignaiId,
             parent_layer_number: layerNumber,
             avatar_id: null,
             name: "",

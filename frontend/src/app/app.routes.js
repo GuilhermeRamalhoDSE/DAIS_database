@@ -715,7 +715,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.layer-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaigniaName/layers/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/layers/new',
         templateUrl: 'app/layers/layer-new.html',
         controller: 'LayerController',
         data: {
@@ -725,7 +725,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.layer-new-children', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaigniaName/layers/new/:layerNumber',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/layers/new/:layerNumber',
         templateUrl: 'app/layers/layer-new-children.html',
         controller: 'LayerController',
         data: {
@@ -736,7 +736,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.layer-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaigniaName/layers',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/layers',
         templateUrl: 'app/layers/layer-view.html',
         controller: 'LayerController',
         data: {
@@ -746,7 +746,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.layer-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaigniaName/update/:layerId',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/update/:layerId',
         templateUrl: 'app/layers/layer-update.html',
         controller: 'LayerUpdateController',
         data: {
@@ -756,7 +756,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.contributionai-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/contributionAI/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/:layerId/:layerName/contributionAI/new',
         templateUrl: 'app/contributionsAI/contributionai-new.html',
         controller: 'ContributionAIController',
         data: {
@@ -767,7 +767,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.contributionai-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/contributionsIA',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/:layerId/:layerName/contributionsIA',
         templateUrl: 'app/contributionsAI/contributionai-view.html',
         controller: 'ContributionAIController',
         data: {
@@ -777,7 +777,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.contributionai-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/contributionIA/update/:contributioniaId/:contributioniaName',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/:layerId/:layerName/contributionIA/update/:contributioniaId/:contributioniaName',
         templateUrl: 'app/contributionsAI/contributionai-update.html',
         controller: 'ContributionAIUpdateController',
         data: {
@@ -787,7 +787,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.formation-new', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/formation/new',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/:layerId/:layerName/formation/new',
         templateUrl: 'app/formations/formation-new.html',
         controller: 'FormationController',
         data: {
@@ -798,7 +798,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.formation-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/formations',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/:layerId/:layerName/formations',
         templateUrl: 'app/formations/formation-view.html',
         controller: 'FormationController',
         data: {
@@ -809,7 +809,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.formation-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaigniaId/:campaigniaName/:layerId/:layerName/formation/update/:formationId/:formationName',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/:layerId/:layerName/formation/update/:formationId/:formationName',
         templateUrl: 'app/formations/formation-update.html',
         controller: 'FormationUpdateController',
         data: {

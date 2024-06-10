@@ -5,14 +5,14 @@ from dais.schemas.avatar_schema import AvatarSchema
 
 
 class LayerCreate(Schema):
-    period_id: int
+    campaignai_id: int
     parent_layer_number: Optional[int] = None  
     avatar_id: int
     name: str
     trigger: str
 
 class LayerUpdate(Schema):
-    period_id: Optional[int] = None
+    campaignai_id: Optional[int] = None
     layer_number: Optional[int] = None
     parent_layer_number: Optional[int] = None  
     avatar_id: Optional[int] = None
@@ -21,7 +21,7 @@ class LayerUpdate(Schema):
 
 class LayerOut(Schema):
     id: int
-    period_id: int
+    campaignai_id: int
     layer_number: int
     parent: Optional[int] = None 
     avatar: AvatarSchema
@@ -34,7 +34,7 @@ class LayerOut(Schema):
     def from_orm(cls, obj):
         return cls(
             id=obj.id,
-            period_id=obj.period_id,
+            campaignai_id=obj.campaignai_id,
             layer_number=obj.layer_number,
             parent=obj.parent.layer_number if obj.parent else None,  
             avatar=obj.avatar,

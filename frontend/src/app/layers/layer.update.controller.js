@@ -6,7 +6,8 @@ angular.module('frontend').controller('LayerUpdateController', ['$scope', 'Layer
     var clientName = $stateParams.clientName;
     var groupId = $stateParams.groupId;
     var groupName = $stateParams.groupName;
-    var periodiaId = $stateParams.periodiaId;
+    var campaignaiId = $stateParams.campaignaiId;
+    var campaignaiName = $stateParams.campaignaiName;
     var layerId = $stateParams.layerId;
     $scope.layerData = {};
     $scope.avatars = [];
@@ -24,7 +25,7 @@ angular.module('frontend').controller('LayerUpdateController', ['$scope', 'Layer
         if (!layerId) {
             console.error('No Layer ID provided.');
             alert('No Layer ID provided.');
-            $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+            $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId, campaignaiName: campaignaiName });
             return;
         }
         LayerService.getLayerById(layerId).then(function(response) {
@@ -34,7 +35,7 @@ angular.module('frontend').controller('LayerUpdateController', ['$scope', 'Layer
             } else {
                 console.error('Layer not found');
                 alert('Layer not found.');
-                $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+                $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId, campaignaiName: campaignaiName });
             }
         }).catch(function(error) {
             console.error('Error fetching Layer details:', error);
@@ -51,7 +52,7 @@ angular.module('frontend').controller('LayerUpdateController', ['$scope', 'Layer
 
         LayerService.updateLayer(layerId, layerDataToUpdate).then(function(response) {
             alert('Layer updated successfully!');
-            $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+            $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId, campaignaiName: campaignaiName });
         }).catch(function(error) {
             console.error('Error updating Layer:', error);
             alert('Error updating Layer. Check console for details.');
@@ -59,7 +60,7 @@ angular.module('frontend').controller('LayerUpdateController', ['$scope', 'Layer
     };
 
     $scope.cancelUpdate = function() {
-        $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, periodiaId: periodiaId });
+        $state.go('base.layer-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, campaignaiId: campaignaiId, campaignaiName: campaignaiName });
     };
 
     $scope.loadAvatars().then(function() {
