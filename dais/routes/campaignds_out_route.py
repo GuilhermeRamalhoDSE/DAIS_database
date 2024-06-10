@@ -10,7 +10,7 @@ def get_overview(request, group_id: int):
     campaigns = CampaignDS.objects.filter(group_id=group_id, active=True)
     campaign_data = []
     for campaign in campaigns:
-        time_slots = TimeSlot.objects.filter(campaign_id=campaign.id)
+        time_slots = TimeSlot.objects.filter(campaignds_id=campaign.id)
         time_slot_data = []
         for time_slot in time_slots:
             contributions = ContributionDS.objects.filter(time_slot_id=time_slot.id)
@@ -31,6 +31,9 @@ def get_overview(request, group_id: int):
             "name": campaign.name,
             "start_date": campaign.start_date.strftime('%d-%m-%Y'),
             "end_date": campaign.end_date.strftime('%d-%m-%Y'),
+            "logo_path": campaign.logo.url,
+            "background_path": campaign.background.url,
+            "footer": campaign.footer,
             "last_update": campaign.last_update.strftime('%d-%m-%Y %H:%M:%S'),
             "time_slots": time_slot_data
         })

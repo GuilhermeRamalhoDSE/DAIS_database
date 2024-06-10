@@ -15,7 +15,7 @@ def get_ia_overview(request, group_id: int):
     campaigns = CampaignAI.objects.filter(group=group_id, active=True)
     campaign_data = []
     for campaign in campaigns:
-        layers = Layer.objects.filter(campaign=campaign).prefetch_related('children', 'avatar')
+        layers = Layer.objects.filter(campaignai=campaign).prefetch_related('children', 'avatar')
         layer_data = []
         for layer in layers:
             contributions = ContributionAI.objects.filter(layer=layer).select_related('language')
@@ -33,10 +33,13 @@ def get_ia_overview(request, group_id: int):
 
 
         campaign_data.append({
-            "id": campaign.id,
-            "start": campaign.start_date.strftime('%d-%m-%Y'),
-            "end": campaign.end_date.strftime('%d-%m-%Y'),
-            "last_updated": campaign.last_update.strftime('%d-%m-%Y'),
+            "name": campaign.name,
+            "start_date": campaign.start_date.strftime('%d-%m-%Y'),
+            "end_date": campaign.end_date.strftime('%d-%m-%Y'),
+            "logo_path": campaign.logo.url,
+            "background_path": campaign.background.url,
+            "footer": campaign.footer,
+            "last_update": campaign.last_update.strftime('%d-%m-%Y %H:%M:%S'),
             "layers": layer_data
         })
 
