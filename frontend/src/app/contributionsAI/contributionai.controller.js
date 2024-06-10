@@ -6,7 +6,8 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
     $scope.clientName = $stateParams.clientName;
     $scope.groupId = $stateParams.groupId;
     $scope.groupName = $stateParams.groupName;
-    $scope.periodiaId = $stateParams.periodiaId;
+    $scope.campaignaiId = $stateParams.campaignaiId;
+    $scope.campaignaiName = $stateParams.campaignaiName;
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
     $scope.languages = [];
@@ -53,7 +54,8 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            periodiaId: $scope.periodiaId, 
+            campaignaiId: $scope.campaignaiId, 
+            campaignaiName: $scope.campaignaiName, 
             layerId: layerId,
             layerName: layerName });
     };
@@ -77,7 +79,8 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
                 clientName: $scope.clientName,
                 groupId: $scope.groupId,
                 groupName: $scope.groupName,
-                periodiaId: $scope.periodiaId, 
+                campaignaiId: $scope.campaignaiId, 
+                campaignaiName: $scope.campaignaiName, 
                 layerId: layerId,
                 layerName: layerName });
         }).catch(function(error) {
@@ -91,7 +94,8 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            periodiaId: $scope.periodiaId, 
+            campaignaiId: $scope.campaignaiId, 
+            campaignaiName: $scope.campaignaiName, 
             layerId: layerId,
             layerName: layerName,
             contributionaiId: contributionaiId,
@@ -110,7 +114,8 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
                     clientName: $scope.clientName,
                     groupId: $scope.groupId,
                     groupName: $scope.groupName,
-                    periodiaId: $scope.periodiaId, 
+                    campaignaiId: $scope.campaignaiId, 
+                    campaignaiName: $scope.campaignaiName, 
                     layerId: layerId,
                     layerName: layerName
                 });
@@ -122,7 +127,7 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
 
     $scope.downloadFile = function(contributionId) {
         if (contributionId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/contributionsIA/download/' + contributionId;
+            var downloadUrl = 'http://127.0.0.1:8000/api/contributionsAI/download/' + contributionId;
     
             $http({
                 url: downloadUrl,
@@ -145,13 +150,22 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
         }
     };
 
+    $scope.viewFile = function(filePath) {
+        if (filePath) {
+            window.open('http://127.0.0.1:8000/' + filePath, '_blank');
+        } else {
+            alert('File path not available.');
+        }
+    };
+
     $scope.cancelCreate = function() {
         $state.go('base.contributionai-view', {
             clientId: $scope.clientId,
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            periodiaId: $scope.periodiaId,
+            campaignaiId: $scope.campaignaiId, 
+            campaignaiName: $scope.campaignaiName, 
             layerId: layerId,
             layerName: layerName
         });
@@ -163,7 +177,8 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            periodiaId: $scope.periodiaId,
+            campaignaiId: $scope.campaignaiId, 
+            campaignaiName: $scope.campaignaiName, 
             layerId: layerId,
             layerName: layerName
         });

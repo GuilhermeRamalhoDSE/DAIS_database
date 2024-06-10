@@ -767,7 +767,7 @@ angular.module('frontend')
 
     $stateProvider
     .state('base.contributionai-view', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/:layerId/:layerName/contributionsIA',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/:layerId/:layerName/contributionsAI',
         templateUrl: 'app/contributionsAI/contributionai-view.html',
         controller: 'ContributionAIController',
         data: {
@@ -777,7 +777,7 @@ angular.module('frontend')
     });
     $stateProvider
     .state('base.contributionai-update', {
-        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/:layerId/:layerName/contributionIA/update/:contributioniaId/:contributioniaName',
+        url: '/:clientId/:clientName/:groupId/:groupName/:campaignaiId/:campaignaiName/:layerId/:layerName/contributionAI/update/:contributionaiId/:contributionaiName',
         templateUrl: 'app/contributionsAI/contributionai-update.html',
         controller: 'ContributionAIUpdateController',
         data: {

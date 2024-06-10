@@ -55,8 +55,12 @@
                     <tr ng-repeat="contribution in contributionList | filter:searchText">
                         <td>{{ contribution.layer.name }}</td>
                         <td>{{ contribution.name }}</td>
-                        <td> <button class="btn btn-primary btn-xs" ng-click="downloadFile(contribution.id)">Download
-                                File</button></td>
+                        <td>
+                            <button class="md-btn md-raised m-b-sm w-xs indigo"
+                                ng-click="downloadFile(contribution.id)">Download</button>
+                            <button class="md-btn md-flat m-b-sm w-xs"
+                                ng-click="viewFile(contribution.file_path)">View</button>
+                        </td>
                         <td>{{ contribution.language.name }}</td>
                         <td>{{ contribution.type }}</td>
                         <td>{{ contribution.trigger }}</td>

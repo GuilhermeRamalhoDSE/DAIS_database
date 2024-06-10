@@ -21,7 +21,7 @@ def create_contribution(request, contribution_in: ContributionAICreateSchema, fi
         raise HttpError(403, "You do not have permission to add a contribution.")
 
     layer = get_object_or_404(Layer, id=contribution_in.layer_id)
-    if not user_info.get('is_superuser') and str(layer.period.group.client.license_id) != str(user_info.get('license_id')):
+    if not user_info.get('is_superuser') and str(layer.campaignai.group.client.license_id) != str(user_info.get('license_id')):
         raise HttpError(403, "You do not have permission to add contributions to this layer.")
     
     contribution_data = {**contribution_in.dict(exclude={'file_path'}), 'file': file}
@@ -73,9 +73,9 @@ def update_contribution(request, contributionai_id: int, data: ContributionAIUpd
     user_info = get_user_info_from_token(request)
     contribution = get_object_or_404(ContributionAI, id=contributionai_id)
     layer = get_object_or_404(Layer, id=contribution.layer_id)
-    period = get_object_or_404(CampaignAI, id=layer.period_id)
+    campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
-    if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
+    if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to update this contribution.")
      
     for attribute, value in data.dict(exclude_none=True).items():
@@ -96,9 +96,9 @@ def delete_contribution(request, contributionai_id: int):
     user_info = get_user_info_from_token(request)
     contribution = get_object_or_404(ContributionAI, id=contributionai_id)
     layer = get_object_or_404(Layer, id=contribution.layer_id)
-    period = get_object_or_404(CampaignAI, id=layer.period_id)
+    campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
-    if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
+    if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to delete this contribution.")
     
     if contribution.file:

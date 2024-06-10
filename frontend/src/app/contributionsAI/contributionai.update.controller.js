@@ -5,12 +5,12 @@ angular.module('frontend').controller('ContributionAIUpdateController', ['$scope
     $scope.clientName = $stateParams.clientName;
     $scope.groupId = $stateParams.groupId;
     $scope.groupName = $stateParams.groupName;
-    $scope.periodiaId = $stateParams.periodiaId;
+    $scope.campaignaiId = $stateParams.campaignaiId;
     $scope.layerName = $stateParams.layerName;
     $scope.layerId = $stateParams.layerId;
     
-    $scope.ContributionaiId = $stateParams.ContributionaiId;
-    $scope.ContributionaiName = $stateParams.ContributionaiName;
+    $scope.contributionaiId = $stateParams.contributionaiId;
+    $scope.contributionaiName = $stateParams.contributionaiName;
     
     $scope.contributionData = {};
     $scope.file = null;
@@ -29,33 +29,35 @@ angular.module('frontend').controller('ContributionAIUpdateController', ['$scope
     }; 
 
     $scope.loadContributionDetails = function() {
-        if(!$scope.ContributionaiId){
+        if(!$scope.contributionaiId){
             console.log('No contribution ID provided.');
             alert('No contribution ID provided.')
-            $state.go('base.Contributionai-view', { 
+            $state.go('base.contributionai-view', { 
                 clientId: $scope.clientId,
                 clientName: $scope.clientName,
                 groupId: $scope.groupId,
                 groupName: $scope.groupName,
-                periodiaId: $scope.periodiaId,
+                campaignaiId: $scope.campaignaiId, 
+                campaignaiName: $scope.campaignaiName, 
                 layerId: $scope.layerId,
                 layerName: $scope.layerName,
              });
              return;
         }
-        ContributionAIService.getById($scope.ContributionaiId).then(function(response) {
+        ContributionAIService.getById($scope.contributionaiId).then(function(response) {
             if (response.data) {
                 $scope.contributionData = response.data;
                 $scope.contributionData.language_id = response.data.language.id; 
             } else {
                 console.error('Contribution not found');
                 alert('Contribution not found.');
-                $state.go('base.Contributionai-view', { 
+                $state.go('base.contributionai-view', { 
                     clientId: $scope.clientId,
                     clientName: $scope.clientName,
                     groupId: $scope.groupId,
                     groupName: $scope.groupName,
-                    periodiaId: $scope.periodiaId,
+                    campaignaiId: $scope.campaignaiId, 
+                    campaignaiName: $scope.campaignaiName, 
                     layerId: $scope.layerId,
                     layerName: $scope.layerName,
                 });
@@ -75,14 +77,15 @@ angular.module('frontend').controller('ContributionAIUpdateController', ['$scope
         formData.append('data', JSON.stringify($scope.contributionData));
     
         $scope.upload($scope.file).then(function() {
-            ContributionAIService.update($scope.ContributionaiId, formData).then(function(response) {
+            ContributionAIService.update($scope.contributionaiId, formData).then(function(response) {
                 alert('Contribution updated successfully!');
-                $state.go('base.Contributionai-view', { 
+                $state.go('base.contributionai-view', { 
                     clientId: $scope.clientId,
                     clientName: $scope.clientName,
                     groupId: $scope.groupId,
                     groupName: $scope.groupName,
-                    periodiaId: $scope.periodiaId,
+                    campaignaiId: $scope.campaignaiId, 
+                    campaignaiName: $scope.campaignaiName, 
                     layerId: $scope.layerId,
                     layerName: $scope.layerName,
                 });
@@ -95,12 +98,13 @@ angular.module('frontend').controller('ContributionAIUpdateController', ['$scope
     };
     
     $scope.cancelUpdate = function() {
-        $state.go('base.Contributionai-view', {
+        $state.go('base.contributionai-view', {
             clientId: $scope.clientId,
             clientName: $scope.clientName,
             groupId: $scope.groupId,
             groupName: $scope.groupName,
-            periodiaId: $scope.periodiaId,
+            campaignaiId: $scope.campaignaiId, 
+            campaignaiName: $scope.campaignaiName, 
             layerId: $scope.layerId,
             layerName: $scope.layerName
         });

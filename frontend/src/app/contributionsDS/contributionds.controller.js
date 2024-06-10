@@ -159,7 +159,7 @@ angular.module('frontend').controller('ContributionDSController', ['$scope', 'Co
         if (filePath) {
             window.open('http://127.0.0.1:8000/' + filePath, '_blank');
         } else {
-            alert('Logo path not available.');
+            alert('File path not available.');
         }
     };
 
