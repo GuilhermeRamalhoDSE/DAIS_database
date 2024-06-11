@@ -30,6 +30,7 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
     };
 
     $scope.goToForm = function(group, form) {
+        sessionStorage.setItem('previousState', $state.current.name);
         if (!form) {
             console.error('Form not provided');
             return;

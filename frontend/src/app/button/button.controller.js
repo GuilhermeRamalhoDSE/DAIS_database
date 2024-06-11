@@ -120,7 +120,7 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
 
     $scope.isURLType = function() {
         var selectedType = $scope.buttonTypes.find(type => type.id === $scope.newButton.button_type_id);
-        return selectedType && selectedType.name === 'Web page';
+        return selectedType && selectedType.name === 'Web Page';
     };
 
     $scope.isFormType = function() {
@@ -182,7 +182,7 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
     };
 
     $scope.isURL = function(button) {
-        return button.button_type.name === 'Web page';
+        return button.button_type.name === 'Web Page';
     };
 
     $scope.isForm = function(button) {
@@ -206,7 +206,7 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
                 console.error('Unknown module type');
                 return;
         }
-
+        sessionStorage.setItem('previousState', $state.current.name);
         $state.go(route, {
             clientId: $stateParams.clientId,
             clientName: $stateParams.clientName,

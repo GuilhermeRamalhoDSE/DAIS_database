@@ -93,11 +93,10 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
         var formData = new FormData();
 
         if ($scope.file) {
-            formData.append('file', $scope.file);
+            formData.append('file', $scope.file);   
         }
         
-        var formationData = { ...$scope.newFormation };
-        formData.append('formation_in', JSON.stringify(formationData));
+        formData.append('formation_in', JSON.stringify($scope.newFormation));
     
         $scope.upload().then(function() {
             FormationService.create(formData).then(function(response) {
@@ -118,6 +117,10 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
             });
         });
     };    
+
+    $scope.fileChanged = function(element) {
+        $scope.file = element.files[0];
+    };
 
     $scope.editFormation = function(formationId, formationName) {
         $state.go('base.formation-update', { 

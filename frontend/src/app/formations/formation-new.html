@@ -27,7 +27,8 @@
                         </div>
                         <div class="form-group" ng-if="inputType === 'file'">
                             <label for="file">File Upload</label>
-                            <input type="file" class="form-control" id="file" file-model="file" required>
+                            <input type="file" class="form-control" id="file" file-model="file" required
+                                onchange="angular.element(this).scope().fileChanged(this)">
                         </div>
                         <div class="form-group" ng-if="inputType === 'text'">
                             <label for="textInput">Text</label>

@@ -6,9 +6,6 @@ from django.utils.timezone import localtime
 
 class ScreenDetails(BaseModel):
     type: str
-    logo_path: Optional[str]
-    background_path: Optional[str]
-    footer: Optional[str]
 
 class TotemDetails(BaseModel):
     id: int
@@ -43,7 +40,6 @@ class FormSchema(BaseModel):
     id: int
     client_module_id: int
     name: str
-    api: bool
     last_update: datetime
     fields: List[FormFieldSchema]
 
@@ -58,7 +54,6 @@ class FormSchema(BaseModel):
             id=obj.id,
             client_module_id=obj.client_module_id,
             name=obj.name,
-            api=obj.api,
             last_update=obj.last_update,
             fields=[FormFieldSchema.from_orm(field) for field in obj.fields.all()]
         )

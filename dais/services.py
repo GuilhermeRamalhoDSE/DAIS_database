@@ -24,10 +24,7 @@ def duplicate_totem_and_screens(totem_id):
         for screen_item in screen:
             Screen.objects.create(
                 totem=totem_copy,
-                typology=screen_item.typology,
-                logo=screen_item.logo,
-                background=screen_item.background,
-                footer=screen_item.footer
+                typology=screen_item.typology
             )
 
         return totem_copy

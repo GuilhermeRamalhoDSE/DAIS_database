@@ -43,7 +43,7 @@
                     <tr ng-repeat="module in clientmoduleList | filter:searchText">
                         <td>{{ clientName }}</td>
                         <td>{{ module.module.name }}</td>
-                        <td>{{ module.form_count }}</td>
+                        <td>{{ getModuleCount(module) }}</td>
                         <td>
                             <div ng-repeat="group in groups">
                                 <label>
@@ -54,8 +54,7 @@
                             </div>
                         </td>
                         <td>
-                            <button class="btn btn-default btn-xs"
-                                ng-click="editClientModule(module.id)">Edit</button>
+                            <button class="btn btn-default btn-xs" ng-click="editClientModule(module.id)">Edit</button>
                             <button class="btn btn-danger btn-xs"
                                 ng-click="deleteClientModule(module.id)">Delete</button>
                         </td>

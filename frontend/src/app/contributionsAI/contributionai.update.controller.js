@@ -72,11 +72,30 @@ angular.module('frontend').controller('ContributionAIUpdateController', ['$scope
     
         if ($scope.file) {
             formData.append('file', $scope.file);
+            $scope.upload($scope.file).then(function() {
+                ContributionAIService.update($scope.contributionaiId, formData).then(function(response) {
+                    alert('Contribution updated successfully!');
+                    $state.go('base.contributionai-view', { 
+                        clientId: $scope.clientId,
+                        clientName: $scope.clientName,
+                        groupId: $scope.groupId,
+                        groupName: $scope.groupName,
+                        campaignaiId: $scope.campaignaiId, 
+                        campaignaiName: $scope.campaignaiName, 
+                        layerId: $scope.layerId,
+                        layerName: $scope.layerName,
+                    });
+                }).catch(function(error) {
+                    console.error('Error updating contribution:', error);
+                });
+            }).catch(function(error) {
+                console.error('Error uploading file:', error);
+            });
         }
     
         formData.append('data', JSON.stringify($scope.contributionData));
     
-        $scope.upload($scope.file).then(function() {
+        $scope.upload().then(function() {
             ContributionAIService.update($scope.contributionaiId, formData).then(function(response) {
                 alert('Contribution updated successfully!');
                 $state.go('base.contributionai-view', { 
@@ -124,7 +143,7 @@ angular.module('frontend').controller('ContributionAIUpdateController', ['$scope
             }
         }, 500); 
     
-        if (file.type.startsWith('image/')) {
+        if (file && file.type && file.type.startsWith('image/')) {
             var reader = new FileReader();
             reader.onload = function(e) {
                 var img = new Image();
@@ -160,7 +179,7 @@ angular.module('frontend').controller('ContributionAIUpdateController', ['$scope
                 };
             };
             reader.readAsDataURL(file);
-        } else if (file.type.startsWith('video/')) {
+        } else if (file && file.type && file.type.startsWith('video/')) {
             var video = document.createElement('video');
             video.src = URL.createObjectURL(file);
             video.controls = true;
@@ -174,6 +193,7 @@ angular.module('frontend').controller('ContributionAIUpdateController', ['$scope
     
         return deferred.promise; 
     };
+    
     
 
     function dataURLtoFile(dataurl, filename) {

@@ -97,7 +97,21 @@ angular.module('frontend').controller('FormFieldController', ['$scope', 'FormFie
     };
 
     $scope.goBack = function() {
-        $window.history.back();
+        var previousState = sessionStorage.getItem('previousState');
+        if (previousState) {
+            sessionStorage.removeItem('previousState'); 
+            $state.go(previousState, {
+                clientId: $scope.clientId,
+                clientName: $scope.clientName,
+                clientmoduleId: $scope.clientmoduleId,
+            });
+        } else {
+            $state.go('base.form-view', {
+                clientId: $scope.clientId,
+                clientName: $scope.clientName,
+                clientmoduleId: $scope.clientmoduleId,
+            });
+        }
     };
     
     $scope.loadFormFields();

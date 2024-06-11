@@ -20,7 +20,8 @@ class ClientModuleSchema(BaseModel):
     id: int
     client_id: int
     module: Optional[ModuleOut]
-    form_count: int
+    form_count: Optional[int] = None
+    touchscreen_interaction_count: Optional[int] = None
     groups: List[GroupOut]
 
     @validator('module')
@@ -43,7 +44,8 @@ class ClientModuleSchema(BaseModel):
                 last_update=group.last_update,
                 total_totems=GroupOut.resolve_total_totems(group),  
                 comments=group.comments,
-                forms=group.forms
+                forms=group.forms,
+                needs_update=group.needs_update
             ) for group in value.all()
         ]
 

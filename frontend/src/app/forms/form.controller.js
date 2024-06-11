@@ -31,6 +31,7 @@ angular.module('frontend').controller('FormController', ['$scope', 'FormService'
     };
 
     $scope.goToFormField = function(formId, formName) {
+        sessionStorage.setItem('previousState', $state.current.name);
         $state.go('base.formfield-view', { 
             clientId: $scope.clientId,
             clientName: $scope.clientName,

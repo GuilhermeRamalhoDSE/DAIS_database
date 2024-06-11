@@ -17,3 +17,7 @@ class ClientModule(models.Model):
     @property
     def form_count(self):
         return self.form_set.count()
+    
+    @property
+    def touchscreen_interaction_count(self):
+        return self.touchscreeninteractions_set.count()

@@ -112,6 +112,7 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
     };   
 
     $scope.goToForm = function(group, form) {
+        sessionStorage.setItem('previousState', $state.current.name);
         if (!form) {
             console.error('Form not provided');
             return;

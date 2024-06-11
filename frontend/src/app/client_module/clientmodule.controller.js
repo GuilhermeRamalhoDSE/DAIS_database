@@ -156,6 +156,15 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
         return client_module.groups && client_module.groups.some(group => group.id === groupId);
     };
 
+    $scope.getModuleCount = function(module) {
+        if (module.module.slug === 'form') {
+            return module.form_count;
+        } else if (module.module.slug === 'touchscreen-interaction') {
+            return module.touchscreen_interaction_count;
+        }
+        return 0;
+    };
+
     $scope.loadClientModule();
     $scope.loadModules();
     $scope.loadGroups();

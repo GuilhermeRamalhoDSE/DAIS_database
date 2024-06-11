@@ -126,6 +126,10 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
         });
     };
 
+    $scope.fileChanged = function(element) {
+        $scope.file = element.files[0];
+    };
+
     $scope.cancelUpdate = function() {
         $state.go('base.formation-view', {
             clientId: $scope.clientId,
