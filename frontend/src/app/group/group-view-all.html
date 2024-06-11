@@ -12,7 +12,8 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button type="button" class="btn btn-fw info pull-right" ng-if="!isHomePage()" ng-click="goBack()">Back</button>
+                    <button type="button" class="btn btn-fw info pull-right" ng-if="!isHomePage()"
+                        ng-click="goBack()">Back</button>
                 </div>
             </div>
         </div>
@@ -41,7 +42,8 @@
                         <td>{{ group.last_update | date:'mediumDate' }}</td>
                         <td>{{ group.comments }}</td>
                         <td>
-                            <button class="btn btn-warning btn-xs" ng-click="updateLastUpdate(group.id)">
+                            <button class="btn btn-warning btn-xs" ng-click="updateLastUpdate(group.id)"
+                                ng-show="group.needs_update">
                                 Update Setup
                             </button>
                             <button class="btn btn-default btn-xs" ng-click="editGroup(group)">Edit</button>

@@ -15,6 +15,7 @@ class Group(models.Model):
     comments = models.TextField(blank=True, null=True)
     last_update = models.DateTimeField(default=now)
     forms = models.ManyToManyField('dais.Form', blank=True)
+    needs_update = models.BooleanField(default=False)
 
     def update_last_update(self):
         self.last_update = now()

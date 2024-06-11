@@ -1,4 +1,4 @@
-angular.module('frontend').controller('GroupGetAllController', ['$scope', '$state', 'GroupService', 'AuthService', '$location', function($scope, $state, GroupService, AuthService, $location) {
+angular.module('frontend').controller('GroupGetAllController', ['$scope', '$state', 'GroupService', 'AuthService', '$location', '$window', function($scope, $state, GroupService, AuthService, $location, $window) {
     $scope.groupList = [];
     $scope.moduleFormEnabled = false;
     $scope.modulesAvailable = AuthService.hasModules();
@@ -46,6 +46,11 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
     $scope.updateLastUpdate = function(groupId) {
         GroupService.updateLastUpdate(groupId).then(function(response) {
             alert('Last update date changed to: ' + new Date(response.data.last_update).toLocaleString());
+            GroupService.updateNeedsUpdate(groupId).then(function(response) {
+                $window.location.reload();
+            }, function(error) {
+                alert('Error updating needs update state!');
+            });
         }, function(error) {
             alert('Error updating the last update date!');
         });

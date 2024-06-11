@@ -1,4 +1,4 @@
-angular.module('frontend').controller('GroupController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', 'FormService', function($scope, GroupService, $state, $stateParams, AuthService, FormService) {
+angular.module('frontend').controller('GroupController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', 'FormService', '$window', function($scope, GroupService, $state, $stateParams, AuthService, FormService, $window) {
     $scope.groupList = [];
     $scope.forms = [];
     $scope.isSuperuser = AuthService.isSuperuser();
@@ -61,6 +61,11 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
     $scope.updateLastUpdate = function(groupId) {
         GroupService.updateLastUpdate(groupId).then(function(response) {
             alert('Last update date changed to: ' + new Date(response.data.last_update).toLocaleString());
+            GroupService.updateNeedsUpdate(groupId).then(function(response) {
+                $window.location.reload();
+            }, function(error) {
+                alert('Error updating needs update state!');
+            });
         }, function(error) {
             alert('Error updating the last update date!');
         });

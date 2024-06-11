@@ -43,6 +43,7 @@ class GroupOut(Schema):
     total_totems: Optional[int] = None
     comments: Optional[str] = None
     forms: List[FormSchema]
+    needs_update: bool
 
     @staticmethod
     def resolve_client_name(obj):

@@ -46,6 +46,14 @@ def remove_form_from_group(request, group_id: int, payload: FormIdSchema):
     
     return GroupOut.from_orm(group)
 
+@group_router.post("/{group_id}/update-needs-update/", response={200: GroupOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def update_group_needs_update(request, group_id: int):
+    group = get_object_or_404(Group, id=group_id)
+    group.needs_update = False 
+    group.save()
+    return GroupOut.from_orm(group)
+
+
 @group_router.get("/", response=List[GroupOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def read_groups(request, client_id: Optional[int] = None, license_id: Optional[int] = None):
     if not check_user_permission(request):

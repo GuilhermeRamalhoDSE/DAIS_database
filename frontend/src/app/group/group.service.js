@@ -45,5 +45,9 @@ angular.module('frontend').factory('GroupService', ['$http', function($http) {
         return $http.get(baseUrl + groupId + '/forms/');
     };
 
+    service.updateNeedsUpdate = function(groupId) {
+        return $http.post(`${baseUrl}${groupId}/update-needs-update/`);
+    };
+
     return service;
 }]);

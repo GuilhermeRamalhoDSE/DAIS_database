@@ -67,9 +67,9 @@
                             </div>
                         </td>
                         <td>
-                            <button class="btn btn-warning btn-xs" ng-click="updateLastUpdate(group.id)">
+                            <button class="btn btn-warning btn-xs" ng-click="updateLastUpdate(group.id)" ng-show="group.needs_update">
                                 Update Setup
-                            </button>
+                            </button>                            
                             <button class="btn btn-default btn-xs" ng-click="editGroup(group.id, group.name)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteGroup(group.id)">Delete</button>
                         </td>
