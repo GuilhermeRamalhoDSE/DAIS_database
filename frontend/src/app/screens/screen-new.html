@@ -19,23 +19,6 @@
                                 <option value="">--Select Typology--</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Logo Upload</label>
-                            <input type="file" class="form-control" file-model="logo" placeholder="Upload Logo">
-                        </div>
-                        <div class="form-group">
-                            <label>Background Upload</label>
-                            <input type="file" class="form-control" file-model="background" placeholder="Upload Background">
-                        </div>
-                        <div class="form-group">
-                            <label>Footer</label>
-                            <input type="text" class="form-control" ng-model="newScreen.footer" placeholder="Footer Text">
-                        </div>
-                        <div class="progress mb-2" ng-show="showProgress">
-                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
-                                {{ loadingProgress }}%
-                            </div>
-                        </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
                     </form>

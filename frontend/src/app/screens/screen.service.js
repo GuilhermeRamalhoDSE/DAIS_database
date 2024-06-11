@@ -11,17 +11,11 @@ angular.module('frontend').factory('ScreenService', ['$http', function($http) {
     };
 
     service.create = function(screenData) {
-        return $http.post(baseUrl, screenData, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        });
+        return $http.post(baseUrl, screenData);
     };
 
     service.update = function(screenId, screenData) {
-        return $http.put(baseUrl + screenId, screenData, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        });
+        return $http.put(baseUrl + screenId, screenData);
     };
 
     service.delete = function(screenId) {

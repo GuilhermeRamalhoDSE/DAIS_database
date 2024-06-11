@@ -53,7 +53,7 @@ def read_screens(request, totem_id: Optional[int] = None):
     if totem_id is not None:
         query = query.filter(totem_id=totem_id)
 
-    screens = [ScreenOutSchema.from_orm(screen) for screen in Query]
+    screens = [ScreenOutSchema.from_orm(screen) for screen in query]
     return screens
 
 @screen_router.get("/{screen_id}", response=ScreenOutSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
@@ -71,7 +71,7 @@ def read_screen_by_id(request, screen_id: int):
 
 
 @screen_router.put("/{screen_id}", response=ScreenOutSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def update_screen(request, screen_id: int, screen_in: ScreenUpdateSchema, logo: UploadedFile = File(None), background: UploadedFile = File(None)):
+def update_screen(request, screen_id: int, screen_in: ScreenUpdateSchema):
     user_info = get_user_info_from_token(request)
     screen = get_object_or_404(Screen, id=screen_id)
     totem = get_object_or_404(Totem, id=screen.totem_id)

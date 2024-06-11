@@ -27,30 +27,12 @@
                         <th>
                             Typology
                         </th>
-                        <th>
-                            Logo
-                        </th>
-                        <th>
-                            Background
-                        </th>
-                        <th>
-                            Footer
-                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="screen in screenList | filter:searchText">
                         <td>{{ screen.typology.name }}</td>
-                        <td>
-                            <button class="btn btn-primary btn-xs"
-                                ng-click="downloadLogoFile(screen.id)">Download Logo</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary btn-xs"
-                                ng-click="downloadBackgroundFile(screen.id)">Download Background</button>
-                        </td>
-                        <td>{{ screen.footer }}</td>
                         <td>
                             <button class="btn btn-default btn-xs" ng-click="editScreen(screen.id)">Edit</button>
                             <button class="btn btn-danger btn-xs" ng-click="deleteScreen(screen.id)">Delete</button>

@@ -11,10 +11,7 @@ angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'Scre
 
     $scope.screenData = {
         typology: null,
-        footer: ''
     };
-    $scope.logo = null;
-    $scope.background = null;
     $scope.screenTypes = [];
 
     $scope.loadScreenDetails = function() {
@@ -54,32 +51,20 @@ angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'Scre
     }; 
 
     $scope.updateScreen = function() {
-        var formData = new FormData();
-        if ($scope.logo) {
-            formData.append('logo', $scope.logo);
-        }
-        if ($scope.background) {
-            formData.append('background', $scope.background);
-        }
-    
-        formData.append('screen_in', JSON.stringify($scope.screenData));
-    
-        $scope.upload(formData).then(function() {
-            ScreenService.update($scope.screenId, formData).then(function(response) {
-                alert('Screen updated successfully!');
-                $state.go('base.screen-view', {
-                    clientId: $scope.clientId,
-                    clientName: $scope.clientName,
-                    groupId: $scope.groupId,
-                    groupName: $scope.groupName,
-                    totemId: $scope.totemId,
-                    totemName: $scope.totemName
-                });
-            }).catch(function(error) {
-                console.error('Error updating screen:', error);
+        ScreenService.update($scope.screenId, $scope.screenData).then(function(response) {
+            alert('Screen updated successfully!');
+            $state.go('base.screen-view', {
+                clientId: $scope.clientId,
+                clientName: $scope.clientName,
+                groupId: $scope.groupId,
+                groupName: $scope.groupName,
+                totemId: $scope.totemId,
+                totemName: $scope.totemName
             });
+        }).catch(function(error) {
+            console.error('Error updating screen:', error);
         });
-    };    
+    };
 
     $scope.cancelUpdate = function() {
         $state.go('base.screen-view', {
@@ -90,23 +75,6 @@ angular.module('frontend').controller('ScreenUpdateController', ['$scope', 'Scre
             totemId: $scope.totemId,
             totemName: $scope.totemName
         });
-    };
-
-    $scope.upload = function(file) {
-        var deferred = $q.defer(); 
-    
-        $scope.showProgress = true;
-        $scope.loadingProgress = 0;
-    
-        var progressInterval = $interval(function() {
-            $scope.loadingProgress += 10; 
-            if ($scope.loadingProgress >= 100) {
-                $interval.cancel(progressInterval); 
-                deferred.resolve(); 
-            }
-        }, 500); 
-    
-        return deferred.promise; 
     };
 
     $scope.loadScreenDetails();

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 from typing import Optional
 from dais.schemas.totem_schema import TotemOut
 from dais.schemas.screentype_schema import ScreenTypeOut
