@@ -33,7 +33,7 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
             avatarData.append('file', $scope.newAvatar.file);
         }
     
-        $scope.upload($scope.newAvatar.file).then(function() {
+        $scope.upload().then(function() {
             AvatarService.createAvatar(avatarData).then(function(response) {
                 alert('Avatar created successfully!');
                 $scope.loadAvatars();
@@ -96,7 +96,7 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
         }
     };
     
-    $scope.upload = function(file) {
+    $scope.upload = function() {
         var deferred = $q.defer(); 
     
         $scope.showProgress = true;

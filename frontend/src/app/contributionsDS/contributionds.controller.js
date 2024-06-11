@@ -61,7 +61,7 @@ angular.module('frontend').controller('ContributionDSController', ['$scope', 'Co
 
         formData.append('contributionds_in', JSON.stringify($scope.newContributionDS))
 
-        $scope.upload($scope.newContributionDS.file).then(function() {
+        $scope.upload().then(function() {
             ContributionDSService.create(formData).then(function(response) {
                 alert('ContributionDS created successfully!');
                 $scope.loadContributionDSs();
@@ -163,7 +163,7 @@ angular.module('frontend').controller('ContributionDSController', ['$scope', 'Co
         }
     };
 
-    $scope.upload = function(file) {
+    $scope.upload = function() {
         var deferred = $q.defer(); 
 
         $scope.showProgress = true;

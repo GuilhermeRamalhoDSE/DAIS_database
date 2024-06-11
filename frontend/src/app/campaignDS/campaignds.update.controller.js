@@ -58,7 +58,7 @@ angular.module('frontend').controller('CampaignDSUpdateController', ['$scope', '
         formData.append('campaignds_in', JSON.stringify(campaignDSDataToUpdate));
     
     
-        $scope.upload($scope.campaignDSData.background).then(function() {
+        $scope.upload().then(function() {
             CampaignDSService.updateCampaignDS(campaigndsId, formData).then(function(response) {
                 alert('Campaign updated successfully!');
                 $state.go('base.campaignds-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
@@ -69,7 +69,7 @@ angular.module('frontend').controller('CampaignDSUpdateController', ['$scope', '
         });
     };    
 
-    $scope.upload = function(file) {
+    $scope.upload = function() {
         var deferred = $q.defer(); 
     
         $scope.showProgress = true;

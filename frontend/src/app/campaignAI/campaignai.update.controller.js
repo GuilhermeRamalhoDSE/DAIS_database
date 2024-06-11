@@ -58,7 +58,7 @@ angular.module('frontend').controller('CampaignAIUpdateController', ['$scope', '
         formData.append('campaignai_in', JSON.stringify(campaignAIDataToUpdate));
     
     
-        $scope.upload($scope.campaignAIData.background).then(function() {
+        $scope.upload().then(function() {
             CampaignAIService.updateCampaignAI(campaignaiId, formData).then(function(response) {
                 alert('Campaign updated successfully!');
                 $state.go('base.campaignai-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
@@ -69,7 +69,7 @@ angular.module('frontend').controller('CampaignAIUpdateController', ['$scope', '
         });
     };    
 
-    $scope.upload = function(file) {
+    $scope.upload = function() {
         var deferred = $q.defer(); 
     
         $scope.showProgress = true;

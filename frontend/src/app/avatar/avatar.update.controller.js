@@ -33,7 +33,7 @@ angular.module('frontend').controller('AvatarUpdateController', ['$scope', '$sta
         
         avatarDataToUpdate.append('payload', JSON.stringify(payload));
         
-        $scope.upload($scope.formAvatar.file).then(function() {
+        $scope.upload().then(function() {
             AvatarService.updateAvatar($scope.formAvatar.id, avatarDataToUpdate).then(function(response) {
                 alert('Avatar updated successfully');
                 $state.go('base.avatar-view');
@@ -48,7 +48,7 @@ angular.module('frontend').controller('AvatarUpdateController', ['$scope', '$sta
         $state.go('base.avatar-view');
     };
 
-    $scope.upload = function(file) {
+    $scope.upload = function() {
         var deferred = $q.defer(); 
     
         $scope.showProgress = true;

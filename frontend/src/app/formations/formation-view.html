@@ -52,8 +52,12 @@
                     <tr ng-repeat="formation in formationList | filter:searchText">
                         <td>{{ formation.layer.name }}</td>
                         <td>{{ formation.name }}</td>
-                        <td> <button class="btn btn-primary btn-xs" ng-click="downloadFile(formation.id)">Download
-                                File</button></td>
+                        <td>
+                            <button class="md-btn md-raised m-b-sm w-xs indigo"
+                                ng-click="downloadFile(formation.id)">Download</button>
+                            <button class="md-btn md-flat m-b-sm w-xs"
+                                ng-click="viewFile(formation.file_path)">View</button>
+                        </td>
                         <td>{{ formation.language.name }}</td>
                         <td>{{ formation.voice.name }}</td>
                         <td>{{ formation.trigger }}</td>

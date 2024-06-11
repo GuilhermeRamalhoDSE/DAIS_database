@@ -1,7 +1,7 @@
 <!-- ############ PAGE START-->
 <div class="padding" ng-controller="FormationController">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
                     <h2>Create Formation</h2>
@@ -19,18 +19,33 @@
                             <input type="text" class="form-control" id="name" ng-model="newFormation.name" required>
                         </div>
                         <div class="form-group">
+                            <label for="inputType">Type</label>
+                            <select id="inputType" class="form-control" ng-model="inputType">
+                                <option value="file">File</option>
+                                <option value="text">Text</option>
+                            </select>
+                        </div>
+                        <div class="form-group" ng-if="inputType === 'file'">
                             <label for="file">File Upload</label>
                             <input type="file" class="form-control" id="file" file-model="file" required>
                         </div>
+                        <div class="form-group" ng-if="inputType === 'text'">
+                            <label for="textInput">Text</label>
+                            <textarea id="textInput" class="form-control" ng-model="textInput"></textarea>
+                            <button type="button" class="btn btn-primary mt-2"
+                                ng-click="generateTextFile(textInput)">Generate Text File</button>
+                        </div>
                         <div class="form-group">
                             <label for="language_id">Language</label>
-                            <select id="language_id" class="form-control" ng-model="newFormation.language_id" ng-options="language.id as language.name for language in languages" required>
+                            <select id="language_id" class="form-control" ng-model="newFormation.language_id"
+                                ng-options="language.id as language.name for language in languages" required>
                                 <option value="">--Select Language--</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="voice_id">Voice</label>
-                            <select id="voice_id" class="form-control" ng-model="newFormation.voice_id" ng-options="voice.id as voice.name for voice in voices" required>
+                            <select id="voice_id" class="form-control" ng-model="newFormation.voice_id"
+                                ng-options="voice.id as voice.name for voice in voices" required>
                                 <option value="">--Select Voice--</option>
                             </select>
                         </div>
@@ -39,7 +54,9 @@
                             <input type="text" class="form-control" id="trigger" ng-model="newFormation.trigger">
                         </div>
                         <div class="progress mb-2" ng-show="showProgress">
-                            <div class="progress-bar progress-bar-striped info" role="progressbar" ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-striped info" role="progressbar"
+                                ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}"
+                                aria-valuemin="0" aria-valuemax="100">
                                 {{ loadingProgress }}%
                             </div>
                         </div>
@@ -49,60 +66,3 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="box">
-                <div class="box-header">
-                    <h2>File Preview</h2>
-                    <small>Preview of the uploaded file</small>
-                </div>
-                <div class="box-divider m-0"></div>
-                <div class="box-body">
-                    <div class="form-group">
-                        <label for="preview">Preview</label>
-                        <div id="preview" class="preview-container">
-                            <div ng-if="hasFileForPreview()">
-                                <video id="videoPreview" class="preview-video" controls ng-if="isVideoFile()"></video>
-                                <div id="imagePreviewContainer" class="preview-image-container" ng-if="isImageFile()">
-                                    <img id="imagePreview" class="preview-image" />
-                                </div>
-                                <audio id="audioPreview" style="width: 100%;" controls ng-if="isAudioFile()"></audio>
-                            </div>
-                            <div ng-if="!hasFileForPreview()">
-                                <p>No file selected for preview</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- ############ PAGE END-->
-
-<style>
-    .preview-container {
-        max-width: 100%;
-        max-height: 400px;
-        overflow: hidden;
-    }
-    
-    .preview-image-container {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .preview-container video {
-    width: 100%;
-    height: auto;
-}
-    .preview-image {
-        width: auto;
-        height: auto;
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
-</style>

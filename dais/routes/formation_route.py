@@ -17,9 +17,9 @@ formation_router = Router(tags=['Formations'])
 def create_formation(request, formation_in: FormationCreateSchema, file: UploadedFile = File(...)):
     user_info = get_user_info_from_token(request)
     layer = get_object_or_404(Layer, id=formation_in.layer_id)
-    period = get_object_or_404(CampaignAI, id=layer.period_id)
+    campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
-    if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
+    if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to add formation to this layer.")
 
     formation_data = {**formation_in.dict(exclude=['file_path']), 'file':file}
@@ -40,9 +40,9 @@ def create_formation(request, formation_in: FormationCreateSchema, file: Uploade
 def read_formations(request, layer_id: Optional[int] = None):
     user_info = get_user_info_from_token(request)
     layer = get_object_or_404(Layer, id=layer_id)
-    period = get_object_or_404(CampaignAI, id=layer.period_id)
+    campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
-    if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
+    if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to view formations.")
     
     query = Formation.objects.all()
@@ -57,9 +57,9 @@ def read_formation_by_id(request, formation_id: int):
     user_info = get_user_info_from_token(request)
     formation = get_object_or_404(Formation, id=formation_id)
     layer = get_object_or_404(Layer, id=formation.layer_id)
-    period = get_object_or_404(CampaignAI, id=layer.period_id)
+    campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
-    if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
+    if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to view this formation.")
     
     return FormationSchema.from_orm(formation)
@@ -69,9 +69,9 @@ def download_formation_file(request, formation_id: int):
     user_info = get_user_info_from_token(request)
     formation = get_object_or_404(Formation, id=formation_id)
     layer = get_object_or_404(Layer, id=formation.layer_id)
-    period = get_object_or_404(CampaignAI, id=layer.period_id)
+    campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
-    if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
+    if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to download this formation.")
     
     if formation.file and hasattr(formation.file, 'path'):
@@ -88,9 +88,9 @@ def update_formation(request, formation_id: int, formation_in: FormationUpdateSc
     user_info = get_user_info_from_token(request)
     formation = get_object_or_404(Formation, id=formation_id)
     layer = get_object_or_404(Layer, id=formation.layer_id)
-    period = get_object_or_404(CampaignAI, id=layer.period_id)
+    campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
-    if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
+    if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to update this formation.")
     
     for attr, value in formation_in.dict(exclude_none=True).items():
@@ -111,9 +111,9 @@ def delete_formation(request, formation_id: int):
     user_info = get_user_info_from_token(request)
     formation = get_object_or_404(Formation, id=formation_id)
     layer = get_object_or_404(Layer, id=formation.layer_id)
-    period = get_object_or_404(CampaignAI, id=layer.period_id)
+    campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
-    if not user_info.get('is_superuser') and str(period.group.client.license_id) != str(user_info.get('license_id')):
+    if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to delete this formation.")
     
     if formation.file:

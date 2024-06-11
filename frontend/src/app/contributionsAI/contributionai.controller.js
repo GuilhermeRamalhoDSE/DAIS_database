@@ -71,20 +71,22 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
         var contributionData = { ...$scope.newContribution };
         formData.append('contribution_in', JSON.stringify(contributionData));
 
-        ContributionAIService.create(formData).then(function(response) {
-            alert('Contribution created successfully!');
-            $scope.loadContributions();
-            $state.go('base.contributionai-view',{
-                clientId: $scope.clientId,
-                clientName: $scope.clientName,
-                groupId: $scope.groupId,
-                groupName: $scope.groupName,
-                campaignaiId: $scope.campaignaiId, 
-                campaignaiName: $scope.campaignaiName, 
-                layerId: layerId,
-                layerName: layerName });
-        }).catch(function(error) {
-            console.error('Error creating contribution:', error);
+        $scope.upload($scope.file).then(function() {
+            ContributionAIService.create(formData).then(function(response) {
+                alert('Contribution created successfully!');
+                $scope.loadContributions();
+                $state.go('base.contributionai-view',{
+                    clientId: $scope.clientId,
+                    clientName: $scope.clientName,
+                    groupId: $scope.groupId,
+                    groupName: $scope.groupName,
+                    campaignaiId: $scope.campaignaiId, 
+                    campaignaiName: $scope.campaignaiName, 
+                    layerId: layerId,
+                    layerName: layerName });
+            }).catch(function(error) {
+                console.error('Error creating contribution:', error);
+            });
         });
     };
 

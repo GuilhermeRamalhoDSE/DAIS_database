@@ -105,7 +105,7 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
         formData.append('campaign_in', JSON.stringify(campaignData));
         
 
-        $scope.upload($scope.newCampaign.background).then(function() {
+        $scope.upload().then(function() {
             CampaignDSService.createCampaignDS(formData).then(function(response) {
                 alert('Campaign created successfully!');
                 $scope.loadCampaigns();
@@ -221,7 +221,7 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
         }
     };
 
-    $scope.upload = function(file) {
+    $scope.upload = function() {
         var deferred = $q.defer(); 
     
         $scope.showProgress = true;
