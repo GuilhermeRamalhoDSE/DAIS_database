@@ -24,9 +24,6 @@ def get_totem(request, totem_id: int):
     screens = Screen.objects.filter(totem_id=totem_id)
     screen_details = [ScreenDetails(
         type=s.typology.name, 
-        logo_path=s.logo.url if s.logo else None,
-        background_path=s.background.url if s.background else None,
-        footer=s.footer
     ) for s in screens]
 
     form_details = [FormSchema.from_orm(form) for form in group.forms.all()]
