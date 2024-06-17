@@ -1,4 +1,5 @@
-angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthService', 'UserService', 'ClientService', 'LicenseService', 'CampaignDSService', 'CampaignAIService', '$state', '$timeout', function($scope, AuthService, UserService, ClientService, LicenseService, CampaignDSService, CampaignAIService, $state, $timeout) {
+angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthService', 'ClientService', 'LicenseService', 'CampaignDSService', 'CampaignAIService', '$state', '$timeout', function($scope, AuthService, ClientService, LicenseService, CampaignDSService, CampaignAIService, $state, $timeout) {
+    $scope.formLicense = {}; 
     $scope.campaignData = [];
     $scope.campaignAIData = [];
     $scope.filteredCampaignData = [];
@@ -14,20 +15,33 @@ angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthSer
     $scope.selectedMonth = new Date().getMonth();
     $scope.selectedYear = new Date().getFullYear();
     $scope.subtitle = "Campaigns in the month of " + new Date().toLocaleString('default', { month: 'long' });
-
+    
     var licenseId = AuthService.getLicenseId();
-    var userId = AuthService.getUserId();
-
-    if (userId) {
-        UserService.getUserById(userId)
-            .then(function(response) {
-                var user = response.data[0];
-                $scope.userName = user.first_name + ' ' + user.last_name;
-            })
-            .catch(function(error) {
-                console.error('Error fetching user details:', error);
-            });
-    }
+   
+    $scope.loadLicenseData = function() {
+        
+        LicenseService.getById(licenseId).then(function(response) {
+            if (response.data && response.data.length > 0) {
+                var licenseData = response.data[0];
+                
+                if (licenseData.start_date) {
+                    licenseData.start_date = new Date(licenseData.start_date);
+                }
+                if (licenseData.end_date) {
+                    licenseData.end_date = new Date(licenseData.end_date);
+                }
+                
+                $scope.formLicense = licenseData;
+            } else {
+                console.error('License not found');
+                alert('License not found.');
+                $state.go('base.licenses-view'); 
+            }
+        }).catch(function(error) {
+            console.error('Error fetching license data:', error);
+            alert('Error fetching license data.');
+        });
+    };
 
     $scope.loadClients = function() {
         ClientService.getAll().then(function(response) {
@@ -515,5 +529,5 @@ angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthSer
     $scope.loadCampaignAIData();
     $scope.updateGanttChart();
     $scope.updateGanttChartAI();
-
+    $scope.loadLicenseData();
 }]);
