@@ -28,6 +28,11 @@ def authenticate_user(email, password):
 
         if user.license.end_date and user.license.end_date < timezone.now().date():
             raise HttpError(403, "License has expired")
+    
+    previous_login = user.last_login    
+    
+    user.last_login = timezone.now() 
+    user.save(update_fields=['last_login'])
 
     expiration_time = datetime.utcnow() + timedelta(days=1)
     token = jwt.encode({
@@ -45,4 +50,5 @@ def authenticate_user(email, password):
         "is_superuser": user.is_superuser,
         "is_staff": user.is_staff,
         "license_id": user.license_id,
+        'last_login': previous_login,
     }

@@ -7,7 +7,11 @@ angular.module('frontend').controller('LoginController', ['$scope', 'AuthService
 
     $scope.login = function() {
         AuthService.login($scope.credentials).then(function() {
-            $state.go('base.home');
+            if (AuthService.isSuperuser()) {
+                $state.go('base.home-su');
+            } else if (AuthService.isStaff()) {
+                $state.go('base.home-admin');
+            }
         }, function(error) {
             alert('Login failed!');
             console.error(error);

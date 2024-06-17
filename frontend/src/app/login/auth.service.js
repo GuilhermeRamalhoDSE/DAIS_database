@@ -10,7 +10,6 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
             storage.setItem('isSuperuser', response.data.is_superuser.toString());
             storage.setItem('isStaff', response.data.is_staff.toString());
             
-            
             if (response.data.license_id != null) {
                 storage.setItem('licenseId', response.data.license_id.toString());
                 authService.fetchAndStoreModules(response.data.license_id);
@@ -18,9 +17,21 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
                 storage.removeItem('licenseId'); 
                 storage.removeItem('licenseModules');
             }  
+    
+            authService.setLastLogin(response.data.last_login);
+            
             return response.data;
         });
-    };  
+    };
+    
+    authService.setLastLogin = function(lastLogin) {
+        var storage = $window.localStorage.getItem('jwtToken') ? $window.localStorage : $window.sessionStorage;
+        storage.setItem('lastLogin', lastLogin);
+    };
+    
+    authService.getLastLogin = function() {
+        return $window.localStorage.getItem('lastLogin') || $window.sessionStorage.getItem('lastLogin');
+    };    
 
     authService.fetchAndStoreModules = function(licenseId) {
         var storage = $window.localStorage.getItem('jwtToken') ? $window.localStorage : $window.sessionStorage;
@@ -50,7 +61,6 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
             return false;
         });
     };
-    
       
     authService.getUserId = function() {
         return $window.localStorage.getItem('userId') || $window.sessionStorage.getItem('userId');

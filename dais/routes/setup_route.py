@@ -18,20 +18,26 @@ def setup_totem(request, totem_id: int):
     totem = get_object_or_404(Totem, id=totem_id)
 
     if totem.active:
-        return ErrorResponse(message="NO - Totem already registered")
+        return Response(ErrorResponse(message="NO - Totem already registered").dict(), status=400)
 
     totem.active = True
     totem.installation_date = now()
     totem.save()
 
-    group = get_object_or_404(Group.objects.prefetch_related(Prefetch('forms', queryset=Form.objects.all())), id=totem.group_id)
+    group = get_object_or_404(
+        Group.objects.prefetch_related(
+            Prefetch('forms', queryset=Form.objects.all()),
+            'client'
+        ), 
+        id=totem.group_id
+    )
+
+    client = group.client
+    client_name = client.name
+    license_id = client.license.id
 
     screens = Screen.objects.filter(totem_id=totem_id)
-    screen_details = [
-        ScreenDetails(
-            type=s.typology.name, 
-        ) for s in screens
-    ]
+    screen_details = [ScreenDetails(type=s.typology.name) for s in screens]
 
     form_details = [FormSchema.from_orm(form) for form in group.forms.all()]
 
@@ -51,5 +57,11 @@ def setup_totem(request, totem_id: int):
         forms=form_details
     )
 
-    response_data = SetupResponseSchema(group=group_details, totem=totem_details)
-    return Response(json.loads(response_data.json()), status=200)
+    response_data = {
+        "client_name": client_name,
+        "license_id": license_id,
+        "group": group_details.dict(),
+        "totem": totem_details.dict()
+    }
+
+    return Response(response_data, status=200)

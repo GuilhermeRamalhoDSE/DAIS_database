@@ -1,5 +1,6 @@
 from ninja import Schema
 from typing import Optional
+from datetime import datetime
 
 class UserSchema(Schema):
     id: int
@@ -9,6 +10,7 @@ class UserSchema(Schema):
     is_staff: Optional[bool] = False
     license_id: Optional[int] = None
     license_name: Optional[str] = None
+    last_login: Optional[datetime] = None 
     
 class UserCreateSchema(Schema):
     first_name: str
@@ -17,8 +19,7 @@ class UserCreateSchema(Schema):
     is_staff: Optional[bool] = False
     password: str
     license_id: int  
-
-
+    
 class UserUpdateSchema(Schema):
     first_name: Optional[str] = None
     last_name: Optional[str] = None

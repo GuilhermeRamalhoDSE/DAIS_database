@@ -1,0 +1,243 @@
+<div class="padding">
+    <div class="row">
+        <div class="col-xs-6 col-sm-3">
+            <div class="box p-a text-center canvas-container">
+                <div class="pull-left m-r">
+                    <span class="w-48 rounded accent">
+                        <i class="material-icons md-24"></i>
+                    </span>
+                </div>
+                <div class="clear" ng-repeat="license in licenses">
+                    <h4 class="m-0 text-lg _300">{{ license.total_totem }} kiosks</h4>
+                    <small class="text-muted">available on your license.</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <div class="box p-a text-center canvas-container">
+                <div class="chart-container">
+                    <canvas id="chartTotemsDS" class="small-canvas" width="60" height="60"></canvas>
+                    <div class="chart-text">{{ percentUsedTotemsDS }}%</div>
+                </div>
+                <h4 class="m-0 text-lg _300"><span class="text-sm">{{ usedTotemsDS }} DS kiosks used</span></h4>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <div class="box p-a text-center canvas-container">
+                <div class="chart-container">
+                    <canvas id="chartTotemsAI" class="small-canvas" width="60" height="60"></canvas>
+                    <div class="chart-text">{{ percentUsedTotemsAI }}%</div>
+                </div>
+                <h4 class="m-0 text-lg _300"> <span class="text-sm">{{ usedTotemsAI }} AI kiosks used</span></h4>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <div class="box p-a text-center canvas-container">
+                <div class="chart-container">
+                    <canvas id="chartRemainingTotems" class="small-canvas" width="60" height="60"></canvas>
+                    <div class="chart-text">{{ percentRemainingTotems }}%</div>
+                </div>
+                <h4 class="m-0 text-lg _300"><span class="text-sm">{{ remainingTotems }} Kiosks remaining</span></h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Campaigns DS Section -->
+        <div class="col-sm-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3>Campaigns DS</h3>
+                    <small class="block text-muted" id="chartSubtitle">Campaigns in the month of
+                        {{monthNames[selectedMonth]}}</small>
+
+                    <ul class="nav pull-right">
+                        <li class="nav-item inline">
+                            <select class="form-control" ng-model="selectedClient" ng-change="filterCampaignsByClient()"
+                                ng-options="client.id as client.name for client in clients">
+                                <option value="">All Clients</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+                <div class="box-body">
+                    <div class="box-tool">
+                        <ul class="nav">
+                            <li class="nav-item inline dropdown">
+                                <a class="nav-link" data-toggle="dropdown">
+                                    <i class="material-icons md-18">&#xe5d4;</i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-scale pull-right">
+                                    <a class="dropdown-item" href ng-click="setMonth(0)">January</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(1)">February</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(2)">March</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(3)">April</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(4)">May</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(5)">June</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(6)">July</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(7)">August</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(8)">September</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(9)">October</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(10)">November</a>
+                                    <a class="dropdown-item" href ng-click="setMonth(11)">December</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="ganttChart" style="height: 300px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Campaigns AI Section -->
+        <div class="col-sm-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3>Campaigns AI</h3>
+                    <small class="block text-muted" id="chartSubtitleAI">Campaigns in the month of
+                        {{monthNames[selectedMonth]}}</small>
+
+                    <ul class="nav pull-right">
+                        <li class="nav-item inline">
+                            <select class="form-control" ng-model="selectedClientAI"
+                                ng-change="filterCampaignsByClientAI()"
+                                ng-options="client.id as client.name for client in clients">
+                                <option value="">All Clients</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+                <div class="box-body">
+                    <div class="box-tool">
+                        <ul class="nav">
+                            <li class="nav-item inline dropdown">
+                                <a class="nav-link" data-toggle="dropdown">
+                                    <i class="material-icons md-18">&#xe5d4;</i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-scale pull-right">
+                                    <a class="dropdown-item" href ng-click="setMonthAI(0)">January</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(1)">February</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(2)">March</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(3)">April</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(4)">May</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(5)">June</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(6)">July</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(7)">August</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(8)">September</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(9)">October</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(10)">November</a>
+                                    <a class="dropdown-item" href ng-click="setMonthAI(11)">December</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="ganttChartAI" style="height: 300px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="box" style="max-height: 400px; overflow-y: auto;">
+                <div class="box-header">
+                    <h3>Clients <span class="label warning">{{ clients.length }}</span></h3>
+                    <small>Data status</small>
+                </div>
+                <ul class="list inset">
+                    <li class="list-item" ng-repeat="client in clients">
+                        <a class="list-left">
+                            <span class="w-40 r-2x _600 text-lg accent">{{ client.name.charAt(0).toUpperCase() }}</span>
+                        </a>
+                        <div class="list-body">
+                            <div class="m-y-sm pull-right">
+                                <a class="btn btn-xs white btn-icon"><i class="fa fa-pencil"
+                                        ng-click="editClient(client.id)"></i></a>
+                            </div>
+                            <div>
+                                <a ng-click="viewGroups(client.id, client.name)">{{ client.name }}</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="box" style="max-height: 400px; overflow-y: auto;">
+                <div class="box-header">
+                    <h3>License Data</h3>
+                    <small>Your license data</small>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td><i class="fa fa-barcode"></i> License Code</td>
+                                    <td>{{ formLicense.license_code }}</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-calendar"></i> End Date</td>
+                                    <td>{{ formLicense.end_date | date:'yyyy-MM-dd' }}</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-user"></i> Avatars</td>
+                                    <td>
+                                        <ul>
+                                            <li ng-repeat="avatar in formLicense.avatars">{{ avatar.name }}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-volume-up"></i> Voices</td>
+                                    <td>
+                                        <ul>
+                                            <li ng-repeat="voice in formLicense.voices">{{ voice.name }}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td><i class="fa fa-language"></i> Languages</td>
+                                    <td>
+                                        <ul>
+                                            <li ng-repeat="language in formLicense.languages">{{ language.name }}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-cubes"></i> Modules</td>
+                                    <td>
+                                        <ul>
+                                            <li ng-repeat="module in formLicense.modules">{{ module.name }}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-desktop"></i> Screen Types</td>
+                                    <td>
+                                        <ul>
+                                            <li ng-repeat="screentype in formLicense.screentypes">{{ screentype.name }}
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-th-large"></i> Button Types</td>
+                                    <td>
+                                        <ul>
+                                            <li ng-repeat="buttontype in formLicense.buttontypes">{{ buttontype.name }}
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
