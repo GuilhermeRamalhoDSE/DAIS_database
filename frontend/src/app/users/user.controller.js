@@ -94,7 +94,7 @@ angular.module('frontend').controller('UserController', ['$scope', 'UserService'
         $state.go('base.user-update', { userId: userId });
     };
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-admin');
     }; 
 
     $scope.deleteUser = function(userId) {

@@ -88,7 +88,7 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
     };
 
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-admin');
     };
 
     $scope.loadAllGroups();

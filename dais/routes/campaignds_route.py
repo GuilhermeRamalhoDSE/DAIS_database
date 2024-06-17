@@ -11,6 +11,8 @@ from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
 import os
 from django.core.files.storage import default_storage
+from datetime import datetime
+from ninja import Query
 
 campaignds_router = Router(tags=["CampaignDS"])
 
@@ -95,7 +97,35 @@ def download_campaignds_backgroundfile(request, campaignds_id: int):
         if os.path.exists(background_path):
             return FileResponse(open(background_path, 'rb'), as_attachment=True, filename=os.path.basename(background_path))
         else:
-            raise Http404('No logo file associated with this campaign')       
+            raise Http404('No logo file associated with this campaign')  
+
+@campaignds_router.get("/with-dates/", response=List[CampaignDSOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_campaignds_with_dates(request, license_id: Optional[int] = None):
+    user_info = get_user_info_from_token(request)
+    
+    if not user_info.get('is_superuser') and str(user_info.get('license_id')) != str(license_id):
+        raise Http404("You do not have permission to view campaigns for this license.")
+    
+    query = CampaignDS.objects.all()
+    if license_id is not None:
+        query = query.filter(group__client__license_id=license_id)
+
+    campaigns = [CampaignDSOut.from_orm(campaign) for campaign in query]
+
+    return campaigns    
+
+@campaignds_router.get("/by-client/", response=List[CampaignDSOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_campaignds_by_client(request, client_id: int):
+    user_info = get_user_info_from_token(request)
+    client = get_object_or_404(Client, id=client_id)
+
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+        raise Http404("You do not have permission to view campaigns for this client.")
+
+    query = CampaignDS.objects.filter(group__client_id=client_id)
+
+    campaigns = [CampaignDSOut.from_orm(campaign) for campaign in query]
+    return campaigns
 
 @campaignds_router.put("/{campaignds_id}", response=CampaignDSOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_campaignds(request, campaignds_id: int, campaignds_in: CampaignDSUpdate, logo: UploadedFile = File(None), background: UploadedFile = File(None)):

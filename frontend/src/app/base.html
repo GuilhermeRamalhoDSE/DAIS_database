@@ -9,12 +9,20 @@
                 </div>
                 <div class="hide-scroll" data-flex>
                     <nav class="scroll nav-light">
-                        <ul class="nav" ui-nav ng-controller="HomeController">
+                        <ul class="nav" ui-nav ng-controller="BaseController">
                             <li class="nav-header hidden-folded">
                                 <small class="text-muted">Main</small>
                             </li>
-                            <li>
-                                <a ui-sref="base.home">
+                            <li ng-if="isSuperuser()">
+                                <a ui-sref="base.home-su">
+                                    <span class="nav-icon">
+                                        <i class="material-icons md-24"></i>
+                                    </span>
+                                    <span class="nav-text">Home</span>
+                                </a>
+                            </li>
+                            <li ng-if="isOnlyStaff()">
+                                <a ui-sref="base.home-admin">
                                     <span class="nav-icon">
                                         <i class="material-icons md-24"></i>
                                     </span>
@@ -113,8 +121,8 @@
                         </ul>
                     </nav>
                 </div>
-                <div ng-controller="HomeController">
-                    <button type="submit" class="btn primary btn-block p-x-md" ng-click="logout()">Logout</button>
+                <div ng-controller="BaseController">
+                    <button type="submit" class="md-btn md-raised m-b-sm w-xs blue" style="width: 100%;" ng-click="logout()">Logout</button>
                 </div>
                 <div class="b-t" ng-controller="UserController">
                     <div class="nav-fold">

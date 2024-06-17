@@ -36,7 +36,7 @@ angular.module('frontend').controller('ClientController', ['$scope', 'ClientServ
     };
 
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-admin');
     };
 
     $scope.viewGroups = function(clientId, clientName) {

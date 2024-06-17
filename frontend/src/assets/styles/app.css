@@ -5678,3 +5678,56 @@ textarea.md-input {
   -webkit-animation: fadeOutDown 0.5s;
   animation: fadeOutDown 0.5s; }
 
+.canvas-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+canvas.small-canvas {
+    width: 120px !important; 
+    height: 120px !important; 
+}
+
+canvas.large-canvas {
+    width: 100% !important;
+    height: auto !important; 
+}
+
+.text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.box {
+  height: 100%; 
+  padding: 20px; 
+  margin-bottom: 20px;
+}
+.row {
+  margin-bottom: 20px;
+}
+
+.chart-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px; 
+  width: 120px; 
+}
+
+.small-canvas {
+  display: block;
+  margin: auto;
+}
+
+.chart-text {
+  position: absolute;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+

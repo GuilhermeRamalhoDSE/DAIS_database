@@ -61,7 +61,7 @@ angular.module('frontend').controller('LogsController', ['$scope', 'LogsService'
     };
 
     $scope.goBack = function() {
-        $state.go('base.totem-view', {clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName, totemId: totemId, totemName: totemName});
+        $state.go('base.home-admin');
     };
 
     $scope.loadLogs();

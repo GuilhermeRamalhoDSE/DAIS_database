@@ -35,10 +35,19 @@ angular.module('frontend')
         }
     })
     $stateProvider
-    .state('base.home', {
+    .state('base.home-admin', {
         url: '/home',
-        templateUrl: 'app/home/home.html',
-        controller: 'HomeController',
+        templateUrl: 'app/home/home-admin.html',
+        controller: 'HomeAdminController',
+        data: {
+            requireLogin: true
+        }
+    })
+    $stateProvider
+    .state('base.home-su', {
+        url: '/home-su',
+        templateUrl: 'app/home/home-su.html',
+        controller: 'HomeSUController',
         data: {
             requireLogin: true
         }

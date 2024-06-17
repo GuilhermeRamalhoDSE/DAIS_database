@@ -98,6 +98,34 @@ def download_campaignai_backgroundfile(request, campaignai_id: int):
         else:
             raise Http404('No logo file associated with this campaign')      
 
+@campaignai_router.get("/with-dates/", response=List[CampaignAIOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_campaignai_with_dates(request, license_id: Optional[int] = None):
+    user_info = get_user_info_from_token(request)
+    
+    if not user_info.get('is_superuser') and str(user_info.get('license_id')) != str(license_id):
+        raise Http404("You do not have permission to view campaigns for this license.")
+    
+    query = CampaignAI.objects.all()
+    if license_id is not None:
+        query = query.filter(group__client__license_id=license_id)
+
+    campaigns = [CampaignAIOut.from_orm(campaign) for campaign in query]
+
+    return campaigns    
+
+@campaignai_router.get("/by-client/", response=List[CampaignAIOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_campaignai_by_client(request, client_id: int):
+    user_info = get_user_info_from_token(request)
+    client = get_object_or_404(Client, id=client_id)
+
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+        raise Http404("You do not have permission to view campaigns for this client.")
+
+    query = CampaignAI.objects.filter(group__client_id=client_id)
+
+    campaigns = [CampaignAIOut.from_orm(campaign) for campaign in query]
+    return campaigns
+
 @campaignai_router.put("/{campaignai_id}", response=CampaignAIOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_campaignai(request, campaignai_id: int, campaignai_in: CampaignAIUpdate, logo: UploadedFile = File(None), background: UploadedFile = File(None)):
     user_info = get_user_info_from_token(request)
