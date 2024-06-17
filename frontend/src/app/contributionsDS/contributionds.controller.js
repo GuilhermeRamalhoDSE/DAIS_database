@@ -132,7 +132,7 @@ angular.module('frontend').controller('ContributionDSController', ['$scope', 'Co
 
     $scope.downloadFile = function(contributiondsId) {
         if (contributiondsId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/contributionsDS/download/' + contributiondsId;
+            var downloadUrl = 'https://daisdatabasedse.it/api/contributionsDS/download/' + contributiondsId;
     
             $http({
                 url: downloadUrl,
@@ -157,7 +157,7 @@ angular.module('frontend').controller('ContributionDSController', ['$scope', 'Co
 
     $scope.viewFile = function(filePath) {
         if (filePath) {
-            window.open('http://127.0.0.1:8000/' + filePath, '_blank');
+            window.open('https://daisdatabasedse.it/' + filePath, '_blank');
         } else {
             alert('File path not available.');
         }
