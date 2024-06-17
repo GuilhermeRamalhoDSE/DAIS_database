@@ -73,6 +73,8 @@ class GroupDetails(BaseModel):
 class SetupResponseSchema(BaseModel):
     group: GroupDetails
     totem: TotemDetails
+    client_name: str  
+    license_id: int
 
 class ErrorResponse(BaseModel):
     message: str
