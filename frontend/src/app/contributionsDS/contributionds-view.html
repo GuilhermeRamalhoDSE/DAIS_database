@@ -35,8 +35,9 @@
                         <td>{{ campaigndsName }}</td>
                         <td>{{ contributionds.name }}</td>
                         <td>
+                            <input type="file" id="fileInput{{ contributionds.id }}" style="display: none;" />
                             <button class="md-btn md-raised m-b-sm w-xs indigo"
-                                ng-click="downloadFile(contributionds.id)">Download</button>
+                                ng-click="triggerFileInput(contributionds.id, contributionds.name)">Upload</button>
                             <button class="md-btn md-flat m-b-sm w-xs"
                                 ng-click="viewFile(contributionds.file_path)">View</button>
                         </td>
@@ -56,6 +57,13 @@
                     </tr>
                 </tfoot>
             </table>
+        </div>
+        <div class="progress mb-2" ng-show="showProgress">
+            <div class="progress-bar progress-bar-striped" role="progressbar"
+                ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0"
+                aria-valuemax="100">
+                {{ loadingProgress }}%
+            </div>
         </div>
     </div>
 </div>

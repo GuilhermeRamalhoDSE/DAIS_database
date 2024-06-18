@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ContributionDSController', ['$scope', 'ContributionDSService', '$state', '$stateParams', 'AuthService', '$http', '$q', '$interval', function($scope, ContributionDSService, $state, $stateParams, AuthService,$http, $q, $interval) {
+angular.module('frontend').controller('ContributionDSController', ['$scope', 'ContributionDSService', '$state', '$stateParams', 'AuthService', '$window', '$q', '$interval', function($scope, ContributionDSService, $state, $stateParams, AuthService,$window, $q, $interval) {
     $scope.contributiondsList = [];
     $scope.campaigndsId = $stateParams.campaigndsId;
     $scope.campaigndsName = $stateParams.campaigndsName;
@@ -130,29 +130,35 @@ angular.module('frontend').controller('ContributionDSController', ['$scope', 'Co
         }
     };
 
-    $scope.downloadFile = function(contributiondsId) {
-        if (contributiondsId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/contributionsDS/download/' + contributiondsId;
-    
-            $http({
-                url: downloadUrl,
-                method: 'GET',
-                responseType: 'blob',
-            }).then(function(response) {
-                var blob = new Blob([response.data], { type: response.headers('Content-Type') });
-                var downloadLink = angular.element('<a></a>');
-                downloadLink.attr('href', window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'ContributionFile-' + contributiondsId); 
-    
-                document.body.appendChild(downloadLink[0]);
-                downloadLink[0].click();
-                document.body.removeChild(downloadLink[0]);
+    $scope.uploadFile = function(contributiondsId, contributiondsName, file) {
+        var contributiondsData = new FormData();
+        contributiondsData.append('file', file);
+
+        const payload = {
+            name: contributiondsName,
+        };
+        
+        contributiondsData.append('contributionds_in', JSON.stringify(payload));
+
+        $scope.upload().then(function() {
+            ContributionDSService.update(contributiondsId, contributiondsData).then(function(response) {
+                alert('Contribution file uploaded successfully!');
+                $scope.loadContributionDSs();
+                $window.location.reload();
             }).catch(function(error) {
-                console.error('Error downloading file:', error);
+                console.error('Error uploading contributionds file:', error);
             });
-        } else {
-            alert('Invalid Detail ID');
-        }
+        });
+    };
+
+    $scope.triggerFileInput = function(contributiondsId, contributiondsName) {
+        var fileInput = document.getElementById('fileInput' + contributiondsId);
+        fileInput.click();
+
+        fileInput.onchange = function(event) {
+            var file = event.target.files[0];
+            $scope.uploadFile(contributiondsId, contributiondsName, file);
+        };
     };
 
     $scope.viewFile = function(filePath) {

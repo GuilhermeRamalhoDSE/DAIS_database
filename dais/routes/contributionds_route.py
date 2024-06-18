@@ -9,7 +9,7 @@ from dais.models.group_models import Group
 from dais.models.client_models import Client
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
-from django.http import Http404, FileResponse
+from django.http import Http404
 import os, random
 from django.core.files.storage import default_storage
 
@@ -69,27 +69,6 @@ def read_contributionds_by_id(request, contributionds_id: int):
        raise Http404("You do not have permission to view this contribution.")
     
     return ContributionDSOutSchema.from_orm(contributionds)
-
-@contributionds_router.get('/download/{contributionds_id}', auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def download_contributionds_file(request, contributionds_id: int):
-    user_info = get_user_info_from_token(request)
-    contributionds = get_object_or_404(ContributionDS, id=contributionds_id)
-    time_slot = get_object_or_404(TimeSlot, id=contributionds.time_slot_id)
-    campaign = get_object_or_404(CampaignDS, id=time_slot.campaignds_id) 
-    group = get_object_or_404(Group, id=campaign.group_id)
-    client = get_object_or_404(Client, id=group.client_id)
-
-    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
-       raise Http404("You do not have permission to download this contribution.")
-
-    if contributionds.file and hasattr(contributionds.file, 'path'):
-        file_path = contributionds.file.path
-        if os.path.exists(file_path):
-            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
-        else:
-            raise Http404("File does not exist.")
-    else:
-        raise Http404("No file associated with this contribution")    
 
 @contributionds_router.put("/{contributionds_id}", response=ContributionDSOutSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_contribution(request, contributionds_id: int, contributionds_in: ContributionDSUpdateSchema, file: UploadedFile = File(None)):
