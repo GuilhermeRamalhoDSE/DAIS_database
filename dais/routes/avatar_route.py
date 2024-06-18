@@ -33,28 +33,9 @@ def read_avatars(request, avatar_id: Optional[int] = None):
     if avatar_id:
         avatars = Avatar.objects.filter(id=avatar_id)
     else:
-        avatars = Avatar.objects.all()
+        avatars = Avatar.objects.all().order_by('id')
     
     return avatars
-
-@avatar_router.get("/download/{avatar_id}")
-def download_avatar_file(request, avatar_id: int):
-    user_info = get_user_info_from_token(request)
-    
-    if not user_info.get('is_superuser', False):
-        raise Http404("Only superusers are allowed to download avatar files.")
-
-    avatar = get_object_or_404(Avatar, id=avatar_id)
-    
-    if avatar.file and hasattr(avatar.file, 'path'):
-        file_path = avatar.file.path
-        if os.path.exists(file_path):
-            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
-        else:
-            raise Http404("File does not exist.")
-    else:
-        raise Http404("No file associated with this avatar.")
-
 
 @avatar_router.put("/{avatar_id}", response={200: AvatarSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_avatar(request, avatar_id: int, payload: AvatarUpdateSchema, file: UploadedFile = File(None)):
@@ -75,7 +56,6 @@ def update_avatar(request, avatar_id: int, payload: AvatarUpdateSchema, file: Up
 
     avatar.save()
     return avatar
-
 
 @avatar_router.delete("/{avatar_id}", response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def delete_avatar(request, avatar_id: int):

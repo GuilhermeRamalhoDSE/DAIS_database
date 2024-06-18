@@ -1,4 +1,4 @@
-angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'Upload', 'AvatarService', '$state', 'AuthService', '$q', '$interval', '$location', function($scope, $http, Upload, AvatarService, $state, AuthService, $q, $interval, $location) {
+angular.module('frontend').controller('AvatarController', ['$scope', 'AvatarService', '$state', 'AuthService', '$q', '$interval', '$location', '$window', function($scope, AvatarService, $state, AuthService, $q, $interval, $location, $window) {
     $scope.avatarList = [];
     $scope.isSuperuser = AuthService.isSuperuser();
 
@@ -42,7 +42,38 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
                 alert('Error creating avatar:', error);
             });
         });
-    };    
+    };  
+    
+    $scope.uploadAvatarFile = function(avatarId, avatarName, file) {
+        var avatarData = new FormData();
+        avatarData.append('file', file);
+
+        const payload = {
+            name: avatarName,
+        };
+        
+        avatarData.append('payload', JSON.stringify(payload));
+
+        $scope.upload().then(function() {
+            AvatarService.updateAvatar(avatarId, avatarData).then(function(response) {
+                alert('Avatar file uploaded successfully!');
+                $scope.loadAvatars();
+                $window.location.reload();
+            }).catch(function(error) {
+                console.error('Error uploading avatar file:', error);
+            });
+        });
+    };
+
+    $scope.triggerFileInput = function(avatarId, avatarName) {
+        var fileInput = document.getElementById('fileInput' + avatarId);
+        fileInput.click();
+
+        fileInput.onchange = function(event) {
+            var file = event.target.files[0];
+            $scope.uploadAvatarFile(avatarId, avatarName, file);
+        };
+    };
 
     $scope.resetForm = function() {
         $scope.newAvatar = { name: "", file: null, voice: "" }; 
@@ -59,7 +90,7 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
     };
 
     $scope.isHomePage = function() {
-        return $location.path() === '/home';
+        return $location.path() === '/home-su';
     };
 
     $scope.deleteAvatar = function(avatarId) {
@@ -73,26 +104,11 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
         }
     };
 
-    $scope.downloadAvatarFile = function(avatarId) {
-        if (avatarId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/avatar/download/' + avatarId;
-            
-            $http({
-                url: downloadUrl,
-                method: 'GET',
-                responseType: 'blob', 
-            }).then(function (response) {
-                var blob = new Blob([response.data], {type: response.headers('Content-Type')});
-                var downloadLink = angular.element('<a></a>');
-                downloadLink.attr('href', window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'AvatarFile-' + avatarId + '.fbx'); 
-                
-                downloadLink[0].click();
-            }).catch(function (error) {
-                console.error("Download failed: ", error);
-            });
+    $scope.viewFile = function(filePath) {
+        if (filePath) {
+            window.open('http://127.0.0.1:8000/' + filePath, '_blank');
         } else {
-            console.error("Download failed: Avatar ID is invalid.");
+            alert('File path not available.');
         }
     };
     
@@ -113,6 +129,5 @@ angular.module('frontend').controller('AvatarController', ['$scope', '$http', 'U
         return deferred.promise; 
     };  
     
-
     $scope.loadAvatars();
 }]);
