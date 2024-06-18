@@ -1,6 +1,6 @@
 angular.module('frontend').factory('FormDataService', ['$http', function($http){
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/formdata/'
+    var baseUrl = 'http://127.0.0.1:8000/api/formdata/'
 
     service.getAll = function(formId) {
         return $http.get(baseUrl, { params: { form_id:formId}});

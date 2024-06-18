@@ -161,7 +161,7 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
 
     $scope.downloadFile = function(formationId) {
         if (formationId) {
-            var downloadUrl = 'https://daisdatabasedse.it/api/formations/download/' + formationId;
+            var downloadUrl = 'http://127.0.0.1:8000/api/formations/download/' + formationId;
     
             $http({
                 url: downloadUrl,
@@ -186,7 +186,7 @@ angular.module('frontend').controller('FormationController', ['$scope', 'Formati
 
     $scope.viewFile = function(filePath) {
         if (filePath) {
-            window.open('https://daisdatabasedse.it/' + filePath, '_blank');
+            window.open('http://127.0.0.1:8000/' + filePath, '_blank');
         } else {
             alert('File path not available.');
         }

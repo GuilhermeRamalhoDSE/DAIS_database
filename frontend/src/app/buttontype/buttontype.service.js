@@ -1,6 +1,6 @@
 angular.module('frontend').factory('ButtonTypeService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/buttontypes/'
+    var baseUrl = 'http://127.0.0.1:8000/api/buttontypes/'
 
     service.create = function(buttontypeData) {
         return $http.post(baseUrl, buttontypeData);

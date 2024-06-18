@@ -1,6 +1,6 @@
 angular.module('frontend').factory('CampaignDSService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/campaignds/';
+    var baseUrl = 'http://127.0.0.1:8000/api/campaignds/';
 
     service.createCampaignDS = function(campaignDSData) {
         return $http.post(baseUrl, campaignDSData, {
