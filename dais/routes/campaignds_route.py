@@ -1,7 +1,7 @@
 from typing import List, Optional
 from ninja import Router, File
 from ninja.files import UploadedFile
-from django.http import HttpRequest, FileResponse, Http404
+from django.http import HttpRequest, Http404
 from django.shortcuts import get_object_or_404
 from dais.models.campaignds_models import CampaignDS
 from dais.models.group_models import Group
@@ -11,8 +11,6 @@ from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
 import os
 from django.core.files.storage import default_storage
-from datetime import datetime
-from ninja import Query
 
 campaignds_router = Router(tags=["CampaignDS"])
 
@@ -64,40 +62,6 @@ def get_campaignds_by_id(request, campaignds_id: int):
        raise Http404("You do not have permission to view this campaign.")
 
     return CampaignDSOut.from_orm(campaignds)
-
-@campaignds_router.get('/download/logo/{campaignds_id}', auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def download_campaignds_logofile(request, campaignds_id: int):
-    user_info = get_user_info_from_token(request)
-    campaignds = get_object_or_404(CampaignDS, id=campaignds_id)
-    group = get_object_or_404(Group, id=campaignds.group_id)
-    client = get_object_or_404(Client, id=group.client_id)
-
-    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
-       raise Http404("You do not have permission to download this logo from this campaign.")
-    
-    if campaignds.logo and hasattr(campaignds.logo, 'path'):
-        logo_path = campaignds.logo.path
-        if os.path.exists(logo_path):
-            return FileResponse(open(logo_path, 'rb'), as_attachment=True, filename=os.path.basename(logo_path))
-        else:
-            raise Http404('No logo file associated with this campaign')
-
-@campaignds_router.get('/download/background/{campaignds_id}', auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def download_campaignds_backgroundfile(request, campaignds_id: int):
-    user_info = get_user_info_from_token(request)
-    campaignds = get_object_or_404(CampaignDS, id=campaignds_id)
-    group = get_object_or_404(Group, id=campaignds.group_id)
-    client = get_object_or_404(Client, id=group.client_id)
-
-    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
-       raise Http404("You do not have permission to download this background from this campaign.")
-    
-    if campaignds.background and hasattr(campaignds.background, 'path'):
-        background_path = campaignds.background.path
-        if os.path.exists(background_path):
-            return FileResponse(open(background_path, 'rb'), as_attachment=True, filename=os.path.basename(background_path))
-        else:
-            raise Http404('No logo file associated with this campaign')  
 
 @campaignds_router.get("/with-dates/", response=List[CampaignDSOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def get_campaignds_with_dates(request, license_id: Optional[int] = None):
