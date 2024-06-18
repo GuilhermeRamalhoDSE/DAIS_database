@@ -56,14 +56,16 @@
                         <td>{{ campaign.start_date | date:'mediumDate' }}</td>
                         <td>{{ campaign.end_date | date:'mediumDate' }}</td>
                         <td>
+                            <input type="file" id="logoInput{{ campaign.id }}" style="display: none;" />
                             <button class="md-btn md-raised m-b-sm w-xs indigo"
-                                ng-click="downloadLogoFile(campaign.id)">Download</button>
+                              ng-click="triggerLogoInput(campaign.id, campaign.name)">Upload</button>
                             <button class="md-btn md-flat m-b-sm w-xs"
                                 ng-click="viewLogo(campaign.logo_path)">View</button>
                         </td>
                         <td>
+                            <input type="file" id="backgroundInput{{ campaign.id }}" style="display: none;" />
                             <button class="md-btn md-raised m-b-sm w-xs indigo"
-                                ng-click="downloadBackgroundFile(campaign.id)">Download</button>
+                              ng-click="triggerBackgroundInput(campaign.id, campaign.name)">Upload</button>
                             <button class="md-btn md-flat m-b-sm w-xs"
                                 ng-click="viewBackground(campaign.background_path)">View</button>
                         </td>
@@ -110,6 +112,12 @@
                 </tfoot>
             </table>
         </div>
+        <div class="progress mb-2" ng-show="showProgress">
+            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{'width': loadingProgress + '%'}"
+              aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
+              {{ loadingProgress }}%
+            </div>
+          </div>
     </div>
 </div>
 <!-- ############ PAGE END-->

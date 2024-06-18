@@ -1,4 +1,4 @@
-angular.module('frontend').controller('CampaignAIController', ['$scope', 'CampaignAIService', 'AuthService', '$state', '$stateParams', '$http', '$filter','$q', '$interval', function($scope, CampaignAIService, AuthService, $state, $stateParams, $http, $filter, $q, $interval) {
+angular.module('frontend').controller('CampaignAIController', ['$scope', 'CampaignAIService', 'AuthService', '$state', '$stateParams', '$window', '$filter','$q', '$interval', function($scope, CampaignAIService, AuthService, $state, $stateParams, $window, $filter, $q, $interval) {
     $scope.campaignList = [];
     $scope.isSuperuser = AuthService.isSuperuser(); 
     $scope.currentPage = 0;
@@ -142,29 +142,35 @@ angular.module('frontend').controller('CampaignAIController', ['$scope', 'Campai
         };
     };
 
-    $scope.downloadLogoFile = function(campaignId) {
-        if (campaignId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/campaignai/download/logo/' + campaignId;
-    
-            $http({
-                url: downloadUrl,
-                method: 'GET',
-                responseType: 'blob',
-            }).then(function(response) {
-                var blob = new Blob([response.data], { type: response.headers('Content-Type') });
-                var downloadLink = angular.element('<a></a>');
-                downloadLink.attr('href', window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'LogoFile-' + campaignId); 
-    
-                document.body.appendChild(downloadLink[0]);
-                downloadLink[0].click();
-                document.body.removeChild(downloadLink[0]);
+    $scope.uploadLogo = function(campaignaiId, campaignaiName, logo) {
+        var campaignaiData = new FormData();
+        campaignaiData.append('logo', logo);
+
+        const payload = {
+            name: campaignaiName,
+        };
+        
+        campaignaiData.append('campaignai_in', JSON.stringify(payload));
+
+        $scope.upload().then(function() {
+            CampaignAIService.updateCampaignAI(campaignaiId, campaignaiData).then(function(response) {
+                alert('Campaign logo uploaded successfully!');
+                $scope.loadCampaigns();
+                $window.location.reload();
             }).catch(function(error) {
-                console.error('Error downloading logo:', error);
+                console.error('Error uploading campaignai logo:', error);
             });
-        } else {
-            alert('Invalid Screen ID');
-        }
+        });
+    };
+
+    $scope.triggerLogoInput = function(campaignaiId, campaignaiName) {
+        var logoInput = document.getElementById('logoInput' + campaignaiId);
+        logoInput.click();
+
+        logoInput.onchange = function(event) {
+            var file = event.target.files[0];
+            $scope.uploadLogo(campaignaiId, campaignaiName, file);
+        };
     };
 
     $scope.viewLogo = function(logoPath) {
@@ -174,31 +180,37 @@ angular.module('frontend').controller('CampaignAIController', ['$scope', 'Campai
             alert('Logo path not available.');
         }
     };
-    
-    
-    $scope.downloadBackgroundFile = function(campaignId) {
-        if (campaignId) {
-            var downloadUrl = 'http://127.0.0.1:8000/api/campaignai/download/background/' + campaignId;
-    
-            $http({
-                url: downloadUrl,
-                method: 'GET',
-                responseType: 'blob',
-            }).then(function(response) {
-                var blob = new Blob([response.data], { type: response.headers('Content-Type') });
-                var downloadLink = angular.element('<a></a>');
-                downloadLink.attr('href', window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'BackgroundFile-' + campaignId); 
-    
-                document.body.appendChild(downloadLink[0]);
-                downloadLink[0].click();
-                document.body.removeChild(downloadLink[0]);
+      
+   
+    $scope.uploadBackground = function(campaignaiId, campaignaiName, background) {
+        var campaignaiData = new FormData();
+        campaignaiData.append('background', background);
+
+        const payload = {
+            name: campaignaiName,
+        };
+        
+        campaignaiData.append('campaignai_in', JSON.stringify(payload));
+
+        $scope.upload().then(function() {
+            CampaignAIService.updateCampaignAI(campaignaiId, campaignaiData).then(function(response) {
+                alert('Campaign background uploaded successfully!');
+                $scope.loadCampaigns();
+                $window.location.reload();
             }).catch(function(error) {
-                console.error('Error downloading logo:', error);
+                console.error('Error uploading campaignai background:', error);
             });
-        } else {
-            alert('Invalid Screen ID');
-        }
+        });
+    };
+
+    $scope.triggerBackgroundInput = function(campaignaiId, campaignaiName) {
+        var backgroundInput = document.getElementById('backgroundInput' + campaignaiId);
+        backgroundInput.click();
+
+        backgroundInput.onchange = function(event) {
+            var file = event.target.files[0];
+            $scope.uploadBackground(campaignaiId, campaignaiName, file);
+        };
     };
 
     $scope.viewBackground = function(backgroundPath) {
