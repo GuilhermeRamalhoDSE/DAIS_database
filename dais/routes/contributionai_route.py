@@ -56,17 +56,6 @@ def read_contribution_by_id(request, contributionai_id: int):
     contribution = get_object_or_404(ContributionAI, id=contributionai_id)
     return ContributionAISchema.from_orm(contribution)
 
-@contributionai_router.get("/download/{contribution_id}", auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def download_contribution_file(request, contribution_id: int):
-    contribution = get_object_or_404(ContributionAI, id=contribution_id)
-    if contribution.file and hasattr(contribution.file, 'path'):
-        file_path = contribution.file.path
-        if os.path.exists(file_path):
-            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
-        else:
-            raise Http404("File does not exist.")
-    else:
-        raise Http404("No file associated with this contribution.")
 
 @contributionai_router.put("/{contributionai_id}", response=ContributionAISchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_contribution(request, contributionai_id: int, data: ContributionAIUpdateSchema, file: UploadedFile = File(None)):
