@@ -5,7 +5,7 @@ from dais.models.license_models import License
 @admin.register(License)
 class LicenseAdmin(admin.ModelAdmin):
     list_display = (
-        'id','name', 'email', 'address', 'tel', 'license_code', 'active',
+        'id','name', 'email', 'address', 'tel', 'active',
         'start_date', 'end_date', 'list_avatars', 'list_voices', 'list_languages', 'list_modules', 'list_screentypes', 'list_buttontypes', 'total_totem'  
     )
     list_filter = ('active', 'start_date', 'end_date')

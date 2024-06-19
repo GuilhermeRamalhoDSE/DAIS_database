@@ -35,7 +35,6 @@ class LicenseBaseSchema(BaseModel):
     email: str
     address: Optional[str] = None
     tel: Optional[str] = None
-    license_code: str
     active: bool
     start_date: date
     end_date: date
@@ -55,7 +54,6 @@ class LicenseUpdateSchema(BaseModel):
     email: Optional[str] = None
     address: Optional[str] = None
     tel: Optional[str] = None
-    license_code: Optional[str] = None
     active: Optional[bool] = None
     start_date: Optional[date] = None
     end_date: Optional[date] = None

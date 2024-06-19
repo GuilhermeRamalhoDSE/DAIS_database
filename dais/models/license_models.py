@@ -11,7 +11,6 @@ class License(models.Model):
     email = models.EmailField(unique=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     tel = models.CharField(max_length=20, null=True, blank=True)
-    license_code = models.CharField(max_length=100, unique=True)
     active = models.BooleanField(default=True)
     start_date = models.DateField()
     end_date = models.DateField()
