@@ -44,7 +44,7 @@ def update_group_type(request, group_type_id: int, group_type_in: GroupTypeIn):
     group_type.save()
     return group_type
 
-@group_type_router.delete('/{group_type_id}', response={204, None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+@group_type_router.delete('/{group_type_id}', response={204: None}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def delete_group_type(request, group_type_id: int):
     if not check_user_permission:
         raise HttpError(403, "Only superusers can delete group type.")

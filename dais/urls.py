@@ -17,6 +17,7 @@ from .routes.voice_route import voice_router
 from .routes.language_route import language_router
 from .routes.module_route import module_router
 from .routes.screentype_route import screentype_router
+from .routes.grouptype_route import group_type_router
 from .routes.group_route import group_router
 from .routes.totem_route import totem_router
 from .routes.screen_route import screen_router
@@ -52,6 +53,7 @@ api.add_router("/voices", voice_router)
 api.add_router("/languages", language_router)
 api.add_router("/modules", module_router)
 api.add_router("/screentypes", screentype_router)
+api.add_router("/grouptypes", group_type_router)
 api.add_router("/groups", group_router)
 api.add_router("/totem", totem_router)
 api.add_router("/screens", screen_router)
