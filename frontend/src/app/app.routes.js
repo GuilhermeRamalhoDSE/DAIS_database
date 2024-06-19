@@ -493,6 +493,36 @@ angular.module('frontend')
         }
     })
     $stateProvider
+    .state('base.grouptype-new', {
+        url: '/grouptype/new',
+        templateUrl: 'app/grouptype/grouptype-new.html',
+        controller: 'GroupTypeController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.grouptype-view', {
+        url: '/grouptypes',
+        templateUrl: 'app/grouptype/grouptype-view.html',
+        controller: 'GroupTypeController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
+    .state('base.grouptype-update', {
+        url: '/grouptype/update/:grouptypeId/:grouptypeName',
+        templateUrl: 'app/grouptype/grouptype-update.html',
+        controller: 'GroupTypeUpdateController',
+        data: {
+            requireLogin: true, 
+            requiredPermissions: ['superuser'] 
+        }
+    })
+    $stateProvider
     .state('base.group-new', {
         url: '/:clientId/:clientName/group/new',
         templateUrl: 'app/group/group-new.html',
@@ -502,6 +532,7 @@ angular.module('frontend')
             requiredPermissions: ['superuser', 'staff'] 
         }
     })
+    
     $stateProvider
     .state('base.group-view', {
         url: '/:clientId/:clientName/groups',
