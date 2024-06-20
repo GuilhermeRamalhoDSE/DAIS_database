@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 
 group_type_router = Router(tags=['Group Types'])
 
-@group_type_router.post('/', response={201: GroupTypeOut}, auth=[QueryTokenAuth(), HeaderTokenAuth])
+@group_type_router.post('/', response={201: GroupTypeOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_group_type(request, group_type_in: GroupTypeIn):
     if not check_user_permission:
         raise HttpError(403, "Only superusers can create group types.")
