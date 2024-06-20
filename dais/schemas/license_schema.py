@@ -8,6 +8,8 @@ from .language_schema import LanguageOut
 from .module_schema import ModuleOut
 from .screentype_schema import ScreenTypeOut
 from .buttontype_schema import ButtonTypeOut
+from .grouptype_schema import GroupTypeOut
+
 
 class UpdateTotemsSchema(BaseModel):
     total_totem: int
@@ -29,6 +31,9 @@ class ScreenTypeIdSchema(BaseModel):
 
 class ButtonTypeIdSchema(BaseModel):
     buttontype_id: int
+
+class GroupTypeIdSchema(BaseModel):
+    grouptype_id: int
     
 class LicenseBaseSchema(BaseModel):
     name: str
@@ -44,6 +49,7 @@ class LicenseBaseSchema(BaseModel):
     modules_id: List[int] = []
     screentypes_id: List[int] = []
     buttontypes_id: List[int] = []
+    grouptypes_id: List[int] = []
     total_totem: int
 
 class LicenseCreateSchema(LicenseBaseSchema):
@@ -63,6 +69,7 @@ class LicenseUpdateSchema(BaseModel):
     module_ids: Optional[List[int]] = None
     screentype_ids: Optional[List[int]] = None
     buttontype_ids: Optional[List[int]] = None
+    grouptype_ids: Optional[List[int]] = None
     total_totem: Optional[int]
 
 class LicenseSchema(LicenseBaseSchema):
@@ -73,6 +80,7 @@ class LicenseSchema(LicenseBaseSchema):
     modules: List[ModuleOut]
     screentypes: List[ScreenTypeOut]
     buttontypes: List[ButtonTypeOut]
+    grouptypes: List[GroupTypeOut]
     total_totem: int
 
     @validator('avatars', pre=True, each_item=False)
@@ -110,6 +118,12 @@ class LicenseSchema(LicenseBaseSchema):
         if value is None:
             return []
         return [ButtonTypeOut(id=buttontype.id, name=buttontype.name) for buttontype in value.all()]
+    
+    @validator('grouptypes', pre=True, each_item=False)
+    def prepare_grouptypes(cls, value):
+        if value is None:
+            return []
+        return [GroupTypeOut(id=grouptype.id, name=grouptype.name) for grouptype in value.all()]
     
     class Config:
         from_attributes = True

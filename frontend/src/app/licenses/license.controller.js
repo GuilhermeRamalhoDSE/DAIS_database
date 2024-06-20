@@ -1,4 +1,4 @@
-angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', 'ScreenTypeService', 'ButtonTypeService', '$state', '$stateParams', '$location', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, ScreenTypeService, ButtonTypeService, $state, $stateParams, $location) {
+angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseService', 'AvatarService', 'VoiceService', 'LanguageService', 'ModuleService', 'ScreenTypeService', 'ButtonTypeService', "GroupTypeService", '$state', '$location', function($scope, LicenseService, AvatarService, VoiceService, LanguageService, ModuleService, ScreenTypeService, ButtonTypeService, GroupTypeService, $state, $location) {
     $scope.licenses = [];
     $scope.avatars = [];
     $scope.voices = [];
@@ -6,6 +6,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
     $scope.modules = [];
     $scope.screentypes = [];
     $scope.buttontypes = [];
+    $scope.grouptypes = [];
     $scope.currentPage = 0;
     $scope.pageSize = 2;
  
@@ -23,6 +24,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         modules_ids: [],
         screentypes_ids: [],
         buttontypes_ids: [],
+        grouptypes_ids: [],
         total_totem: null
     };
 
@@ -82,6 +84,14 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         });
     };
 
+    $scope.loadGroupTypes = function() {
+        GroupTypeService.getAll().then(function(response) {
+            $scope.grouptypes = response.data;
+        }).catch(function(error) {
+            alert('Error fetching group type:', error);
+        });
+    };
+
     $scope.goToCreateLicense = function() {
         $state.go('base.licenses-new');
     };
@@ -138,6 +148,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
                 modules_ids: [],
                 screentypes_ids: [],
                 buttontypes_ids: [],
+                grouptypes_ids: [],
                 total_totem: null
             };
             $state.go('base.licenses-view'); 
@@ -319,6 +330,31 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
         return license.buttontypes && license.buttontypes.some(buttontype => buttontype.id === buttontypeId);
     };
 
+    $scope.toggleGroupTypeAssignment = function(license, grouptypeId) {
+        const isAssigned = license.grouptypes && license.grouptypes.some(grouptype => grouptype.id === grouptypeId);
+        if (isAssigned) {
+            LicenseService.removeGroupTypeFromLicense(license.id, grouptypeId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error removing group type from license:', error);
+                });
+        } else {
+            LicenseService.addGroupTypeToLicense(license.id, grouptypeId)
+                .then(function(response) {
+                    $scope.getAllLicenses(); 
+                })
+                .catch(function(error) {
+                    console.error('Error adding group type to license:', error);
+                });
+        }
+    };
+
+    $scope.isGroupTypeAssignedToLicense = function(license, grouptypeId) {
+        return license.grouptypes && license.grouptypes.some(grouptype => grouptype.id === grouptypeId);
+    };
+
     $scope.isHomePage = function() {
         return $location.path() === '/home';
     };
@@ -341,4 +377,5 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
     $scope.loadModules();
     $scope.loadScreenTypes();
     $scope.loadButtonTypes();
+    $scope.loadGroupTypes();
 }]);

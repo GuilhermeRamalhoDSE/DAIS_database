@@ -9,6 +9,7 @@ from dais.models.language_models import Language
 from dais.models.module_models import Module
 from dais.models.screentype_models import ScreenType
 from dais.models.buttontype_models import ButtonType
+from dais.models.grouptype_models import GroupType
 from dais.schemas.avatar_schema import AvatarSchema
 from dais.schemas.group_schema import GroupOut
 from dais.schemas.language_schema import LanguageOut
@@ -16,7 +17,8 @@ from dais.schemas.voice_schema import VoiceOut
 from dais.schemas.module_schema import ModuleOut
 from dais.schemas.screentype_schema import ScreenTypeOut
 from dais.schemas.buttontype_schema import ButtonTypeOut
-from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarIdSchema, VoiceIdSchema, LanguageIdSchema, ModuleIdSchema, ScreenTypeIdSchema, ButtonTypeIdSchema, UpdateTotemsSchema
+from dais.schemas.grouptype_schema import GroupTypeOut
+from dais.schemas.license_schema import LicenseSchema, LicenseCreateSchema, LicenseUpdateSchema, AvatarIdSchema, VoiceIdSchema, LanguageIdSchema, ModuleIdSchema, ScreenTypeIdSchema, ButtonTypeIdSchema, UpdateTotemsSchema, GroupTypeIdSchema
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 
 
@@ -24,7 +26,7 @@ license_router = Router(tags=['Licenses'])
 
 @license_router.post("/", response={201: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_license(request, payload: LicenseCreateSchema):
-    license_data = payload.dict(exclude={'avatars_id', 'voices_id', 'languages_id', 'modules_id', 'screentypes_id', 'buttontypes_id'})
+    license_data = payload.dict(exclude={'avatars_id', 'voices_id', 'languages_id', 'modules_id', 'screentypes_id', 'buttontypes_id', 'grouptypes_id'})
     license_obj = License.objects.create(**license_data)
     
     return LicenseSchema.from_orm(license_obj)
@@ -143,6 +145,25 @@ def remove_buttontype_from_license(request, license_id: int, payload: ButtonType
     
     return LicenseSchema.from_orm(license)
 
+@license_router.post("/{license_id}/add-grouptype/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def add_grouptype_to_license(request, license_id: int, payload: GroupTypeIdSchema):
+    license = get_object_or_404(License, id=license_id)
+    grouptype = get_object_or_404(GroupType, id=payload.grouptype_id)
+    
+    license.grouptypes.add(grouptype)
+    
+    return LicenseSchema.from_orm(license)
+
+@license_router.post("/{license_id}/remove-grouptype/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def remove_grouptype_from_license(request, license_id: int, payload: GroupTypeIdSchema):
+    license = get_object_or_404(License, id=license_id)
+    grouptype = get_object_or_404(GroupType, id=payload.grouptype_id)
+    
+    if license.grouptypes.filter(id=grouptype.id).exists():
+        license.grouptypes.remove(grouptype)
+    
+    return LicenseSchema.from_orm(license)
+
 @license_router.put("/{license_id}/update-totems/", response={200: LicenseSchema}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_totems(request, license_id: int, payload: UpdateTotemsSchema):
     license_obj = get_object_or_404(License, id=license_id)
@@ -201,7 +222,13 @@ def get_screentype_by_license(request, license_id: int):
 def get_buttontype_by_license(request, license_id: int):
     license = get_object_or_404(License, id=license_id)
     buttontypes = license.buttontypes.all()
-    return [ScreenTypeOut.from_orm(buttontype) for buttontype in buttontypes]
+    return [ButtonTypeOut.from_orm(buttontype) for buttontype in buttontypes]
+
+@license_router.get("/{license_id}/grouptypes/", response=List[GroupTypeOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_grouptype_by_license(request, license_id: int):
+    license = get_object_or_404(License, id=license_id)
+    grouptypes = license.grouptypes.all()
+    return [GroupTypeOut.from_orm(grouptype) for grouptype in grouptypes]
 
 @license_router.put("/{license_id}", response=LicenseSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_license(request, license_id: int, payload: LicenseUpdateSchema):

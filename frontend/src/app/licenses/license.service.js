@@ -73,6 +73,14 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.post(`${baseUrl}${licenseId}/remove-buttontype/`, { buttontype_id: buttontypeId });
     };
 
+    service.addGroupTypeToLicense = function(licenseId, grouptypeId) {
+        return $http.post(`${baseUrl}${licenseId}/add-grouptype/`, { grouptype_id: grouptypeId });
+    };
+
+    service.removeGroupTypeFromLicense = function(licenseId, grouptypeId) {
+        return $http.post(`${baseUrl}${licenseId}/remove-grouptype/`, { grouptype_id: grouptypeId });
+    };
+
     service.getAvatarsByLicense = function(licenseId) {
         return $http.get(baseUrl + licenseId + '/avatars/');
     };
@@ -95,6 +103,10 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
 
     service.getButtonTypeByLicense = function(licenseId) {
         return $http.get(baseUrl + licenseId + '/buttontypes/');
+    };
+
+    service.getGroupTypeByLicense = function(licenseId) {
+        return $http.get(baseUrl + licenseId + '/grouptypes/');
     };
     
     service.updateTotems = function(licenseId, totalTotem) {

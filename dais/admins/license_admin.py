@@ -6,10 +6,10 @@ from dais.models.license_models import License
 class LicenseAdmin(admin.ModelAdmin):
     list_display = (
         'id','name', 'email', 'address', 'tel', 'active',
-        'start_date', 'end_date', 'list_avatars', 'list_voices', 'list_languages', 'list_modules', 'list_screentypes', 'list_buttontypes', 'total_totem'  
+        'start_date', 'end_date', 'list_avatars', 'list_voices', 'list_languages', 'list_modules', 'list_screentypes', 'list_buttontypes', 'list_grouptypes', 'total_totem'  
     )
     list_filter = ('active', 'start_date', 'end_date')
-    search_fields = ('name', 'email', 'license_code', 'avatars__name', 'voices__name', 'languages__name', 'modules__name', 'screentypes__name', 'buttontypes__name', 'total_totem') 
+    search_fields = ('name', 'email', 'license_code', 'avatars__name', 'voices__name', 'languages__name', 'modules__name', 'screentypes__name', 'buttontypes__name', 'grouptypes__name', 'total_totem') 
     ordering = ('-start_date',)
 
     def has_view_permission(self, request, obj=None):
@@ -47,3 +47,7 @@ class LicenseAdmin(admin.ModelAdmin):
     def list_buttontypes(self, obj):
         return ", ".join([buttontype.name for buttontype in obj.buttontypes.all()])
     list_buttontypes.short_description = "Button Types"
+
+    def list_grouptypes(self, obj):
+        return ", ".join([grouptype.name for grouptype in obj.grouptypes.all()])
+    list_grouptypes.short_description = "Group Types"
