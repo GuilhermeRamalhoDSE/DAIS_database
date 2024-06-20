@@ -111,8 +111,12 @@ angular.module('frontend').controller('CampaignAIController', ['$scope', 'Campai
                 $scope.loadCampaigns();
                 $state.go('base.campaignai-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
             }).catch(function(error) {
-                console.error('Error creating campaign:', error);
-                alert('Error creating campaign: Check console for details.');
+                if (error.data && error.data.detail && error.data.detail === "A campaign already exists in this period.") {
+                    alert('Cannot create campaign: A campaign already exists in this period.');
+                } else {
+                    console.error('Error creating campaign:', error);
+                    alert('Error creating campaign: Check console for details.');
+                }
             });
         });  
     };      
