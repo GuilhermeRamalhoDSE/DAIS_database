@@ -88,30 +88,30 @@
                         </td>
                     </tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="10" class="text-center">
-                            <ul class="pagination">
-                                <li ng-class="{ disabled: currentPage === 0 }">
-                                    <a ng-click="setCurrentPage(0)">«</a>
-                                </li>
-                                <li ng-class="{ disabled: currentPage === 0 }">
-                                    <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
-                                </li>
-                                <li ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
-                                    <a ng-click="setCurrentPage(page)">{{ page + 1 }}</a>
-                                </li>
-                                <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
-                                    <a ng-click="setCurrentPage(currentPage + 1)">›</a>
-                                </li>
-                                <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
-                                    <a ng-click="setCurrentPage(totalPages() - 1)">»</a>
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tfoot>
             </table>
+            <tfoot>
+                <tr>
+                    <td colspan="10" class="text-center">
+                        <ul class="pagination">
+                            <li ng-class="{ disabled: currentPage === 0 }">
+                                <a ng-click="setCurrentPage(0)">«</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === 0 }">
+                                <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
+                            </li>
+                            <li ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                <a ng-click="setCurrentPage(page)">{{ page + 1 }}</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                <a ng-click="setCurrentPage(currentPage + 1)">›</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                <a ng-click="setCurrentPage(totalPages() - 1)">»</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tfoot>
         </div>
         <div class="progress mb-2" ng-show="showProgress">
             <div class="progress-bar progress-bar-striped" role="progressbar"
