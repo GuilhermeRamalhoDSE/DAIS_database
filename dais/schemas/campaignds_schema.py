@@ -40,14 +40,14 @@ class CampaignDSOut(BaseModel):
     
     @validator('background_path', pre=True, always=True)
     def convert_background_to_url(cls, v):
-        if isinstance(v, FieldFile) and v.name:
-            return v.url
+        if isinstance(v, FieldFile):
+            return v.url if v.name else None
         return v
     
     @validator('logo_path', pre=True, always=True)
     def convert_logo_to_url(cls, v):
-        if isinstance(v, FieldFile) and v.name:
-            return v.url
+        if isinstance(v, FieldFile):
+            return v.url if v.name else None
         return v
 
     class Config:
