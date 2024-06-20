@@ -15,9 +15,8 @@
                         </div>
                         <div class="form-group">
                             <label>Typology</label>
-                            <select class="form-control" ng-model="newGroup.typology" required>
-                                <option value="Artificial Intelligence">Artificial Intelligence</option>
-                                <option value="Digital Signage">Digital Signage</option>
+                            <select id="grouptype_id" class="form-control" ng-model="newGroup.typology_id" ng-options="grouptype.id as grouptype.name for grouptype in grouptypes" required>
+                                <option value="">--Select Typology--</option>
                             </select>
                         </div>
                         <div class="form-group">

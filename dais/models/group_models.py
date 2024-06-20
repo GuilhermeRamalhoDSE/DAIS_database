@@ -2,16 +2,13 @@ from django.db import models
 from django.utils.timezone import now
 from dais.models.client_models import Client
 from dais.models.module_models import Module
+from dais.models.grouptype_models import GroupType
 
 class Group(models.Model):
-    TYPOLOGY_CHOICES = [
-        ('Artificial Intelligence', 'Artificial Intelligence'),
-        ('Digital Signage', 'Digital Signage'),
-    ]
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=255)
-    typology = models.CharField(max_length=24, choices=TYPOLOGY_CHOICES)
+    typology = models.ForeignKey(GroupType, on_delete=models.CASCADE, null=True, blank=True)
     comments = models.TextField(blank=True, null=True)
     last_update = models.DateTimeField(default=now)
     forms = models.ManyToManyField('dais.Form', blank=True)

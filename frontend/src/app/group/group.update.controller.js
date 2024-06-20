@@ -1,14 +1,23 @@
-angular.module('frontend').controller('GroupUpdateController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', function($scope, GroupService, $state, $stateParams, AuthService) {
+angular.module('frontend').controller('GroupUpdateController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', 'LicenseService', function($scope, GroupService, $state, $stateParams, AuthService, LicenseService) {
     $scope.group = {};
     $scope.isSuperuser = AuthService.isSuperuser();
+    $scope.grouptypes = [];
+    $scope.licenseId = AuthService.getLicenseId();
 
     var clientId = $stateParams.clientId;
     var clientName = $stateParams.clientName;
 
-    $scope.typologyOptions = [
-        {value: 'Artificial Intelligence', label: 'Intelligenza artificiale'},
-        {value: 'Digital Signage', label: 'Digital Signage'}
-    ];
+    $scope.loadGroupType = function() {
+        if ($scope.licenseId) {
+            LicenseService.getGroupTypeByLicense($scope.licenseId).then(function(response) {
+                $scope.grouptypes = response.data;
+            }).catch(function(error) {
+                console.error('Error loading group type:', error);
+            });
+        } else {
+            console.error('License ID is undefined');
+        }
+    }; 
 
     $scope.loadGroupData = function() {
         const groupId = $stateParams.groupId; 
@@ -51,4 +60,5 @@ angular.module('frontend').controller('GroupUpdateController', ['$scope', 'Group
     };
 
     $scope.loadGroupData();
+    $scope.loadGroupType();
 }]);
