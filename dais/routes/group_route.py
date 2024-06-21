@@ -11,6 +11,7 @@ from dais.schemas.grouptype_schema import GroupTypeOut
 from ninja.errors import HttpError
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token, check_user_permission
+from django.http import Http404
 
 
 group_router = Router(tags=["Group"])
@@ -117,17 +118,15 @@ def get_forms_by_group(request, group_id: int):
 
 @group_router.put("/{group_id}", response=GroupOut, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_group(request, group_id: int, payload: GroupUpdate):
-
+    user_info = get_user_info_from_token(request)
     group = get_object_or_404(Group, id=group_id)
+    client = get_object_or_404(Client, id=group.client_id)
+
+    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
+       raise Http404("You do not have permission to update this group.")
     
-    if payload.client_id is not None:
-        group.client_id = payload.client_id
-    if payload.name is not None:
-        group.name = payload.name
-    if payload.typology is not None:
-        group.typology = payload.typology
-    if payload.comments is not None:
-        group.comments = payload.comments
+    for attr, value in payload.dict(exclude_none=True).items():
+        setattr(group, attr, value)
     
     group.save()
     return group

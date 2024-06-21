@@ -26,6 +26,7 @@ angular.module('frontend').controller('GroupUpdateController', ['$scope', 'Group
             if (response.data) {
                 $scope.group = response.data;
                 $scope.clientId = response.data.client_id;
+                $scope.group.typology_id = response.data.typology.id;
             } else {
                 console.error('Group not found');
                 alert('Group not found.');
@@ -41,7 +42,7 @@ angular.module('frontend').controller('GroupUpdateController', ['$scope', 'Group
         if ($scope.group && $scope.group.id) {
             const payload = {
                 name: $scope.group.name,
-                typology: $scope.group.typology,
+                typology_id: $scope.group.typology_id,
                 comments: $scope.group.comments
                
             };
