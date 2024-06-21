@@ -1,10 +1,37 @@
-angular.module('frontend').controller('AvatarController', ['$scope', 'AvatarService', '$state', 'AuthService', '$q', '$interval', '$location', '$window', function($scope, AvatarService, $state, AuthService, $q, $interval, $location, $window) {
+angular.module('frontend').controller('AvatarController', ['$scope', 'AvatarService', '$state', 'AuthService', '$q', '$interval', '$location', '$window', '$filter', function($scope, AvatarService, $state, AuthService, $q, $interval, $location, $window, $filter) {
     $scope.avatarList = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 5;
     $scope.isSuperuser = AuthService.isSuperuser();
 
     $scope.newAvatar = {
         name: "",
         file: null,
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.avatarList, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+     
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.avatarList.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
     };
 
     $scope.loadAvatars = function() {

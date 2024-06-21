@@ -12,12 +12,12 @@
             ng-model="searchText" />
         </div>
         <div class="col-sm-6">
-          <button class="btn btn-fw primary" ng-click="goToCreateAvatar()">
+          <button class="md-btn md-raised m-b-sm w-md green" ng-click="goToCreateAvatar()">
             <i class="fa fa-fw fa-plus text-muted"></i>
             <span>New Avatar</span>
           </button>
           <a>
-            <button type="button" class="btn btn-fw info pull-right" ng-if="!isHomePage()"
+            <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right" ng-if="!isHomePage()"
               ng-click="goBack()">Back</button>
           </a>
         </div>
@@ -43,7 +43,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="avatar in avatarList | filter:searchText">
+          <tr ng-repeat="avatar in getPaginatedData() | filter:searchText" ng-class-even="'footable-even'"
+          ng-class-odd="'footable-odd'">
             <td ng-if="isSuperuser">{{ avatar.id }}</td>
             <td>{{ avatar.name }}</td>
             <td>
@@ -54,19 +55,35 @@
             </td>
             <td>{{ avatar.last_update_date | date:'dd/MM/yyyy HH:mm' }}</td>
             <td>
-              <button class="btn btn-default btn-xs" ng-click="editAvatar(avatar.id)">Edit</button>
-              <button class="btn btn-danger btn-xs" ng-click="deleteAvatar(avatar.id)">Delete</button>
+              <button class="md-btn md-raised m-b-sm w-xs white" ng-click="editAvatar(avatar.id)">Edit</button>
+              <button class="md-btn md-raised m-b-sm w-xs red" ng-click="deleteAvatar(avatar.id)">Delete</button>
             </td>
           </tr>
         </tbody>
-        <tfoot class="hide-if-no-paging">
-          <tr>
-            <td colspan="6" class="text-center">
-              <ul class="pagination"></ul>
-            </td>
-          </tr>
-        </tfoot>
       </table>
+      <tfoot>
+        <tr>
+          <td colspan="10" class="text-center">
+            <ul class="pagination">
+              <li ng-class="{ disabled: currentPage === 0 }">
+                <a ng-click="setCurrentPage(0)">«</a>
+              </li>
+              <li ng-class="{ disabled: currentPage === 0 }">
+                <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
+              </li>
+              <li ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                <a ng-click="setCurrentPage(page)">{{ page + 1 }}</a>
+              </li>
+              <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                <a ng-click="setCurrentPage(currentPage + 1)">›</a>
+              </li>
+              <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                <a ng-click="setCurrentPage(totalPages() - 1)">»</a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tfoot>
     </div>
     <div class="progress mb-2" ng-show="showProgress">
       <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{'width': loadingProgress + '%'}"
