@@ -2,7 +2,7 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
     var authService = {};
 
     authService.login = function(credentials) {
-        return $http.post('http://127.0.0.1:8000/api/login/', credentials).then(function(response) {
+        return $http.post('https://daisdatabasedse.it/api/login/', credentials).then(function(response) {
             var storage = credentials.rememberMe ? $window.localStorage : $window.sessionStorage;
             
             storage.setItem('jwtToken', response.data.token);
@@ -36,7 +36,7 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
     authService.fetchAndStoreModules = function(licenseId) {
         var storage = $window.localStorage.getItem('jwtToken') ? $window.localStorage : $window.sessionStorage;
     
-        return $http.get('http://127.0.0.1:8000/api/licenses/' + licenseId + '/modules/').then(function(response) {
+        return $http.get('https://daisdatabasedse.it/api/licenses/' + licenseId + '/modules/').then(function(response) {
             if (response.data && Array.isArray(response.data)) { 
                 var moduleSlugs = response.data.map(module => module.slug); 
                 storage.setItem('licenseModules', JSON.stringify(moduleSlugs));
@@ -53,7 +53,7 @@ angular.module('frontend').factory('AuthService', ['$http', '$window', function(
     authService.isModuleInAnyGroup = function(moduleSlug, groupId) {
         if (!groupId) return Promise.resolve(false);
     
-        return $http.get(`http://127.0.0.1:8000/api/groups/${groupId}/modules/`)
+        return $http.get(`https://daisdatabasedse.it/api/groups/${groupId}/modules/`)
         .then(function(response) {
             return response.data.some(module => module.slug === moduleSlug);
         }).catch(function(error) {

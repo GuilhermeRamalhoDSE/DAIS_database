@@ -251,7 +251,7 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
 
     $scope.viewFile = function(filePath) {
         if (filePath) {
-            window.open('http://127.0.0.1:8000/' + filePath, '_blank');
+            window.open('https://daisdatabasedse.it/' + filePath, '_blank');
         } else {
             alert('File path not available.');
         }
