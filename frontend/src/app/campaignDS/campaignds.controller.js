@@ -1,4 +1,4 @@
-angular.module('frontend').controller('CampaignDSController', ['$scope', 'CampaignDSService', 'AuthService', '$state', '$stateParams', '$http', '$filter','$q', '$interval', function($scope, CampaignDSService, AuthService, $state, $stateParams, $http, $filter, $q, $interval) {
+angular.module('frontend').controller('CampaignDSController', ['$scope', 'CampaignDSService', 'AuthService', '$state', '$stateParams', '$window', '$filter','$q', '$interval', function($scope, CampaignDSService, AuthService, $state, $stateParams, $window, $filter, $q, $interval) {
     $scope.campaignList = [];
     $scope.isSuperuser = AuthService.isSuperuser(); 
     $scope.currentPage = 0;
@@ -111,8 +111,12 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
                 $scope.loadCampaigns();
                 $state.go('base.campaignds-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
             }).catch(function(error) {
-                console.error('Error creating campaign:', error);
-                alert('Error creating campaign: Check console for details.');
+                if (error.data && error.data.detail && error.data.detail === "A campaign already exists in this period.") {
+                    alert('Cannot create campaign: A campaign already exists in this period.');
+                } else {
+                    console.error('Error creating campaign:', error);
+                    alert('Error creating campaign: Check console for details.');
+                }
             });
         });  
     };      
@@ -142,29 +146,35 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
         };
     };
 
-    $scope.downloadLogoFile = function(campaignId) {
-        if (campaignId) {
-            var downloadUrl = 'https://daisdatabasedse.it/api/campaignds/download/logo/' + campaignId;
-    
-            $http({
-                url: downloadUrl,
-                method: 'GET',
-                responseType: 'blob',
-            }).then(function(response) {
-                var blob = new Blob([response.data], { type: response.headers('Content-Type') });
-                var downloadLink = angular.element('<a></a>');
-                downloadLink.attr('href', window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'LogoFile-' + campaignId); 
-    
-                document.body.appendChild(downloadLink[0]);
-                downloadLink[0].click();
-                document.body.removeChild(downloadLink[0]);
+    $scope.uploadLogo = function(campaigndsId, campaigndsName, logo) {
+        var campaigndsData = new FormData();
+        campaigndsData.append('logo', logo);
+
+        const payload = {
+            name: campaigndsName,
+        };
+        
+        campaigndsData.append('campaignds_in', JSON.stringify(payload));
+
+        $scope.upload().then(function() {
+            CampaignDSService.updateCampaignDS(campaigndsId, campaigndsData).then(function(response) {
+                alert('Campaign logo uploaded successfully!');
+                $scope.loadCampaigns();
+                $window.location.reload();
             }).catch(function(error) {
-                console.error('Error downloading logo:', error);
+                console.error('Error uploading campaign DS logo:', error);
             });
-        } else {
-            alert('Invalid Screen ID');
-        }
+        });
+    };
+
+    $scope.triggerLogoInput = function(campaigndsId, campaigndsName) {
+        var logoInput = document.getElementById('logoInput' + campaigndsId);
+        logoInput.click();
+
+        logoInput.onchange = function(event) {
+            var file = event.target.files[0];
+            $scope.uploadLogo(campaigndsId, campaigndsName, file);
+        };
     };
 
     $scope.viewLogo = function(logoPath) {
@@ -175,30 +185,35 @@ angular.module('frontend').controller('CampaignDSController', ['$scope', 'Campai
         }
     };
     
-    
-    $scope.downloadBackgroundFile = function(campaignId) {
-        if (campaignId) {
-            var downloadUrl = 'https://daisdatabasedse.it/api/campaignds/download/background/' + campaignId;
-    
-            $http({
-                url: downloadUrl,
-                method: 'GET',
-                responseType: 'blob',
-            }).then(function(response) {
-                var blob = new Blob([response.data], { type: response.headers('Content-Type') });
-                var downloadLink = angular.element('<a></a>');
-                downloadLink.attr('href', window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'BackgroundFile-' + campaignId); 
-    
-                document.body.appendChild(downloadLink[0]);
-                downloadLink[0].click();
-                document.body.removeChild(downloadLink[0]);
+    $scope.uploadBackground = function(campaigndsId, campaigndsName, background) {
+        var campaigndsData = new FormData();
+        campaigndsData.append('background', background);
+
+        const payload = {
+            name: campaigndsName,
+        };
+        
+        campaigndsData.append('campaignds_in', JSON.stringify(payload));
+
+        $scope.upload().then(function() {
+            CampaignDSService.updateCampaignDS(campaigndsId, campaigndsData).then(function(response) {
+                alert('Campaign background uploaded successfully!');
+                $scope.loadCampaigns();
+                $window.location.reload();
             }).catch(function(error) {
-                console.error('Error downloading logo:', error);
+                console.error('Error uploading campaign DS background:', error);
             });
-        } else {
-            alert('Invalid Screen ID');
-        }
+        });
+    };
+
+    $scope.triggerBackgroundInput = function(campaigndsId, campaigndsName) {
+        var backgroundInput = document.getElementById('backgroundInput' + campaigndsId);
+        backgroundInput.click();
+
+        backgroundInput.onchange = function(event) {
+            var file = event.target.files[0];
+            $scope.uploadBackground(campaigndsId, campaigndsName, file);
+        };
     };
 
     $scope.viewBackground = function(backgroundPath) {

@@ -63,8 +63,12 @@ angular.module('frontend').controller('CampaignDSUpdateController', ['$scope', '
                 alert('Campaign updated successfully!');
                 $state.go('base.campaignds-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
             }).catch(function(error) {
+                if (error.data && error.data.detail && error.data.detail === "A campaign already exists in this period.") {
+                    alert('Cannot update campaign: A campaign already exists in this period.');
+                }else {
                 console.error('Error updating CampaignDS:', error);
                 alert('Error updating CampaignDS: Check console for details.');
+                }
             });
         });
     };    

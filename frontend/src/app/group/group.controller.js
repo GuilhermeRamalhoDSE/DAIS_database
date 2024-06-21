@@ -1,9 +1,11 @@
-angular.module('frontend').controller('GroupController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', 'FormService', '$window', function($scope, GroupService, $state, $stateParams, AuthService, FormService, $window) {
+angular.module('frontend').controller('GroupController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', 'FormService', 'LicenseService', '$window', function($scope, GroupService, $state, $stateParams, AuthService, FormService, LicenseService, $window) {
     $scope.groupList = [];
     $scope.forms = [];
+    $scope.grouptypes = [];
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.moduleFormEnabled = false;
     $scope.modulesAvailable = AuthService.hasModules();
+    $scope.licenseId = AuthService.getLicenseId();
 
     let clientId = parseInt($stateParams.clientId || sessionStorage.getItem('lastclientId'), 10);
     if (isNaN(clientId)) {
@@ -22,11 +24,23 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
 
     $scope.newGroup = {
         name: "",
-        typology: "",
+        typology_id: null,
         comments: "",
         client_id: clientId, 
         forms_ids: []
     };
+
+    $scope.loadGroupType = function() {
+        if ($scope.licenseId) {
+            LicenseService.getGroupTypeByLicense($scope.licenseId).then(function(response) {
+                $scope.grouptypes = response.data;
+            }).catch(function(error) {
+                console.error('Error loading group type:', error);
+            });
+        } else {
+            console.error('License ID is undefined');
+        }
+    }; 
 
     $scope.checkModuleFormEnabled = function() {
         if (AuthService.isModuleEnabled('form')) {
@@ -141,7 +155,7 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
     $scope.resetForm = function() {
         $scope.newGroup = {
             name: "",
-            typology: "",
+            typology_id: null,
             comments: "",
             client_id: clientId,
             forms_ids: []
@@ -175,4 +189,5 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
 
     $scope.loadGroups();
     $scope.loadForms();
+    $scope.loadGroupType();
 }]);

@@ -52,7 +52,7 @@ def setup_totem(request, totem_id: int):
     group_details = GroupDetails(
         id=group.id, 
         name=group.name, 
-        typology=group.typology, 
+        typology=group.typology.name, 
         last_update=group.last_update,
         forms=form_details
     )

@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonService', 'AuthService', 'LicenseService', 'FormService', '$state', '$stateParams', '$http', '$q', '$interval', function($scope, ButtonService, AuthService, LicenseService, FormService, $state, $stateParams, $http, $q, $interval) {
+angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonService', 'AuthService', 'LicenseService', 'FormService', '$state', '$stateParams', '$q', '$interval', '$window', function($scope, ButtonService, AuthService, LicenseService, FormService, $state, $stateParams, $q, $interval, $window) {
     $scope.buttonList = [];
     $scope.forms = [];
     $scope.buttonTypes = [];
@@ -86,7 +86,7 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
             buttonData.append('file', $scope.newButton.file);
         }
 
-        $scope.upload($scope.newButton.file).then(function() {
+        $scope.upload().then(function() {
             ButtonService.create(buttonData).then(function(response) {
                 alert('Button created successfully!');
                 $scope.loadButtons();
@@ -216,29 +216,48 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
         });
     };
 
-    $scope.downloadFile = function(buttonId) {
-        if (buttonId) {
-            var downloadUrl = 'https://daisdatabasedse.it/api/buttons/download/' + buttonId;
+    $scope.uploadFile = function(buttonId, buttonName, buttontypeId, file) {
+        var buttonData = new FormData();
+        buttonData.append('file', file);
 
-            $http({
-                url: downloadUrl,
-                method: 'GET',
-                responseType: 'blob',
-            }).then(function(response) {
-                var blob = new Blob([response.data], { type: response.headers('Content-Type') });
-                var downloadLink = angular.element('<a></a>');
-                downloadLink.attr('href', window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'ButtonFile-' + buttonId);
-                downloadLink[0].click();
+        const payload = {
+            interaction_id: touchscreeninteractionId,
+            name: buttonName,
+            button_type_id: buttontypeId,
+        };
+        
+        buttonData.append('button_in', JSON.stringify(payload));
+
+        $scope.upload().then(function() {
+            ButtonService.update(buttonId, buttonData).then(function(response) {
+                alert('Button file uploaded successfully!');
+                $scope.loadButtons();
+                $window.location.reload();
             }).catch(function(error) {
-                console.error("Download failed: ", error);
+                console.error('Error uploading button file:', error);
             });
+        });
+    };
+
+    $scope.triggerFileInput = function(buttonId, buttonName, buttontypeId) {
+        var fileInput = document.getElementById('fileInput' + buttonId);
+        fileInput.click();
+
+        fileInput.onchange = function(event) {
+            var file = event.target.files[0];
+            $scope.uploadFile(buttonId, buttonName, buttontypeId, file);
+        };
+    };
+
+    $scope.viewFile = function(filePath) {
+        if (filePath) {
+            window.open('https://daisdatabasedse.it/' + filePath, '_blank');
         } else {
-            console.error("Download failed: Button ID is invalid.");
+            alert('File path not available.');
         }
     };
 
-    $scope.upload = function(file) {
+    $scope.upload = function() {
         var deferred = $q.defer();
 
         $scope.showProgress = true;

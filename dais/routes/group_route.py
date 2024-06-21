@@ -7,6 +7,7 @@ from dais.models.form_models import Form
 from dais.schemas.form_schema import FormSchema
 from dais.schemas.group_schema import GroupCreate, GroupUpdate, GroupOut, LastUpdateOut, FormIdSchema
 from dais.schemas.module_schema import ModuleOut
+from dais.schemas.grouptype_schema import GroupTypeOut
 from ninja.errors import HttpError
 from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token, check_user_permission
@@ -19,7 +20,11 @@ def create_group(request, payload: GroupCreate):
     client = get_object_or_404(Client, id=payload.client_id)
     
     group = Group.objects.create(**payload.dict(exclude={'forms_id'}))
-    return 201, group
+    group_type = GroupTypeOut.from_orm(group.typology)
+
+    group_schema = GroupOut.from_orm(group)
+    group_schema.typology = group_type
+    return 201, group_schema
 
 @group_router.post("/{group_id}/update-last-update/", response={200: LastUpdateOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_group_last_update(request, group_id: int):

@@ -45,7 +45,10 @@
                             <button class="btn btn-danger btn-xs" ng-click="deleteButton(button.id)">Delete</button>
                         </td>
                         <td>
-                            <button class="btn btn-primary btn-xs" ng-if="isDownloadable(button)" ng-click="downloadFile(button.id)">Download File</button>
+                            <input type="file" id="fileInput{{ button.id }}" style="display: none;"  ng-if="isDownloadable(button)" />
+                            <button class="md-btn md-raised m-b-sm w-xs indigo"
+                              ng-click="triggerFileInput(button.id, button.name, button.button_type.id)"  ng-if="isDownloadable(button)">Upload</button>
+                            <button class="md-btn md-flat m-b-sm w-xs" ng-click="viewFile(button.file_path)"  ng-if="isDownloadable(button)">View</button>
                             <button class="btn btn-primary btn-xs" ng-if="isURL(button)" ng-click="redirectToURL(button.url)">Go To URL</button>
                             <button class="btn btn-primary btn-xs" ng-if="isForm(button)" ng-click="redirectToModule(button)">Go To Form</button>
                         </td>
@@ -59,6 +62,11 @@
                     </tr>
                 </tfoot>
             </table>
+        </div>
+        <div class="progress mb-2" ng-show="showProgress">
+            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{'width': loadingProgress + '%'}"
+              aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
+              {{ loadingProgress }}%
         </div>
     </div>
 </div>

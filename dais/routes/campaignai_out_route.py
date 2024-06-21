@@ -36,8 +36,8 @@ def get_ia_overview(request, group_id: int):
             "name": campaign.name,
             "start_date": campaign.start_date.strftime('%d-%m-%Y'),
             "end_date": campaign.end_date.strftime('%d-%m-%Y'),
-            "logo_path": campaign.logo.url,
-            "background_path": campaign.background.url,
+            "logo_path": campaign.logo.url if campaign.logo else None,
+            "background_path": campaign.background.url if campaign.background else None,
             "footer": campaign.footer,
             "last_update": campaign.last_update.strftime('%d-%m-%Y %H:%M:%S'),
             "layers": layer_data

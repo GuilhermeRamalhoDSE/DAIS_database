@@ -32,23 +32,25 @@
                         </div>
                         <div class="form-group" ng-if="inputType === 'text'">
                             <label for="textInput">Text</label>
-                            <textarea id="textInput" class="form-control" ng-model="textInput"></textarea>
+                            <textarea id="textInput" class="form-control large-textarea" ng-model="textInput"></textarea>
                             <button type="button" class="btn btn-primary mt-2"
                                 ng-click="generateTextFile(textInput)">Generate Text File</button>
                         </div>
-                        <div class="form-group">
-                            <label for="language_id">Language</label>
-                            <select id="language_id" class="form-control" ng-model="newFormation.language_id"
-                                ng-options="language.id as language.name for language in languages" required>
-                                <option value="">--Select Language--</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="voice_id">Voice</label>
-                            <select id="voice_id" class="form-control" ng-model="newFormation.voice_id"
-                                ng-options="voice.id as voice.name for voice in voices" required>
-                                <option value="">--Select Voice--</option>
-                            </select>
+                        <div class="form-group flex-container">
+                            <div class="flex-item">
+                                <label for="language_id">Language</label>
+                                <select id="language_id" class="form-control" ng-model="newFormation.language_id"
+                                    ng-options="language.id as language.name for language in languages" required>
+                                    <option value="">--Select Language--</option>
+                                </select>
+                            </div>
+                            <div class="flex-item">
+                                <label for="voice_id">Voice</label>
+                                <select id="voice_id" class="form-control" ng-model="newFormation.voice_id"
+                                    ng-options="voice.id as voice.name for voice in voices" required>
+                                    <option value="">--Select Voice--</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="trigger">Trigger</label>
@@ -67,3 +69,22 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<!-- ############ PAGE END-->
+
+<style>
+    .large-textarea {
+        height: 300px; 
+        width: 100%; 
+    }
+
+    .flex-container {
+        display: flex;
+        gap: 20px; 
+    }
+
+    .flex-item {
+        flex: 1;
+    }
+</style>

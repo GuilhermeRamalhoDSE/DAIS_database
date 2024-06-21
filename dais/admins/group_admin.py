@@ -1,8 +1,6 @@
 from django.contrib import admin
 from dais.models.group_models import Group
 
-
-
 class GroupAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'client', 'typology', 'total_totems','last_update', 'list_forms')
     search_fields = ('name', 'client__name', 'last_update', 'comments', 'forms__name')

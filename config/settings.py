@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -171,5 +172,32 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+    'celery': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     }
+}
+
+# CELERY
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_BEAT_SCHEDULE = {
+    'deactivate-expired-licenses-every-day': {
+        'task': 'dais.tasks.deactivate_expired_licenses',
+        'schedule': crontab(hour=13, minute=00),
+    },
+        'deactivate-expired-campaigns-ai-every-day': {
+        'task': 'dais.tasks.deactivate_expired_campaigns_ai',
+        'schedule': crontab(hour=13, minute=00),
+    },
+    'deactivate-expired-campaigns-ds-every-day': {
+        'task': 'dais.tasks.deactivate_expired_campaigns_ds',
+        'schedule': crontab(hour=13, minute=00),
+    },
 }

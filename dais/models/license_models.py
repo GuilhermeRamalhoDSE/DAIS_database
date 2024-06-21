@@ -5,13 +5,13 @@ from dais.models.language_models import Language
 from dais.models.module_models import Module
 from dais.models.screentype_models import ScreenType
 from dais.models.buttontype_models import ButtonType
+from dais.models.grouptype_models import GroupType
 
 class License(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     tel = models.CharField(max_length=20, null=True, blank=True)
-    license_code = models.CharField(max_length=100, unique=True)
     active = models.BooleanField(default=True)
     start_date = models.DateField()
     end_date = models.DateField()
@@ -21,6 +21,7 @@ class License(models.Model):
     modules = models.ManyToManyField(Module, blank=True)
     screentypes = models.ManyToManyField(ScreenType, blank=True)
     buttontypes = models.ManyToManyField(ButtonType, blank=True)
+    grouptypes = models.ManyToManyField(GroupType, blank=True)
     total_totem = models.IntegerField(default=0)
 
     def __str__(self):

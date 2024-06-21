@@ -54,7 +54,7 @@
                         <td>{{ group.id }}</td>
                         <td>{{ clientName }}</td>
                         <td>{{ group.name }}</td>
-                        <td>{{ group.typology }}</td>
+                        <td>{{ group.typology.name }}</td>
                         <td>{{ group.total_totems }}</td>
                         <td>{{ group.comments }}</td>
                         <td>
@@ -82,7 +82,7 @@
                         </td>
                         <td>
                             <button class="btn btn-default btn-xs"
-                                ng-click="detailGroup(group.id, group.name, group.typology)">Details</button>
+                                ng-click="detailGroup(group.id, group.name, group.typology.name)">Details</button>
                         </td>
                         <td>
                             <button class="btn btn-default btn-xs"

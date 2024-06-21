@@ -1,4 +1,4 @@
-angular.module('frontend').controller('ContributionAIController', ['$scope', 'ContributionAIService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$http', 'Upload', '$q', '$interval', function($scope, ContributionAIService, LicenseService, AuthService, $state, $stateParams, $http, Upload, $q, $interval) {
+angular.module('frontend').controller('ContributionAIController', ['$scope', 'ContributionAIService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$window', '$q', '$interval', function($scope, ContributionAIService, LicenseService, AuthService, $state, $stateParams, $window, $q, $interval) {
     $scope.contributionList = [];
     $scope.file = null;
 
@@ -127,29 +127,35 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
         }
     };
 
-    $scope.downloadFile = function(contributionId) {
-        if (contributionId) {
-            var downloadUrl = 'https://daisdatabasedse.it/api/contributionsAI/download/' + contributionId;
-    
-            $http({
-                url: downloadUrl,
-                method: 'GET',
-                responseType: 'blob',
-            }).then(function(response) {
-                var blob = new Blob([response.data], { type: response.headers('Content-Type') });
-                var downloadLink = angular.element('<a></a>');
-                downloadLink.attr('href', window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'ContributionFile-' + contributionId);
-    
-                document.body.appendChild(downloadLink[0]);
-                downloadLink[0].click();
-                document.body.removeChild(downloadLink[0]);
+    $scope.uploadFile = function(contributionId, contributionName, file) {
+        var contributionData = new FormData();
+        contributionData.append('file', file);
+
+        const payload = {
+            name: contributionName,
+        };
+        
+        contributionData.append('data', JSON.stringify(payload));
+
+        $scope.uploadbar().then(function() {
+            ContributionAIService.update(contributionId, contributionData).then(function(response) {
+                alert('Contribution file uploaded successfully!');
+                $scope.loadContributions();
+                $window.location.reload();
             }).catch(function(error) {
-                console.error('Error downloading file:', error);
+                console.error('Error uploading contribution file:', error);
             });
-        } else {
-            alert('Invalid Contribution ID');
-        }
+        });
+    };
+
+    $scope.triggerFileInput = function(contributionId, contributionName) {
+        var fileInput = document.getElementById('fileInput' + contributionId);
+        fileInput.click();
+
+        fileInput.onchange = function(event) {
+            var file = event.target.files[0];
+            $scope.uploadFile(contributionId, contributionName, file);
+        };
     };
 
     $scope.viewFile = function(filePath) {
@@ -159,6 +165,23 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
             alert('File path not available.');
         }
     };
+
+    $scope.uploadbar = function() {
+        var deferred = $q.defer(); 
+    
+        $scope.showProgress = true;
+        $scope.loadingProgress = 0;
+    
+        var progressInterval = $interval(function() {
+            $scope.loadingProgress += 10; 
+            if ($scope.loadingProgress >= 100) {
+                $interval.cancel(progressInterval); 
+                deferred.resolve(); 
+            }
+        }, 500); 
+    
+        return deferred.promise; 
+    };  
 
     $scope.cancelCreate = function() {
         $state.go('base.contributionai-view', {

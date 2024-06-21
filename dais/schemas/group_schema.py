@@ -1,6 +1,6 @@
 from ninja import Schema
 from typing import Optional, List
-from ninja.errors import ValidationError
+from dais.schemas.grouptype_schema import GroupTypeOut
 from dais.models.client_models import Client 
 from datetime import datetime
 from django.shortcuts import get_object_or_404
@@ -12,21 +12,14 @@ class FormIdSchema(Schema):
 class GroupCreate(Schema):
     client_id: int  
     name: str
-    typology: str 
+    typology_id: int 
     comments: Optional[str] = None
     forms_id: List[int] = []
-
-    @classmethod
-    def validate_typology(cls, value):
-        valid_typologies = ["Artificial Intelligence", "Digital Signage"]
-        if value not in valid_typologies:
-            raise ValidationError(f"Invalid typology value: {value}. Valid options are: {valid_typologies}")
-        return value
 
 class GroupUpdate(Schema):
     client_id: Optional[int] = None  
     name: Optional[str] = None
-    typology: Optional[str] = None
+    typology_id: Optional[int] = None
     comments: Optional[str] = None
     form_ids: Optional[List[int]] = None
 
@@ -38,7 +31,7 @@ class GroupOut(Schema):
     client_id: int
     client_name: str  
     name: str
-    typology: str
+    typology: GroupTypeOut
     last_update: datetime
     total_totems: Optional[int] = None
     comments: Optional[str] = None

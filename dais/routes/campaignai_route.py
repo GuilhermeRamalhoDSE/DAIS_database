@@ -1,7 +1,7 @@
 from typing import List, Optional
 from ninja import Router, File
 from ninja.files import UploadedFile
-from django.http import HttpRequest, FileResponse, Http404
+from django.http import HttpRequest, Http404
 from django.shortcuts import get_object_or_404
 from dais.models.campaignai_models import CampaignAI  
 from dais.models.group_models import Group
@@ -11,9 +11,25 @@ from dais.auth import QueryTokenAuth, HeaderTokenAuth
 from dais.utils import get_user_info_from_token
 import os
 from django.core.files.storage import default_storage
+from django.db.models import Q
+from ninja.errors import HttpError
+from datetime import timedelta
 
 
 campaignai_router = Router(tags=["CampaignAI"])  
+
+def check_campaign_overlap(group_id, start_date, end_date, campaign_id=None):
+    query = CampaignAI.objects.filter(
+        Q(group_id=group_id) &
+        Q(active=True) &
+        (
+            Q(start_date__lt=end_date + timedelta(days=1)) &
+            Q(end_date__gt=start_date - timedelta(days=1))
+        )
+    )
+    if campaign_id:
+        query = query.exclude(id=campaign_id)
+    return query.exists()
 
 @campaignai_router.post("/", response={201: CampaignAIOut}, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def create_campaignai(request: HttpRequest, campaign_in: CampaignAICreate, logo: UploadedFile = File(None), background: UploadedFile = File(None)):
@@ -23,6 +39,9 @@ def create_campaignai(request: HttpRequest, campaign_in: CampaignAICreate, logo:
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to add campaigns.")
+    
+    if check_campaign_overlap(group.id, campaign_in.start_date, campaign_in.end_date):
+        raise HttpError(400, "A campaign already exists in this period.")
     
     campaign_data = {
         **campaign_in.dict(exclude={'background_path', 'logo_path'}),
@@ -62,41 +81,7 @@ def get_campaignai_by_id(request, campaignai_id: int):
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to view this campaign.")
 
-    return CampaignAIOut.from_orm(campaignai)
-
-@campaignai_router.get('/download/logo/{campaignai_id}', auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def download_campaignai_logofile(request, campaignai_id: int):
-    user_info = get_user_info_from_token(request)
-    campaignai = get_object_or_404(CampaignAI, id=campaignai_id)
-    group = get_object_or_404(Group, id=campaignai.group_id)
-    client = get_object_or_404(Client, id=group.client_id)
-
-    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
-       raise Http404("You do not have permission to download this logo from this campaign.")
-    
-    if campaignai.logo and hasattr(campaignai.logo, 'path'):
-        logo_path = campaignai.logo.path
-        if os.path.exists(logo_path):
-            return FileResponse(open(logo_path, 'rb'), as_attachment=True, filename=os.path.basename(logo_path))
-        else:
-            raise Http404('No logo file associated with this campaign')
-
-@campaignai_router.get('/download/background/{campaignai_id}', auth=[QueryTokenAuth(), HeaderTokenAuth()])
-def download_campaignai_backgroundfile(request, campaignai_id: int):
-    user_info = get_user_info_from_token(request)
-    campaignai = get_object_or_404(CampaignAI, id=campaignai_id)
-    group = get_object_or_404(Group, id=campaignai.group_id)
-    client = get_object_or_404(Client, id=group.client_id)
-
-    if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
-       raise Http404("You do not have permission to download this background from this campaign.")
-    
-    if campaignai.background and hasattr(campaignai.background, 'path'):
-        background_path = campaignai.background.path
-        if os.path.exists(background_path):
-            return FileResponse(open(background_path, 'rb'), as_attachment=True, filename=os.path.basename(background_path))
-        else:
-            raise Http404('No logo file associated with this campaign')      
+    return CampaignAIOut.from_orm(campaignai)  
 
 @campaignai_router.get("/with-dates/", response=List[CampaignAIOut], auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def get_campaignai_with_dates(request, license_id: Optional[int] = None):
@@ -135,6 +120,17 @@ def update_campaignai(request, campaignai_id: int, campaignai_in: CampaignAIUpda
 
     if not user_info.get('is_superuser') and str(client.license_id) != str(user_info.get('license_id')):
        raise Http404("You do not have permission to update this campaign.")
+    
+    new_start_date = campaignai_in.start_date if campaignai_in.start_date else campaignai.start_date
+    new_end_date = campaignai_in.end_date if campaignai_in.end_date else campaignai.end_date
+    new_active_status = campaignai_in.active if campaignai_in.active is not None else campaignai.active
+
+    if check_campaign_overlap(group.id, new_start_date, new_end_date, campaignai_id):
+        raise HttpError(400, "A campaign already exists in this period.")
+
+    if new_active_status and not campaignai.active:
+        if check_campaign_overlap(group.id, new_start_date, new_end_date, campaignai_id):
+            raise HttpError(400, "A campaign already exists in this period.")
     
     for attr, value in campaignai_in.dict(exclude_none=True).items():
         setattr(campaignai, attr, value)
