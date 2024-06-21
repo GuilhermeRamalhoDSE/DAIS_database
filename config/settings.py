@@ -190,14 +190,14 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULE = {
     'deactivate-expired-licenses-every-day': {
         'task': 'dais.tasks.deactivate_expired_licenses',
-        'schedule': crontab(hour=13, minute=00),
+        'schedule': crontab(hour=00, minute=00),
     },
         'deactivate-expired-campaigns-ai-every-day': {
         'task': 'dais.tasks.deactivate_expired_campaigns_ai',
-        'schedule': crontab(hour=13, minute=00),
+        'schedule': crontab(hour=00, minute=00),
     },
     'deactivate-expired-campaigns-ds-every-day': {
         'task': 'dais.tasks.deactivate_expired_campaigns_ds',
-        'schedule': crontab(hour=13, minute=00),
+        'schedule': crontab(hour=00, minute=00),
     },
 }
