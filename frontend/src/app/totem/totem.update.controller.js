@@ -20,12 +20,6 @@ angular.module('frontend').controller('TotemUpdateController', ['$scope', 'Totem
             if (response.data) {
                 $scope.totemData = response.data;
 
-                ['installation_date'].forEach(function(dateField) {
-                    if ($scope.totemData[dateField]) {
-                        $scope.totemData[dateField] = new Date($scope.totemData[dateField]);
-                    }
-                });
-
             } else {
                 console.error('Totem not found');
                 alert('Totem not found.');
@@ -48,12 +42,6 @@ angular.module('frontend').controller('TotemUpdateController', ['$scope', 'Totem
     $scope.updateTotem = function() {
         var totemDataToUpdate = angular.copy($scope.totemData);
         
-        ['installation_date'].forEach(function(dateField) {
-            if (totemDataToUpdate[dateField]) {
-                totemDataToUpdate[dateField] = moment(totemDataToUpdate[dateField]).format('YYYY-MM-DD');
-            }
-        });
-
         TotemService.updateTotem(totemId, totemDataToUpdate).then(function(response) {
             alert('Totem updated successfully!');
             $state.go('base.totem-view', { clientId: clientId, clientName: clientName, groupId: groupId, groupName: groupName });
