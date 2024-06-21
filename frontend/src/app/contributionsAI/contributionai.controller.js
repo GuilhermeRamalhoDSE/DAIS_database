@@ -160,7 +160,7 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
 
     $scope.viewFile = function(filePath) {
         if (filePath) {
-            window.open('https://daisdatabasedse.it/' + filePath, '_blank');
+            window.open('http://127.0.0.1:8000/' + filePath, '_blank');
         } else {
             alert('File path not available.');
         }

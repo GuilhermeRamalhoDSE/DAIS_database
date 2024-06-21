@@ -1,6 +1,6 @@
 angular.module('frontend').factory('LogsService', ['$http', function($http) {
     var service = {};
-    var baseUrl = 'https://daisdatabasedse.it/api/logs/';
+    var baseUrl = 'http://127.0.0.1:8000/api/logs/';
 
     service.getLogsByLicense = function(licenseId) {
         return $http.get(baseUrl, {

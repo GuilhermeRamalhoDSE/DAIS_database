@@ -179,7 +179,7 @@ angular.module('frontend').controller('CampaignAIController', ['$scope', 'Campai
 
     $scope.viewLogo = function(logoPath) {
         if (logoPath) {
-            window.open('https://daisdatabasedse.it/' + logoPath, '_blank');
+            window.open('http://127.0.0.1:8000/' + logoPath, '_blank');
         } else {
             alert('Logo path not available.');
         }
@@ -219,7 +219,7 @@ angular.module('frontend').controller('CampaignAIController', ['$scope', 'Campai
 
     $scope.viewBackground = function(backgroundPath) {
         if (backgroundPath) {
-            window.open('https://daisdatabasedse.it/' + backgroundPath, '_blank');
+            window.open('http://127.0.0.1:8000/' + backgroundPath, '_blank');
         } else {
             alert('Background path not available.');
         }

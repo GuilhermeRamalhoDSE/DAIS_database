@@ -27,11 +27,11 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
-ALLOWED_HOSTS = ['localhost', '18.201.85.201', 'daisdatabasedse.it', 'www.daisdatabasedse.it']
+# DEBUG = False
+# ALLOWED_HOSTS = ['localhost', '18.201.85.201', 'daisdatabasedse.it', 'www.daisdatabasedse.it']
 
-# DEBUG = True
-# ALLOWED_HOSTS = []
+DEBUG = True
+ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
@@ -147,13 +147,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'dais.User'
 
 CORS_ALLOWED_ORIGINS = [
-    # "http://127.0.0.1:8080",
-    # "http://localhost:8080",
-    'http://18.201.85.201',
-    'https://daisdatabasedse.it',
-    'http://daisdatabasedse.it',
-    'https://www.daisdatabasedse.it',
-    'http://www.daisdatabasedse.it'
+    "http://127.0.0.1:8080",
+    "http://localhost:8080",
+    # 'http://18.201.85.201',
+    # 'https://daisdatabasedse.it',
+    # 'http://daisdatabasedse.it',
+    # 'https://www.daisdatabasedse.it',
+    # 'http://www.daisdatabasedse.it'
 ]
 
 LOGGING = {
@@ -167,11 +167,11 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
+        # 'django': {
+        #     'handlers': ['file'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
     'celery': {
             'handlers': ['file'],
             'level': 'DEBUG',
