@@ -113,5 +113,9 @@ angular.module('frontend').factory('LicenseService', ['$http', function($http) {
         return $http.put(`${baseUrl}${licenseId}/update-totems/`, { total_totem: totalTotem });
     };
 
+    service.getLicenseSummary = function() {
+        return $http.get(baseUrl + 'license-summary');
+    };
+
     return service;
 }]);

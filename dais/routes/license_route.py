@@ -230,6 +230,18 @@ def get_grouptype_by_license(request, license_id: int):
     grouptypes = license.grouptypes.all()
     return [GroupTypeOut.from_orm(grouptype) for grouptype in grouptypes]
 
+@license_router.get("/license-summary", response=dict, auth=[QueryTokenAuth(), HeaderTokenAuth()])
+def get_license_summary(request):
+    total_licenses = License.objects.count()
+    active_licenses = License.objects.filter(active=True).count()
+    inactive_licenses = total_licenses - active_licenses
+
+    return {
+        "total": total_licenses,
+        "active": active_licenses,
+        "inactive": inactive_licenses
+    }
+
 @license_router.put("/{license_id}", response=LicenseSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_license(request, license_id: int, payload: LicenseUpdateSchema):
     license_obj = get_object_or_404(License, id=license_id)
