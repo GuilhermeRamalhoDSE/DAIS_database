@@ -3,7 +3,7 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
     $scope.moduleFormEnabled = false;
     $scope.modulesAvailable = AuthService.hasModules();
     $scope.currentPage = 0;
-    $scope.pageSize = 1;
+    $scope.pageSize = 5;
 
     $scope.checkModuleFormEnabled = function() {
         if (AuthService.isModuleEnabled('form')) {
