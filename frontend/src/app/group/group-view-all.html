@@ -12,7 +12,7 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button type="button" class="btn btn-fw info pull-right" ng-if="!isHomePage()"
+                    <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right"
                         ng-click="goBack()">Back</button>
                 </div>
             </div>
@@ -33,7 +33,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="group in groupList | filter:searchText">
+                    <tr ng-repeat="group in getPaginatedData() | filter:searchText" ng-class-even="'footable-even'"
+                        ng-class-odd="'footable-odd'">
                         <td>{{ group.id }}</td>
                         <td>{{ group.client_name }}</td>
                         <td>{{ group.name }}</td>
@@ -42,37 +43,59 @@
                         <td>{{ group.last_update | date:'mediumDate' }}</td>
                         <td>{{ group.comments }}</td>
                         <td>
-                            <button class="btn btn-warning btn-xs" ng-click="updateLastUpdate(group.id)"
-                                ng-show="group.needs_update">
-                                Update Setup
-                            </button>
-                            <button class="btn btn-default btn-xs" ng-click="editGroup(group)">Edit</button>
-                            <button class="btn btn-danger btn-xs" ng-click="deleteGroup(group.id)">Delete</button>
+                            <button class="md-btn md-raised m-b-sm w-xs white" ng-click="editGroup(group)">Edit</button>
+                            <button class="md-btn md-raised m-b-sm w-xs red"
+                                ng-click="deleteGroup(group.id)">Delete</button>
                         </td>
                         <td>
                             <div ng-repeat="form in group.forms">
                                 <button ng-if="group.moduleFormEnabled && group.forms.length > 0"
-                                    class="btn btn-default btn-xs" ng-click="goToForm(group, form)">{{ form.name
+                                    class="md-btn md-raised m-b-sm w-md white" ng-click="goToForm(group, form)">{{
+                                    form.name
                                     }}</button>
                             </div>
                         </td>
+                        <td ng-show="group.needs_update">
+                            <button class="md-btn md-raised m-b-sm w-md orange" ng-click="updateLastUpdate(group.id)"
+                                ng-show="group.needs_update">
+                                Update Setup
+                            </button>
+                        </td>
                         <td>
-                            <button class="btn btn-default btn-xs" ng-click="detailGroup(group)">Details</button>
+                            <button class="md-btn md-raised m-b-sm w-xs white"
+                                ng-click="detailGroup(group)">Details</button>
                         </td>
                         <td>
 
-                            <button class="btn btn-default btn-xs" ng-click="goToTotem(group)">Totem</button>
+                            <button class="md-btn md-raised m-b-sm w-xs white"
+                                ng-click="goToTotem(group)">Totem</button>
                         </td>
                     </tr>
                 </tbody>
-                <tfoot class="hide-if-no-paging">
-                    <tr>
-                        <td colspan="9" class="text-center">
-                            <ul class="pagination"></ul>
-                        </td>
-                    </tr>
-                </tfoot>
             </table>
+            <tfoot>
+                <tr>
+                    <td colspan="10" class="text-center">
+                        <ul class="pagination">
+                            <li ng-class="{ disabled: currentPage === 0 }">
+                                <a ng-click="setCurrentPage(0)">«</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === 0 }">
+                                <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
+                            </li>
+                            <li ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                <a ng-click="setCurrentPage(page)">{{ page + 1 }}</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                <a ng-click="setCurrentPage(currentPage + 1)">›</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                <a ng-click="setCurrentPage(totalPages() - 1)">»</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tfoot>
         </div>
     </div>
 </div>

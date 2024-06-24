@@ -1,7 +1,9 @@
-angular.module('frontend').controller('GroupGetAllController', ['$scope', '$state', 'GroupService', 'AuthService', '$location', '$window', function($scope, $state, GroupService, AuthService, $location, $window) {
+angular.module('frontend').controller('GroupGetAllController', ['$scope', '$state', 'GroupService', 'AuthService', '$filter', '$window', function($scope, $state, GroupService, AuthService, $filter, $window) {
     $scope.groupList = [];
     $scope.moduleFormEnabled = false;
     $scope.modulesAvailable = AuthService.hasModules();
+    $scope.currentPage = 0;
+    $scope.pageSize = 1;
 
     $scope.checkModuleFormEnabled = function() {
         if (AuthService.isModuleEnabled('form')) {
@@ -9,6 +11,32 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
                 group.moduleFormEnabled = group.forms && group.forms.length > 0;  
             });
         }
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.groupList, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.groupList.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
     };
 
     $scope.loadAllGroups = function() {
@@ -81,10 +109,6 @@ angular.module('frontend').controller('GroupGetAllController', ['$scope', '$stat
                 console.error('Error deleting group:', error);
             });
         }
-    };
-
-    $scope.isHomePage = function() {
-        return $location.path() === '/home';
     };
 
     $scope.goBack = function() {
