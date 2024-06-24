@@ -1,7 +1,35 @@
-angular.module('frontend').controller('GroupTypeController', ['$scope', 'GroupTypeService', '$state', 'AuthService', '$location', function($scope, GroupTypeService, $state, AuthService,$location) {
+angular.module('frontend').controller('GroupTypeController', ['$scope', 'GroupTypeService', '$state', 'AuthService', '$filter', function($scope, GroupTypeService, $state, AuthService, $filter) {
     $scope.grouptypes = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 2;
     $scope.newGroupType = {
         name: "",
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.grouptypes, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.grouptypes.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
     };
 
     $scope.loadGroupTypes = function() {
@@ -14,10 +42,6 @@ angular.module('frontend').controller('GroupTypeController', ['$scope', 'GroupTy
 
     $scope.goToNewGroupType = function() {
         $state.go('base.grouptype-new');
-    };
-
-    $scope.isHomePage = function() {
-        return $location.path() === '/home';
     };
 
     $scope.createGroupType = function() {
@@ -38,7 +62,7 @@ angular.module('frontend').controller('GroupTypeController', ['$scope', 'GroupTy
     };
 
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-su');
     };
 
     $scope.deleteGroupType = function(grouptypeId) {
