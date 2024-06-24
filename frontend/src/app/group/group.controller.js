@@ -7,7 +7,7 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
     $scope.modulesAvailable = AuthService.hasModules();
     $scope.licenseId = AuthService.getLicenseId();
     $scope.currentPage = 0;
-    $scope.pageSize = 1;
+    $scope.pageSize = 5;
 
     let clientId = parseInt($stateParams.clientId || sessionStorage.getItem('lastclientId'), 10);
     if (isNaN(clientId)) {
