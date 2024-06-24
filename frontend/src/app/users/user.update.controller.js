@@ -4,19 +4,6 @@ angular.module('frontend').controller('UserUpdateController', ['$scope', '$state
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenses = [];
 
-    $scope.loadUser = function() {
-        const userId = $state.params.userId;
-        UserService.getUserById(userId).then(function(response) {
-            if (response.data && response.data.length > 0) {
-                $scope.formUser = response.data[0];
-            } else {
-                $state.go('base.user-view');
-            }
-        }).catch(function(error) {
-            console.error('Error fetching user:', error);
-        });
-    };
-
     $scope.getAllLicenses = function() {
         UserService.getAllLicenses().then(function(response) {
             $scope.licenses = response.data.map(function(license) {
@@ -29,7 +16,21 @@ angular.module('frontend').controller('UserUpdateController', ['$scope', '$state
             console.error('Error fetching licenses:', error);
         });
     };
-    
+
+    $scope.loadUser = function() {
+        const userId = $state.params.userId;
+        UserService.getUserById(userId).then(function(response) {
+            if (response.data && response.data.length > 0) {
+                $scope.formUser = response.data[0];
+                $scope.formUser.license_id = response.data[0].license_id;
+            } else {
+                $state.go('base.user-view');
+            }
+        }).catch(function(error) {
+            console.error('Error fetching user:', error);
+        });
+    };
+
     $scope.togglePasswordVisibility = function() {
         $scope.showPassword = !$scope.showPassword;
     };
