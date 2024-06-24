@@ -66,10 +66,6 @@ angular.module('frontend').controller('UserController', ['$scope', 'UserService'
             });
         }
     };
-
-    $scope.isHomePage = function() {
-        return $location.path() === '/home';
-    };
     
     $scope.togglePasswordVisibility = function() {
         $scope.showPassword = !$scope.showPassword;
@@ -117,8 +113,13 @@ angular.module('frontend').controller('UserController', ['$scope', 'UserService'
     $scope.editUser = function(userId) {
         $state.go('base.user-update', { userId: userId });
     };
+
     $scope.goBack = function() {
-        $state.go('base.home-admin');
+        if ($scope.isSuperuser()) {
+            $state.go('base.home-su');
+        } else {
+            $state.go('base.home-admin');
+        }
     }; 
 
     $scope.deleteUser = function(userId) {

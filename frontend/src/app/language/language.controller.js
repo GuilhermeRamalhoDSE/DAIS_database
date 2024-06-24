@@ -1,7 +1,35 @@
-angular.module('frontend').controller('LanguageController', ['$scope', 'LanguageService', '$state', 'AuthService', '$location', function($scope, LanguageService, $state, AuthService, $location) {
+angular.module('frontend').controller('LanguageController', ['$scope', 'LanguageService', '$state', 'AuthService', '$filter', function($scope, LanguageService, $state, AuthService, $filter) {
     $scope.languages = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 3;
     $scope.newLanguage = {
         name: "",
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.languages, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.languages.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
     };
 
     $scope.loadLanguages = function() {
@@ -25,10 +53,6 @@ angular.module('frontend').controller('LanguageController', ['$scope', 'Language
         });
     };
 
-    $scope.isHomePage = function() {
-        return $location.path() === '/home';
-    };
-
     $scope.editLanguage = function(languageId) {
         $state.go('base.language-update', { languageId: languageId });
     };
@@ -38,7 +62,7 @@ angular.module('frontend').controller('LanguageController', ['$scope', 'Language
     };
 
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-su');
     };
 
     $scope.deleteLanguage = function(languageId) {

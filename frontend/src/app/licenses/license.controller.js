@@ -166,7 +166,7 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
     };
 
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-su');
     }; 
     
     $scope.deleteLicense = function(licenseId) {
@@ -353,10 +353,6 @@ angular.module('frontend').controller('LicenseController', ['$scope', 'LicenseSe
 
     $scope.isGroupTypeAssignedToLicense = function(license, grouptypeId) {
         return license.grouptypes && license.grouptypes.some(grouptype => grouptype.id === grouptypeId);
-    };
-
-    $scope.isHomePage = function() {
-        return $location.path() === '/home';
     };
 
     $scope.updateTotalTotem = function(licenseId, newTotalTotem) {

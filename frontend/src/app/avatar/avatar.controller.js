@@ -115,9 +115,9 @@ angular.module('frontend').controller('AvatarController', ['$scope', 'AvatarServ
     $scope.editAvatar = function(avatarId) {
         $state.go('base.avatar-update', { avatarId: avatarId });
     };
-
-    $scope.isHomePage = function() {
-        return $location.path() === '/home-su';
+    
+    $scope.goBack = function() {
+        $state.go('base.home-su');
     };
 
     $scope.deleteAvatar = function(avatarId) {

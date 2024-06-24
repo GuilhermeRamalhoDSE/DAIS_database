@@ -17,7 +17,7 @@
                         <span>New User</span>
                     </button>
                     <a>
-                        <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right" ng-if="!isHomePage()"
+                        <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right"
                             ng-click="goBack()">Back</button>
                     </a>
                 </div>
@@ -38,7 +38,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="user in getPaginatedData() | filter:searchText" ng-class-even="'footable-even'"
-                    ng-class-odd="'footable-odd'">
+                        ng-class-odd="'footable-odd'">
                         <td ng-if="isSuperuser()">{{ user.id }}</td>
                         <td>{{ user.license_name}}</td>
                         <td>{{ user.first_name }}</td>
@@ -49,8 +49,10 @@
                             <i class="fa fa-times text-danger" ng-show="!user.is_staff"></i>
                         </td>
                         <td>
-                            <button class="md-btn md-raised m-b-sm w-xs white" ng-click="editUser(user.id)">Edit</button>
-                            <button class="md-btn md-raised m-b-sm w-xs red" ng-click="deleteUser(user.id)">Delete</button>
+                            <button class="md-btn md-raised m-b-sm w-xs white"
+                                ng-click="editUser(user.id)">Edit</button>
+                            <button class="md-btn md-raised m-b-sm w-xs red"
+                                ng-click="deleteUser(user.id)">Delete</button>
                         </td>
                     </tr>
                 </tbody>

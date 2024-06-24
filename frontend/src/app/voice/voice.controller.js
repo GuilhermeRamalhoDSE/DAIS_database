@@ -62,7 +62,7 @@ angular.module('frontend').controller('VoiceController', ['$scope', 'VoiceServic
     };
 
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-su');
     };
 
     $scope.deleteVoice = function(voiceId) {
