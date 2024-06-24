@@ -1,8 +1,36 @@
-angular.module('frontend').controller('ModuleController', ['$scope', 'ModuleService', '$state', 'AuthService', '$location', function($scope, ModuleService, $state, AuthService,$location) {
+angular.module('frontend').controller('ModuleController', ['$scope', 'ModuleService', '$state', 'AuthService', '$filter', function($scope, ModuleService, $state, AuthService,$filter) {
     $scope.modules = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 2;
     $scope.newModule = {
         name: "",
     }
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.modules, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.modules.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
+    };
     
     $scope.loadModules = function() {
         ModuleService.getAll().then(function(response){
@@ -25,10 +53,6 @@ angular.module('frontend').controller('ModuleController', ['$scope', 'ModuleServ
         });
     };
 
-    $scope.isHomePage = function() {
-        return $location.path() === '/home';
-    };
-
     $scope.editModule = function(moduleId) {
         $state.go('base.module-update', { moduleId: moduleId });
     };
@@ -38,7 +62,7 @@ angular.module('frontend').controller('ModuleController', ['$scope', 'ModuleServ
     };
 
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-su');
     };
 
     $scope.deleteModule = function(moduleId) {
