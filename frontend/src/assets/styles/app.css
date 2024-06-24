@@ -959,8 +959,8 @@ a.list-group-item {
   .pager > li > span:hover,
   .pager > li > span:focus {
     border-color: rgba(120, 130, 140, 0.13);
-    background-color: rgba(0, 0, 0, 0.065);
-    color: inherit; }
+    background-color: #0496bf !important;
+    color: white !important; }
 
 .pagination .page-item.active,
 .pagination > .active > a,
@@ -969,11 +969,11 @@ a.list-group-item {
 .pager > .active > a,
 .pager > .active > span {
   color: white !important;
-  background-color: #0cc2aa !important;
-  border-color: #0cc2aa !important; }
+  background-color: #0496bf !important;
+  border-color: #0496bf !important; }
 
 .pagination > li {
-  display: inline;
+  display: flex;
   list-style: none; }
 
 .pagination > li > a {
