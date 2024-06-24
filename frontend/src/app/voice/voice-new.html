@@ -11,10 +11,12 @@
                     <form ng-submit="createVoice()" enctype="multipart/form-data">
                         <div class="form-group">
                             <label>Voice Name</label>
-                            <input type="text" class="form-control" ng-model="newVoice.name" placeholder="Voice Name" required>
+                            <input type="text" class="form-control" ng-model="newVoice.name" placeholder="Voice Name"
+                                required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                        <button type="submit" class="md-btn md-raised m-b-sm w-xs green">Create</button>
+                        <button type="button" class="md-btn md-raised m-b-sm w-xs red"
+                            ng-click="cancelCreate()">Cancel</button>
                     </form>
                 </div>
             </div>
