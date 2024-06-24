@@ -1,6 +1,8 @@
-angular.module('frontend').controller('ClientModuleController', ['$scope', 'ClientModuleService', 'LicenseService', 'AuthService', 'GroupService', '$state', '$stateParams', function($scope, ClientModuleService, LicenseService, AuthService, GroupService, $state, $stateParams) {
+angular.module('frontend').controller('ClientModuleController', ['$scope', 'ClientModuleService', 'LicenseService', 'AuthService', 'GroupService', '$state', '$stateParams', '$filter', function($scope, ClientModuleService, LicenseService, AuthService, GroupService, $state, $stateParams, $filter) {
     $scope.clientmoduleList = [];
     $scope.modules = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
     $scope.groups = [];
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
@@ -23,6 +25,32 @@ angular.module('frontend').controller('ClientModuleController', ['$scope', 'Clie
         client_id: clientId,
         module_id: null,
         groups_ids: []
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.clientmoduleList, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.clientmoduleList.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
     };
 
     $scope.loadClientModule = function() {
