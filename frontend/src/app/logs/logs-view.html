@@ -10,11 +10,11 @@
                 <div class="col-sm-6">
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="exportToCSV()">
+                    <button class="md-btn md-raised m-b-sm w-md green" ng-click="exportToCSV()">
                         <i class="fa fa-fw fa-file-text text-muted"></i>
                         <span>Export to CSV</span>
                     </button>
-                    <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
+                    <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right" ng-click="goBack()">Back</button>
                 </div>
             </div>
             <div>
@@ -54,14 +54,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="log in logs | dateFilter:from:to | filter: {
-                        date: dateSearchText,
-                        client: clientSearchText,
-                        campaign: campaignSearchText,
-                        typology: typologySearchText,
-                        logtype: logtypeSearchText,
-                        information: informationSearchText
-                    } | customTotemIdFilter:totemIdSearchText">
+                        <tr ng-repeat="log in getPaginatedData()" ng-class-even="'footable-even'" ng-class-odd="'footable-odd'">
                             <td>{{ log.date | date: 'medium' }}</td>
                             <td>{{ log.totem_id }}</td>
                             <td>{{ log.client }}</td>
@@ -70,18 +63,34 @@
                             <td>{{ log.logtype }}</td>
                             <td>{{ log.information }}</td>
                             <td>
-                                <button class="btn btn-danger btn-xs" ng-click="deleteLog(log.id)">Delete</button>
+                                <button class="md-btn md-raised m-b-sm w-xs red" ng-click="deleteLog(log.id)">Delete</button>
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot class="hide-if-no-paging">
-                        <tr>
-                            <td colspan="7" class="text-center">
-                                <ul class="pagination"></ul>
-                            </td>
-                        </tr>
-                    </tfoot>
                 </table>
+                <tfoot>
+                    <tr>
+                        <td colspan="10" class="text-center">
+                            <ul class="pagination">
+                                <li ng-class="{ disabled: currentPage === 0 }">
+                                    <a ng-click="setCurrentPage(0)">«</a>
+                                </li>
+                                <li ng-class="{ disabled: currentPage === 0 }">
+                                    <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
+                                </li>
+                                <li ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                    <a ng-click="setCurrentPage(page)">{{ page + 1 }}</a>
+                                </li>
+                                <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                    <a ng-click="setCurrentPage(currentPage + 1)">›</a>
+                                </li>
+                                <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                    <a ng-click="setCurrentPage(totalPages() - 1)">»</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tfoot>
             </div>
         </div>
     </div>
