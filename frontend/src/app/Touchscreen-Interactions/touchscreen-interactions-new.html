@@ -9,7 +9,7 @@
                 </div>
                 <div class="box-divider m-0"></div>
                 <div class="box-body">
-                    <form novalidate>
+                    <form ng-submit="createTouchscreenInteraction()" novalidate>
                         <div class="form-group">
                             <label for="clientName">Client Name</label>
                             <input type="text" class="form-control" id="clientName" ng-model="clientName" readonly>
@@ -18,8 +18,9 @@
                             <label for="touchscreeninteractionName">Name</label>
                             <input type="text" class="form-control" id="touchscreeninteractionName" ng-model="newTouchscreenInteraction.name" required>
                         </div>
-                        <button type="button" class="btn btn-primary" ng-click="createTouchscreenInteraction()">Create</button>
-                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                        <button type="submit" class="md-btn md-raised m-b-sm w-xs blue">Submit</button>
+                        <button type="button" class="md-btn md-raised m-b-sm w-xs white"
+                            ng-click="cancelCreate()">Cancel</button>
                     </form>
                 </div>
             </div>

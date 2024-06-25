@@ -1,5 +1,7 @@
-angular.module('frontend').controller('TouchscreenInteractionController', ['$scope', 'TouchscreenInteractionService', 'AuthService', '$state', '$stateParams', function($scope, TouchscreenInteractionService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('TouchscreenInteractionController', ['$scope', 'TouchscreenInteractionService', 'AuthService', '$state', '$stateParams', '$filter', function($scope, TouchscreenInteractionService, AuthService, $state, $stateParams, $filter) {
     $scope.touchscreeninteractionList = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
 
     $scope.clientId = $stateParams.clientId;
     $scope.clientName = $stateParams.clientName;
@@ -12,6 +14,33 @@ angular.module('frontend').controller('TouchscreenInteractionController', ['$sco
         client_module_id: clientmoduleId,
         name: '',
     };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.touchscreeninteractionList, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.touchscreeninteractionList.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
+    };
+    
 
     $scope.loadTouchscreenInteraction = function() {
         TouchscreenInteractionService.getAll(clientmoduleId).then(function(response) {
