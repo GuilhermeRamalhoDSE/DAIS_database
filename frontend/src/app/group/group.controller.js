@@ -1,4 +1,4 @@
-angular.module('frontend').controller('GroupController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', 'FormService', 'LicenseService', '$window', function($scope, GroupService, $state, $stateParams, AuthService, FormService, LicenseService, $window) {
+angular.module('frontend').controller('GroupController', ['$scope', 'GroupService', '$state', '$stateParams', 'AuthService', 'FormService', 'LicenseService', '$window', '$filter', function($scope, GroupService, $state, $stateParams, AuthService, FormService, LicenseService, $window, $filter) {
     $scope.groupList = [];
     $scope.forms = [];
     $scope.grouptypes = [];
@@ -6,6 +6,8 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
     $scope.moduleFormEnabled = false;
     $scope.modulesAvailable = AuthService.hasModules();
     $scope.licenseId = AuthService.getLicenseId();
+    $scope.currentPage = 0;
+    $scope.pageSize = 5;
 
     let clientId = parseInt($stateParams.clientId || sessionStorage.getItem('lastclientId'), 10);
     if (isNaN(clientId)) {
@@ -28,6 +30,31 @@ angular.module('frontend').controller('GroupController', ['$scope', 'GroupServic
         comments: "",
         client_id: clientId, 
         forms_ids: []
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.groupList, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.groupList.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
     };
 
     $scope.loadGroupType = function() {

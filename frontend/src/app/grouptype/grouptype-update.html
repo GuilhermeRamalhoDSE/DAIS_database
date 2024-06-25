@@ -11,10 +11,13 @@
                     <form ng-submit="updateGroupType()" enctype="multipart/form-data">
                         <div class="form-group">
                             <label>Group Type Name</label>
-                            <input type="text" class="form-control" ng-model="grouptype.name" placeholder="GroupType Name" required>
+                            <input type="text" class="form-control" ng-model="grouptype.name"
+                                placeholder="GroupType Name" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                        <button type="submit" class="md-btn md-raised m-b-sm w-xs blue">Submit</button>
+                        <button type="button" class="md-btn md-raised m-b-sm w-xs white"
+                            ng-click="cancelUpdate()">Cancel</button>
+
                     </form>
                 </div>
             </div>

@@ -1,8 +1,36 @@
-angular.module('frontend').controller('ButtonTypeController', ['$scope', 'ButtonTypeService', '$state', 'AuthService', '$location', function($scope, ButtonTypeService, $state, AuthService, $location) {
+angular.module('frontend').controller('ButtonTypeController', ['$scope', 'ButtonTypeService', '$state', 'AuthService', '$filter', function($scope, ButtonTypeService, $state, AuthService, $filter) {
     $scope.buttontypes = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 5;
     $scope.newButtonType = {
         name: "",
-    }
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.buttontypes, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.buttontypes.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
+    };
     
     $scope.loadButtonTypes = function() {
         ButtonTypeService.getAll().then(function(response){
@@ -34,7 +62,7 @@ angular.module('frontend').controller('ButtonTypeController', ['$scope', 'Button
     };
 
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-su');
     };
 
     $scope.deleteButtonType = function(buttontypeId) {
@@ -47,10 +75,6 @@ angular.module('frontend').controller('ButtonTypeController', ['$scope', 'Button
                 console.error('Error deleting button type:', error);
             });
         }
-    };
-
-    $scope.isHomePage = function() {
-        return $location.path() === '/home';
     };
 
     $scope.isSuperuser = function() {

@@ -17,8 +17,7 @@
             <span>New License</span>
           </button>
           <a>
-            <button type="button" class="btn btn-fw info pull-right" ng-if="!isHomePage()"
-              ng-click="goBack()">Back</button>
+            <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right"  ng-click="goBack()">Back</button>
           </a>
         </div>
       </div>
@@ -56,7 +55,6 @@
             <th>Button Types</th>
             <th>Group Types</th>
             <th>Total Totem</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -140,10 +138,10 @@
                 <input type="number" class="form-control" ng-model="license.total_totem"
                   ng-change="updateTotalTotem(license.id, license.total_totem)" min="0">
               </div>
-            </td>
-            <td>
-              <button class="btn btn-default btn-xs" ng-click="editLicense(license.id)">Edit</button>
-              <button class="btn btn-danger btn-xs" ng-click="deleteLicense(license.id)">Delete</button>
+              <div>
+                <button class="md-btn md-raised m-b-sm w-xs white" ng-click="editLicense(license.id)">Edit</button>
+                <button class="md-btn md-raised m-b-sm w-xs red" ng-click="deleteLicense(license.id)">Delete</button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -180,7 +178,6 @@
 <style>
   .license-id-column {
     width: 50px;
-    /* Ajuste conforme necessário */
     text-align: center;
   }
 </style>

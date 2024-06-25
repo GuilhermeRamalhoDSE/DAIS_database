@@ -1,7 +1,35 @@
-angular.module('frontend').controller('VoiceController', ['$scope', 'VoiceService', '$state', 'AuthService', '$location', function($scope, VoiceService, $state, AuthService,$location) {
+angular.module('frontend').controller('VoiceController', ['$scope', 'VoiceService', '$state', 'AuthService', '$filter', function($scope, VoiceService, $state, AuthService, $filter) {
     $scope.voices = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 5;
     $scope.newVoice = {
         name: "",
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.voices, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.voices.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
     };
 
     $scope.loadVoices = function() {
@@ -14,10 +42,6 @@ angular.module('frontend').controller('VoiceController', ['$scope', 'VoiceServic
 
     $scope.goToNewVoice = function() {
         $state.go('base.voice-new');
-    };
-
-    $scope.isHomePage = function() {
-        return $location.path() === '/home';
     };
 
     $scope.createVoice = function() {
@@ -38,7 +62,7 @@ angular.module('frontend').controller('VoiceController', ['$scope', 'VoiceServic
     };
 
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-su');
     };
 
     $scope.deleteVoice = function(voiceId) {

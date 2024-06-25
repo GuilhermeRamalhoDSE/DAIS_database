@@ -1,8 +1,36 @@
-angular.module('frontend').controller('ScreenTypeController', ['$scope', 'ScreenTypeService', '$state', 'AuthService', '$location', function($scope, ScreenTypeService, $state, AuthService, $location) {
+angular.module('frontend').controller('ScreenTypeController', ['$scope', 'ScreenTypeService', '$state', 'AuthService', '$filter', function($scope, ScreenTypeService, $state, AuthService, $filter) {
     $scope.screentypes = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 5;
     $scope.newScreenType = {
         name: "",
-    }
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.screentypes, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.screentypes.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
+    };
     
     $scope.loadScreenTypes = function() {
         ScreenTypeService.getAll().then(function(response){
@@ -29,16 +57,12 @@ angular.module('frontend').controller('ScreenTypeController', ['$scope', 'Screen
         $state.go('base.screentype-update', { screentypeId: screentypeId });
     };
 
-    $scope.isHomePage = function() {
-        return $location.path() === '/home';
-    };
-
     $scope.cancelCreate = function() {
         $state.go('base.screentype-view');
     };
 
     $scope.goBack = function() {
-        $state.go('base.home');
+        $state.go('base.home-su');
     };
 
     $scope.deleteScreenType = function(screentypeId) {

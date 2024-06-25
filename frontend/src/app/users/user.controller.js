@@ -1,12 +1,38 @@
-angular.module('frontend').controller('UserController', ['$scope', 'UserService', '$state', 'AuthService', 'LicenseService', '$location', function($scope, UserService, $state, AuthService, LicenseService, $location) {
+angular.module('frontend').controller('UserController', ['$scope', 'UserService', '$state', 'AuthService', 'LicenseService', '$location', '$filter', function($scope, UserService, $state, AuthService, LicenseService, $location, $filter) {
     $scope.users = [];
     $scope.formUser = {};
     $scope.isEditing = false;
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.userName = '';
-
+    $scope.currentPage = 0;
+    $scope.pageSize = 5;
     $scope.showPassword = false;
+    $scope.licenses = [];
 
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.users, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.users.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
+    };
 
     $scope.getAllUsers = function() {
         UserService.getAllUsers().then(function(response) {
@@ -15,8 +41,6 @@ angular.module('frontend').controller('UserController', ['$scope', 'UserService'
             console.error('Error fetching users:', error);
         });
     };
-
-    $scope.licenses = [];
 
     $scope.getAllLicenses = function() {
         UserService.getAllLicenses().then(function(response) {
@@ -41,10 +65,6 @@ angular.module('frontend').controller('UserController', ['$scope', 'UserService'
                 console.error('Error fetching user details:', error);
             });
         }
-    };
-
-    $scope.isHomePage = function() {
-        return $location.path() === '/home';
     };
     
     $scope.togglePasswordVisibility = function() {
@@ -93,8 +113,13 @@ angular.module('frontend').controller('UserController', ['$scope', 'UserService'
     $scope.editUser = function(userId) {
         $state.go('base.user-update', { userId: userId });
     };
+
     $scope.goBack = function() {
-        $state.go('base.home-admin');
+        if ($scope.isSuperuser()) {
+            $state.go('base.home-su');
+        } else {
+            $state.go('base.home-admin');
+        }
     }; 
 
     $scope.deleteUser = function(userId) {
