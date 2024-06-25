@@ -5,7 +5,8 @@ angular.module('frontend').controller('LogsController', ['$scope', 'LogsService'
     $scope.from.setMonth($scope.from.getMonth()-1);
     $scope.to = new Date();
     $scope.currentPage = 0;
-    $scope.pageSize = 5;
+    $scope.pageSize = 20;
+    $scope.visiblePages = 3;
 
     $scope.getPaginatedData = function() {
         var filteredList = $filter('filter')($scope.logs, $scope.searchText);
@@ -48,9 +49,28 @@ angular.module('frontend').controller('LogsController', ['$scope', 'LogsService'
 
     $scope.getPages = function() {
         var pages = [];
-        for (var i = 0; i < $scope.totalPages(); i++) {
+        var total = $scope.totalPages();
+        var startPage = Math.max(0, $scope.currentPage - Math.floor($scope.visiblePages / 2));
+        var endPage = Math.min(total, startPage + $scope.visiblePages);
+    
+        if (startPage > 0) {
+            pages.push(0);
+            if (startPage > 1) {
+                pages.push('...');
+            }
+        }
+    
+        for (var i = startPage; i < endPage; i++) {
             pages.push(i);
         }
+    
+        if (endPage < total) {
+            if (endPage < total - 1) {
+                pages.push('...');
+            }
+            pages.push(total - 1);
+        }
+    
         return pages;
     };
 
