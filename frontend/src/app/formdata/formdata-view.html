@@ -12,11 +12,11 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="exportToCSV()">
+                    <button class="md-btn md-raised m-b-sm w-md green" ng-click="exportToCSV()">
                         <i class="fa fa-fw fa-file-text text-muted"></i>
                         <span>Export to CSV</span>
                     </button>
-                    <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
+                    <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right" ng-click="goBack()">Back</button>
                 </div>
             </div>
         </div>
@@ -29,24 +29,41 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="data in formDataList | filter:searchText track by data.id">
+                    <tr ng-repeat="data in getPaginatedData() | filter:searchText" ng-class-even="'footable-even'"
+                    ng-class-odd="'footable-odd'">
                         <td ng-repeat="field in formFields">
                             <span ng-if="field.field_type !== 'date'">{{ data.data[field.name] }}</span>
                             <span ng-if="field.field_type === 'date'">{{ data.data[field.name] | date:'dd/MM/yyyy' }}</span>
                         </td>
                         <td>
-                            <button class="btn btn-danger btn-xs" ng-click="deleteFormData(data.id)">Delete</button>
+                            <button class="md-btn md-raised m-b-sm w-xs red" ng-click="deleteFormData(data.id)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
-                <tfoot class="hide-if-no-paging">
-                    <tr>
-                        <td colspan="{{ formFields.length + 1 }}" class="text-center">
-                            <ul class="pagination"></ul>
-                        </td>
-                    </tr>
-                </tfoot>
             </table>
+            <tfoot>
+                <tr>
+                    <td colspan="10" class="text-center">
+                        <ul class="pagination">
+                            <li ng-class="{ disabled: currentPage === 0 }">
+                                <a ng-click="setCurrentPage(0)">«</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === 0 }">
+                                <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
+                            </li>
+                            <li ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                <a ng-click="setCurrentPage(page)">{{ page + 1 }}</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                <a ng-click="setCurrentPage(currentPage + 1)">›</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                <a ng-click="setCurrentPage(totalPages() - 1)">»</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tfoot>
         </div>
     </div>
 </div>
