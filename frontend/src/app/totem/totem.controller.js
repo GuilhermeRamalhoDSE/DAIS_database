@@ -1,5 +1,7 @@
-angular.module('frontend').controller('TotemController', ['$scope', 'TotemService', 'AuthService', '$state', '$stateParams', function($scope, TotemService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('TotemController', ['$scope', 'TotemService', 'AuthService', '$state', '$stateParams', '$filter', function($scope, TotemService, AuthService, $state, $stateParams, $filter) {
     $scope.totems = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 10; 
     $scope.isSuperuser = AuthService.isSuperuser(); 
 
     let groupId = parseInt($stateParams.groupId || sessionStorage.getItem('lastgroupId'), 10);
@@ -29,6 +31,32 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
     }
     $scope.clientName = clientName;
 
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.totems, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.totems.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
+    };
+
     $scope.loadClients = function() {
         ClientService.getClients().then(function(response) {
             $scope.clients = response.data;
@@ -48,7 +76,7 @@ angular.module('frontend').controller('TotemController', ['$scope', 'TotemServic
             return;
         }
         TotemService.getAll(groupId).then(function(response) {
-            $scope.totemList = response.data;
+            $scope.totems = response.data;
         }).catch(function(error) {
             console.error('Error loading totems:', error);
         });
