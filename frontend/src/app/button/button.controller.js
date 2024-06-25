@@ -1,7 +1,9 @@
-angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonService', 'AuthService', 'LicenseService', 'FormService', '$state', '$stateParams', '$q', '$interval', '$window', function($scope, ButtonService, AuthService, LicenseService, FormService, $state, $stateParams, $q, $interval, $window) {
+angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonService', 'AuthService', 'LicenseService', 'FormService', '$state', '$stateParams', '$q', '$interval', '$window', '$filter', function($scope, ButtonService, AuthService, LicenseService, FormService, $state, $stateParams, $q, $interval, $window, $filter) {
     $scope.buttonList = [];
     $scope.forms = [];
     $scope.buttonTypes = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
     
     $scope.clientId = $stateParams.clientId;
     $scope.clientName = $stateParams.clientName;
@@ -23,6 +25,32 @@ angular.module('frontend').controller('ButtonController', ['$scope', 'ButtonServ
         url: '',
         form_id: null,
         file: null
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.buttonList, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.buttonList.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        for (var i = 0; i < $scope.totalPages(); i++) {
+            pages.push(i);
+        }
+        return pages;
     };
 
     $scope.loadButtons = function() {

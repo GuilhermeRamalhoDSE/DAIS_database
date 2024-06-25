@@ -16,9 +16,10 @@
                         </div>
                         <div class="form-group">
                             <label for="buttonType">Button Type</label>
-                            <select class="form-control" id="buttonType" ng-model="buttonData.button_type_id" ng-options="type.id as type.name for type in buttonTypes" ng-disabled="true">
+                            <select class="form-control" id="buttonType" ng-model="buttonData.button_type_id"
+                                ng-options="type.id as type.name for type in buttonTypes" ng-disabled="true">
                             </select>
-                        </div>                        
+                        </div>
                         <div class="form-group"
                             ng-show="buttonData.button_type_id === 1 || buttonData.button_type_id === 3">
                             <label for="file">File</label>
@@ -42,8 +43,9 @@
                                 {{ loadingProgress }}%
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                        <button type="submit" class="md-btn md-raised m-b-sm w-xs blue">Submit</button>
+                        <button type="button" class="md-btn md-raised m-b-sm w-xs white"
+                            ng-click="cancelUpdate()">Cancel</button>
                     </form>
                 </div>
             </div>
