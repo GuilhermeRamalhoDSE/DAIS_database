@@ -89,7 +89,7 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
     }; 
 
     $scope.loadFileContent = function(filePath) {
-        $http.get('http://127.0.0.1:8000/' + filePath).then(function(response) {
+        $http.get('https://www.daisdatabasedse.it/' + filePath).then(function(response) {
             $scope.textInput = response.data;
             $scope.inputType = 'text';
         }).catch(function(error) {
