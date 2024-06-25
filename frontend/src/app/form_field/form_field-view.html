@@ -12,11 +12,11 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="goToCreateFormField()">
+                    <button class="md-btn md-raised m-b-sm w-md green" ng-click="goToCreateFormField()">
                         <i class="fa fa-fw fa-plus text-muted"></i>
                         <span>New Field</span>
                     </button>
-                    <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
+                    <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right" ng-click="goBack()">Back</button>
                 </div>
             </div>
         </div>
@@ -42,7 +42,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="field in formfieldList | filter:searchText">
+                    <tr ng-repeat="field in getPaginatedData() | filter:searchText" ng-class-even="'footable-even'"
+                    ng-class-odd="'footable-odd'">
                         <td>{{ field.number }}</td>
                         <td>{{ field.name }}</td>
                         <td>{{ field.field_type }}</td>
@@ -51,19 +52,35 @@
                             <i class="fa fa-times text-danger" ng-show="!field.required"></i>
                         </td>
                         <td>
-                            <button class="btn btn-default btn-xs" ng-click="editFormField(field.id, field.name)">Edit</button>
-                            <button class="btn btn-danger btn-xs" ng-click="deleteFormField(field.id)">Delete</button>
+                            <button class="md-btn md-raised m-b-sm w-xs white" ng-click="editFormField(field.id, field.name)">Edit</button>
+                            <button class="md-btn md-raised m-b-sm w-xs red" ng-click="deleteFormField(field.id)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
-                <tfoot class="hide-if-no-paging">
-                    <tr>
-                        <td colspan="5" class="text-center">
-                            <ul class="pagination"></ul>
-                        </td>
-                    </tr>
-                </tfoot>
             </table>
+            <tfoot>
+                <tr>
+                    <td colspan="10" class="text-center">
+                        <ul class="pagination">
+                            <li ng-class="{ disabled: currentPage === 0 }">
+                                <a ng-click="setCurrentPage(0)">«</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === 0 }">
+                                <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
+                            </li>
+                            <li ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                <a ng-click="setCurrentPage(page)">{{ page + 1 }}</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                <a ng-click="setCurrentPage(currentPage + 1)">›</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                <a ng-click="setCurrentPage(totalPages() - 1)">»</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tfoot>
         </div>
     </div>
 </div>
