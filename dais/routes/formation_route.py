@@ -10,6 +10,7 @@ from dais.utils import get_user_info_from_token
 from django.http import Http404, FileResponse
 import os
 from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 formation_router = Router(tags=['Formations'])
 
@@ -20,9 +21,13 @@ def create_formation(request, formation_in: FormationCreateSchema, file: Uploade
     campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
     if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
-       raise Http404("You do not have permission to add formation to this layer.")
-
-    formation_data = {**formation_in.dict(exclude=['file_path']), 'file':file}
+        raise Http404("You do not have permission to add formation to this layer.")
+    
+    file_content = file.read().decode('utf-8')
+    file_name = file.name
+    content_file = ContentFile(file_content.encode('utf-8'), name=file_name)
+    
+    formation_data = {**formation_in.dict(exclude=['file_path']), 'file': content_file}
 
     formation = Formation.objects.create(**formation_data)
 
@@ -72,16 +77,18 @@ def download_formation_file(request, formation_id: int):
     campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
     if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
-       raise Http404("You do not have permission to download this formation.")
+        raise Http404("You do not have permission to download this formation.")
     
     if formation.file and hasattr(formation.file, 'path'):
         file_path = formation.file.path
         if os.path.exists(file_path):
-            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
+            response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
+            response['Content-Type'] = 'text/plain; charset=utf-8'
+            return response
         else:
             raise Http404("File does not exist.")
     else:
-        raise Http404("No file associated with this formation")    
+        raise Http404("No file associated with this formation")
     
 @formation_router.put('/{formation_id}', response=FormationSchema, auth=[QueryTokenAuth(), HeaderTokenAuth()])
 def update_formation(request, formation_id: int, formation_in: FormationUpdateSchema, file: UploadedFile = File(None)):
@@ -91,17 +98,18 @@ def update_formation(request, formation_id: int, formation_in: FormationUpdateSc
     campaignai = get_object_or_404(CampaignAI, id=layer.campaignai_id)
 
     if not user_info.get('is_superuser') and str(campaignai.group.client.license_id) != str(user_info.get('license_id')):
-       raise Http404("You do not have permission to update this formation.")
+        raise Http404("You do not have permission to update this formation.")
     
     for attr, value in formation_in.dict(exclude_none=True).items():
         setattr(formation, attr, value)
 
-    if file and formation.file:
-        if default_storage.exists(formation.file.name):
-            default_storage.delete(formation.file.name)
-    
     if file:
-        formation.file = file
+        file_content = file.read().decode('utf-8')
+        file_name = file.name
+        content_file = ContentFile(file_content.encode('utf-8'), name=file_name)
+        if formation.file and default_storage.exists(formation.file.name):
+            default_storage.delete(formation.file.name)
+        formation.file = content_file
 
     formation.save()
     return formation

@@ -1,4 +1,4 @@
-angular.module('frontend').controller('FormationUpdateController', ['$scope', 'FormationService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$q', '$interval', 'Upload', function($scope, FormationService, LicenseService, AuthService, $state, $stateParams, $q, $interval, Upload) {
+angular.module('frontend').controller('FormationUpdateController', ['$scope', 'FormationService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$http', '$q', '$interval', 'Upload', function($scope, FormationService, LicenseService, AuthService, $state, $stateParams, $http, $q, $interval, Upload) {
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
     $scope.clientId = $stateParams.clientId;
@@ -17,7 +17,8 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
     $scope.file = null;
     $scope.languages = [];
     $scope.voices = [];
-    $scope.inputType = 'file'
+    $scope.inputType = 'file';
+    $scope.textInput = '';
 
     $scope.loadLanguages = function() {
         if ($scope.licenseId) {
@@ -64,9 +65,13 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
                 $scope.formationData = response.data;
                 $scope.formationData.language_id = response.data.language.id; 
                 $scope.formationData.voice_id = response.data.voice.id; 
+
+                if (response.data.file_path) {
+                    $scope.loadFileContent(response.data.file_path);
+                }
             } else {
-                console.error('formation not found');
-                alert('formation not found.');
+                console.error('Formation not found');
+                alert('Formation not found.');
                 $state.go('base.formation-view', { 
                     clientId: $scope.clientId,
                     clientName: $scope.clientName,
@@ -82,6 +87,15 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
             console.error('Error fetching formation details:', error);
         });
     }; 
+
+    $scope.loadFileContent = function(filePath) {
+        $http.get('http://127.0.0.1:8000/' + filePath).then(function(response) {
+            $scope.textInput = response.data;
+            $scope.inputType = 'text';
+        }).catch(function(error) {
+            console.error('Error loading file content:', error);
+        });
+    };
 
     $scope.generateTextFile = function(textInput) {
         if (!textInput) {
@@ -109,7 +123,7 @@ angular.module('frontend').controller('FormationUpdateController', ['$scope', 'F
 
         $scope.upload($scope.file).then(function() {
             FormationService.update($scope.formationId, formData).then(function(response) {
-                alert('formation updated successfully!');
+                alert('Formation updated successfully!');
                 $state.go('base.formation-view', { 
                     clientId: $scope.clientId,
                     clientName: $scope.clientName,
