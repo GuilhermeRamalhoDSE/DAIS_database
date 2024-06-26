@@ -15,7 +15,7 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
     } else {
         campaignaiName = sessionStorage.getItem('lastCampaignaiName');
     }
-    $scope.campaignaiName = campaignaiName;
+  
 
     let clientId = parseInt($stateParams.clientId, 10);
     let groupId = parseInt($stateParams.groupId, 10);

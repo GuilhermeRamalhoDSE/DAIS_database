@@ -32,8 +32,9 @@
                         </div>
                         <div class="form-group" ng-if="inputType === 'text'">
                             <label for="textInput">Text</label>
-                            <textarea id="textInput" class="form-control large-textarea" ng-model="textInput"></textarea>
-                            <button type="button" class="btn btn-primary mt-2"
+                            <textarea id="textInput" class="form-control large-textarea"
+                                ng-model="textInput"></textarea>
+                            <button type="button" class="md-btn md-raised m-b-sm w-md blue"
                                 ng-click="generateTextFile(textInput)">Generate Text File</button>
                         </div>
                         <div class="form-group flex-container">
@@ -63,8 +64,9 @@
                                 {{ loadingProgress }}%
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary" ng-click="createFormation()">Create</button>
-                        <button type="button" class="btn btn-secondary" ng-click="cancelCreate()">Cancel</button>
+                        <button type="submit" class="md-btn md-raised m-b-sm w-xs blue">Submit</button>
+                        <button type="button" class="md-btn md-raised m-b-sm w-xs white"
+                            ng-click="cancelCreate()">Cancel</button>
                     </form>
                 </div>
             </div>
@@ -75,13 +77,13 @@
 
 <style>
     .large-textarea {
-        height: 300px; 
-        width: 100%; 
+        height: 300px;
+        width: 100%;
     }
 
     .flex-container {
         display: flex;
-        gap: 20px; 
+        gap: 20px;
     }
 
     .flex-item {
