@@ -1,6 +1,9 @@
-angular.module('frontend').controller('LayerController', ['$scope', 'LayerService', 'LicenseService', 'AuthService', '$state', '$stateParams', function($scope, LayerService, LicenseService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('LayerController', ['$scope', 'LayerService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$filter', function($scope, LayerService, LicenseService, AuthService, $state, $stateParams, $filter) {
     $scope.layers = [];
     $scope.avatars = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
+    $scope.visiblePages = 3;
     $scope.isSuperuser = AuthService.isSuperuser();
     $scope.licenseId = AuthService.getLicenseId();
 
@@ -33,9 +36,53 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
         trigger: ""
     };
 
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.layers, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+
+    $scope.totalPages = function() {
+        return Math.ceil($scope.layers.length / $scope.pageSize);
+    };
+
+    $scope.getPages = function() {
+        var pages = [];
+        var total = $scope.totalPages();
+        var startPage = Math.max(0, $scope.currentPage - Math.floor($scope.visiblePages / 2));
+        var endPage = Math.min(total, startPage + $scope.visiblePages);
+    
+        if (startPage > 0) {
+            pages.push(0);
+            if (startPage > 1) {
+                pages.push('...');
+            }
+        }
+    
+        for (var i = startPage; i < endPage; i++) {
+            pages.push(i);
+        }
+    
+        if (endPage < total) {
+            if (endPage < total - 1) {
+                pages.push('...');
+            }
+            pages.push(total - 1);
+        }
+    
+        return pages;
+    };
+
     $scope.loadLayers = function() {
         LayerService.getLayersByPeriod(campaignaiId).then(function(response) {
-            $scope.layerList = response.data;
+            $scope.layers = response.data;
         }).catch(function(error) {
             console.error('Error loading layers:', error);
         });
@@ -123,9 +170,9 @@ angular.module('frontend').controller('LayerController', ['$scope', 'LayerServic
     };
     
     $scope.isParentZeroPresent = function() {
-        if ($scope.layerList && $scope.layerList.length > 0) {
-            for (var i = 0; i < $scope.layerList.length; i++) {
-                if ($scope.layerList[i].parent === null) {
+        if ($scope.layers && $scope.layers.length > 0) {
+            for (var i = 0; i < $scope.layers.length; i++) {
+                if ($scope.layers[i].parent === null) {
                     return true; 
                 }
             }
