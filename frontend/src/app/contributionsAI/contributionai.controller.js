@@ -1,7 +1,9 @@
-angular.module('frontend').controller('ContributionAIController', ['$scope', 'ContributionAIService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$window', '$q', '$interval', function($scope, ContributionAIService, LicenseService, AuthService, $state, $stateParams, $window, $q, $interval) {
+angular.module('frontend').controller('ContributionAIController', ['$scope', 'ContributionAIService', 'LicenseService', 'AuthService', '$state', '$stateParams', '$window', '$q', '$interval', '$filter', function($scope, ContributionAIService, LicenseService, AuthService, $state, $stateParams, $window, $q, $interval, $filter) {
     $scope.contributionList = [];
     $scope.file = null;
-
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
+    $scope.visiblePages = 3;
     $scope.clientId = $stateParams.clientId;
     $scope.clientName = $stateParams.clientName;
     $scope.groupId = $stateParams.groupId;
@@ -26,6 +28,50 @@ angular.module('frontend').controller('ContributionAIController', ['$scope', 'Co
         trigger: '',
         detail: '',
         language_id: null
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.contributionList, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+
+    $scope.totalPages = function() {
+        return Math.ceil($scope.contributionList.length / $scope.pageSize);
+    };
+
+    $scope.getPages = function() {
+        var pages = [];
+        var total = $scope.totalPages();
+        var startPage = Math.max(0, $scope.currentPage - Math.floor($scope.visiblePages / 2));
+        var endPage = Math.min(total, startPage + $scope.visiblePages);
+    
+        if (startPage > 0) {
+            pages.push(0);
+            if (startPage > 1) {
+                pages.push('...');
+            }
+        }
+    
+        for (var i = startPage; i < endPage; i++) {
+            pages.push(i);
+        }
+    
+        if (endPage < total) {
+            if (endPage < total - 1) {
+                pages.push('...');
+            }
+            pages.push(total - 1);
+        }
+    
+        return pages;
     };
 
     $scope.loadContributions = function() {

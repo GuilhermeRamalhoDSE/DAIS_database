@@ -72,25 +72,6 @@ angular.module('frontend').controller('ContributionAIUpdateController', ['$scope
     
         if ($scope.file) {
             formData.append('file', $scope.file);
-            $scope.upload($scope.file).then(function() {
-                ContributionAIService.update($scope.contributionaiId, formData).then(function(response) {
-                    alert('Contribution updated successfully!');
-                    $state.go('base.contributionai-view', { 
-                        clientId: $scope.clientId,
-                        clientName: $scope.clientName,
-                        groupId: $scope.groupId,
-                        groupName: $scope.groupName,
-                        campaignaiId: $scope.campaignaiId, 
-                        campaignaiName: $scope.campaignaiName, 
-                        layerId: $scope.layerId,
-                        layerName: $scope.layerName,
-                    });
-                }).catch(function(error) {
-                    console.error('Error updating contribution:', error);
-                });
-            }).catch(function(error) {
-                console.error('Error uploading file:', error);
-            });
         }
     
         formData.append('data', JSON.stringify($scope.contributionData));
