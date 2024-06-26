@@ -1,5 +1,8 @@
-angular.module('frontend').controller('ContributionDSController', ['$scope', 'ContributionDSService', '$state', '$stateParams', 'AuthService', '$window', '$q', '$interval', function($scope, ContributionDSService, $state, $stateParams, AuthService,$window, $q, $interval) {
+angular.module('frontend').controller('ContributionDSController', ['$scope', 'ContributionDSService', '$state', '$stateParams', 'AuthService', '$window', '$q', '$interval', '$filter', function($scope, ContributionDSService, $state, $stateParams, AuthService,$window, $q, $interval, $filter) {
     $scope.contributiondsList = [];
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
+    $scope.visiblePages = 3;
     $scope.campaigndsId = $stateParams.campaigndsId;
     $scope.campaigndsName = $stateParams.campaigndsName;
     $scope.clientId = $stateParams.clientId;
@@ -19,6 +22,50 @@ angular.module('frontend').controller('ContributionDSController', ['$scope', 'Co
     $scope.newContributionDS = {
         time_slot_id: timeslotId,
         name: "",
+    };
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.contributiondsList, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+
+    $scope.totalPages = function() {
+        return Math.ceil($scope.contributiondsList.length / $scope.pageSize);
+    };
+
+    $scope.getPages = function() {
+        var pages = [];
+        var total = $scope.totalPages();
+        var startPage = Math.max(0, $scope.currentPage - Math.floor($scope.visiblePages / 2));
+        var endPage = Math.min(total, startPage + $scope.visiblePages);
+    
+        if (startPage > 0) {
+            pages.push(0);
+            if (startPage > 1) {
+                pages.push('...');
+            }
+        }
+    
+        for (var i = startPage; i < endPage; i++) {
+            pages.push(i);
+        }
+    
+        if (endPage < total) {
+            if (endPage < total - 1) {
+                pages.push('...');
+            }
+            pages.push(total - 1);
+        }
+    
+        return pages;
     };
 
     $scope.loadContributionDSs = function() {
