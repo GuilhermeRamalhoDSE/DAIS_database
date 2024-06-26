@@ -11,7 +11,8 @@
                     <form ng-submit="updateCampaignAI()">
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" ng-model="campaignAIData.name" placeholder="Campaign Name" required>
+                            <input type="text" class="form-control" ng-model="campaignAIData.name"
+                                placeholder="Campaign Name" required>
                         </div>
                         <div class="form-group">
                             <label>Start Date</label>
@@ -27,23 +28,28 @@
                         </div>
                         <div class="form-group">
                             <label>Background Upload</label>
-                            <input type="file" class="form-control" file-model="background" placeholder="Upload Background">
+                            <input type="file" class="form-control" file-model="background"
+                                placeholder="Upload Background">
                         </div>
                         <div class="form-group">
                             <label>Footer</label>
-                            <input type="text" class="form-control" ng-model="campaignAIData.footer" placeholder="Footer Text">
+                            <input type="text" class="form-control" ng-model="campaignAIData.footer"
+                                placeholder="Footer Text">
                         </div>
                         <div class="form-group">
                             <label>Active</label>
                             <input type="checkbox" ng-model="campaignAIData.active">
                         </div>
                         <div class="progress mb-2" ng-show="showProgress">
-                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-striped" role="progressbar"
+                                ng-style="{'width': loadingProgress + '%'}" aria-valuenow="{{ loadingProgress }}"
+                                aria-valuemin="0" aria-valuemax="100">
                                 {{ loadingProgress }}%
                             </div>
                         </div>
-                        <button type="submit" class="md-btn md-raised m-b-sm w-xs green">Update</button>
-                        <button type="button" class="md-btn md-raised m-b-sm w-xs red" ng-click="cancelUpdate()">Cancel</button>
+                        <button type="submit" class="md-btn md-raised m-b-sm w-xs blue">Submit</button>
+                        <button type="button" class="md-btn md-raised m-b-sm w-xs white"
+                            ng-click="cancelUpdate()">Cancel</button>
                     </form>
                 </div>
             </div>
