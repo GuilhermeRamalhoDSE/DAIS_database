@@ -1,7 +1,8 @@
 angular.module('frontend').controller('LanguageController', ['$scope', 'LanguageService', '$state', 'AuthService', '$filter', function($scope, LanguageService, $state, AuthService, $filter) {
     $scope.languages = [];
     $scope.currentPage = 0;
-    $scope.pageSize = 3;
+    $scope.pageSize = 10;
+    $scope.visiblePages = 3;
     $scope.newLanguage = {
         name: "",
     };
@@ -26,9 +27,28 @@ angular.module('frontend').controller('LanguageController', ['$scope', 'Language
     
     $scope.getPages = function() {
         var pages = [];
-        for (var i = 0; i < $scope.totalPages(); i++) {
+        var total = $scope.totalPages();
+        var startPage = Math.max(0, $scope.currentPage - Math.floor($scope.visiblePages / 2));
+        var endPage = Math.min(total, startPage + $scope.visiblePages);
+    
+        if (startPage > 0) {
+            pages.push(0);
+            if (startPage > 1) {
+                pages.push('...');
+            }
+        }
+    
+        for (var i = startPage; i < endPage; i++) {
             pages.push(i);
         }
+    
+        if (endPage < total) {
+            if (endPage < total - 1) {
+                pages.push('...');
+            }
+            pages.push(total - 1);
+        }
+    
         return pages;
     };
 
