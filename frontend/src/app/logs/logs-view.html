@@ -14,7 +14,8 @@
                         <i class="fa fa-fw fa-file-text text-muted"></i>
                         <span>Export to CSV</span>
                     </button>
-                    <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right" ng-click="goBack()">Back</button>
+                    <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right"
+                        ng-click="goBack()">Back</button>
                 </div>
             </div>
             <div>
@@ -54,7 +55,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="log in getPaginatedData()" ng-class-even="'footable-even'" ng-class-odd="'footable-odd'">
+                        <tr ng-repeat="log in getPaginatedData()" ng-class-even="'footable-even'"
+                            ng-class-odd="'footable-odd'">
                             <td>{{ log.date | date: 'medium' }}</td>
                             <td>{{ log.totem_id }}</td>
                             <td>{{ log.client }}</td>
@@ -63,7 +65,8 @@
                             <td>{{ log.logtype }}</td>
                             <td>{{ log.information }}</td>
                             <td>
-                                <button class="md-btn md-raised m-b-sm w-xs red" ng-click="deleteLog(log.id)">Delete</button>
+                                <button class="md-btn md-raised m-b-sm w-xs red"
+                                    ng-click="deleteLog(log.id)">Delete</button>
                             </td>
                         </tr>
                     </tbody>
@@ -78,8 +81,10 @@
                                 <li ng-class="{ disabled: currentPage === 0 }">
                                     <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
                                 </li>
-                                <li ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
-                                    <a ng-click="setCurrentPage(page)">{{ page + 1 }}</a>
+                                <li ng-repeat="page in getPages() track by $index"
+                                    ng-class="{ active: currentPage === page, disabled: page === '...' }">
+                                    <a ng-click="setCurrentPage(page)" ng-if="page !== '...'">{{ page + 1 }}</a>
+                                    <a ng-if="page === '...'" style="pointer-events: none;">...</a>
                                 </li>
                                 <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
                                     <a ng-click="setCurrentPage(currentPage + 1)">›</a>

@@ -12,11 +12,11 @@
                         ng-model="searchText" />
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-fw primary" ng-click="goToCreateContributionAI()">
+                    <button class="md-btn md-raised m-b-sm w-md green" ng-click="goToCreateContributionAI()">
                         <i class="fa fa-fw fa-plus text-muted"></i>
                         <span>New Contribution</span>
                     </button>
-                    <button type="button" class="btn btn-fw info pull-right" ng-click="goBack()">Back</button>
+                    <button type="button" class="md-btn md-raised m-b-sm w-xs blue pull-right" ng-click="goBack()">Back</button>
                 </div>
             </div>
         </div>
@@ -52,7 +52,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="contribution in contributionList | filter:searchText">
+                    <tr ng-repeat="contribution in getPaginatedData() | filter:searchText" ng-class-even="'footable-even'"
+                    ng-class-odd="'footable-odd'">
                         <td>{{ contribution.layer.name }}</td>
                         <td>{{ contribution.name }}</td>
                         <td>
@@ -68,21 +69,39 @@
                         <td>{{ contribution.detail }}</td>
                         <td>{{ contribution.last_update_date | date:'medium' }}</td>
                         <td>
-                            <button class="btn btn-default btn-xs"
+                            <button class="md-btn md-raised m-b-sm w-xs white"
                                 ng-click="editContributionAI(contribution.id, contribution.name)">Edit</button>
-                            <button class="btn btn-danger btn-xs"
+                            <button class="md-btn md-raised m-b-sm w-xs red"
                                 ng-click="deleteContribution(contribution.id)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
-                <tfoot class="hide-if-no-paging">
-                    <tr>
-                        <td colspan="7" class="text-center">
-                            <ul class="pagination"></ul>
-                        </td>
-                    </tr>
-                </tfoot>
             </table>
+            <tfoot>
+                <tr>
+                    <td colspan="10" class="text-center">
+                        <ul class="pagination">
+                            <li ng-class="{ disabled: currentPage === 0 }">
+                                <a ng-click="setCurrentPage(0)">«</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === 0 }">
+                                <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
+                            </li>
+                            <li ng-repeat="page in getPages() track by $index"
+                                ng-class="{ active: currentPage === page, disabled: page === '...' }">
+                                <a ng-click="setCurrentPage(page)" ng-if="page !== '...'">{{ page + 1 }}</a>
+                                <a ng-if="page === '...'" style="pointer-events: none;">...</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                <a ng-click="setCurrentPage(currentPage + 1)">›</a>
+                            </li>
+                            <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
+                                <a ng-click="setCurrentPage(totalPages() - 1)">»</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tfoot>
         </div>
         <div class="progress mb-2" ng-show="showProgress">
             <div class="progress-bar progress-bar-striped" role="progressbar"

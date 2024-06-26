@@ -11,12 +11,14 @@
                     <form ng-submit="updateScreen()">
                         <div class="form-group">
                             <label for="typology">Typology</label>
-                            <select id="typology" class="form-control" ng-model="screenData.typology_id" ng-options="typology.id as typology.name for typology in screenTypes" required>
+                            <select id="typology" class="form-control" ng-model="screenData.typology_id"
+                                ng-options="typology.id as typology.name for typology in screenTypes" required>
                                 <option value="">--Select Typology--</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                        <button type="submit" class="md-btn md-raised m-b-sm w-xs blue">Submit</button>
+                        <button type="button" class="md-btn md-raised m-b-sm w-xs white"
+                            ng-click="cancelUpdate()">Cancel</button>
                     </form>
                 </div>
             </div>

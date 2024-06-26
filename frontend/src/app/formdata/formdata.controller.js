@@ -1,7 +1,10 @@
-angular.module('frontend').controller('FormDataController', ['$scope', 'FormDataService', 'FormFieldService', 'AuthService', '$state', '$stateParams', function($scope, FormDataService, FormFieldService, AuthService, $state, $stateParams) {
+angular.module('frontend').controller('FormDataController', ['$scope', 'FormDataService', 'FormFieldService', 'AuthService', '$state', '$stateParams', '$filter', function($scope, FormDataService, FormFieldService, AuthService, $state, $stateParams, $filter) {
     $scope.formData = {};
     $scope.formDataList = [];
     $scope.formFields = []; 
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
+    $scope.visiblePages = 3;
 
     $scope.clientId = $stateParams.clientId;
     $scope.clientName = $stateParams.clientName;
@@ -14,6 +17,51 @@ angular.module('frontend').controller('FormDataController', ['$scope', 'FormData
     let formName = $stateParams.formName || sessionStorage.getItem('lastformName');
     sessionStorage.setItem('lastformName', formName);
     $scope.formName = formName;
+
+    $scope.getPaginatedData = function() {
+        var filteredList = $filter('filter')($scope.formDataList, $scope.searchText);
+        var startIndex = $scope.currentPage * $scope.pageSize;
+        var endIndex = Math.min(startIndex + $scope.pageSize, filteredList.length);
+        return filteredList.slice(startIndex, endIndex);
+    };
+    
+    
+    $scope.setCurrentPage = function(page) {
+        if (page >= 0 && page < $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+    
+    $scope.totalPages = function() {
+        return Math.ceil($scope.formDataList.length / $scope.pageSize);
+    };
+    
+    $scope.getPages = function() {
+        var pages = [];
+        var total = $scope.totalPages();
+        var startPage = Math.max(0, $scope.currentPage - Math.floor($scope.visiblePages / 2));
+        var endPage = Math.min(total, startPage + $scope.visiblePages);
+    
+        if (startPage > 0) {
+            pages.push(0);
+            if (startPage > 1) {
+                pages.push('...');
+            }
+        }
+    
+        for (var i = startPage; i < endPage; i++) {
+            pages.push(i);
+        }
+    
+        if (endPage < total) {
+            if (endPage < total - 1) {
+                pages.push('...');
+            }
+            pages.push(total - 1);
+        }
+    
+        return pages;
+    };
 
     $scope.loadFormFields = function() {
         FormFieldService.getAll(formId).then(function(response) {

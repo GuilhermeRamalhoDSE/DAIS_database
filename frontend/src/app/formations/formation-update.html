@@ -30,7 +30,7 @@
                             <label for="textInput">Text</label>
                             <textarea id="textInput" class="form-control large-textarea"
                                 ng-model="textInput"></textarea>
-                            <button type="button" class="btn btn-primary mt-2"
+                            <button type="button" class="md-btn md-raised m-b-sm w-md blue"
                                 ng-click="generateTextFile(textInput)">Generate Text File</button>
                         </div>
                         <div class="form-group flex-container">
@@ -60,8 +60,9 @@
                                 {{ loadingProgress }}%
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                        <button type="button" class="btn btn-secondary" ng-click="cancelUpdate()">Cancel</button>
+                        <button type="submit" class="md-btn md-raised m-b-sm w-xs blue">Submit</button>
+                        <button type="button" class="md-btn md-raised m-b-sm w-xs white"
+                            ng-click="cancelUpdate()">Cancel</button>
                     </form>
                 </div>
             </div>
