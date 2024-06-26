@@ -55,8 +55,10 @@
                             <li ng-class="{ disabled: currentPage === 0 }">
                                 <a ng-click="setCurrentPage(currentPage - 1)">‹</a>
                             </li>
-                            <li ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
-                                <a ng-click="setCurrentPage(page)">{{ page + 1 }}</a>
+                            <li ng-repeat="page in getPages() track by $index"
+                                ng-class="{ active: currentPage === page, disabled: page === '...' }">
+                                <a ng-click="setCurrentPage(page)" ng-if="page !== '...'">{{ page + 1 }}</a>
+                                <a ng-if="page === '...'" style="pointer-events: none;">...</a>
                             </li>
                             <li ng-class="{ disabled: currentPage === totalPages() - 1 }">
                                 <a ng-click="setCurrentPage(currentPage + 1)">›</a>
