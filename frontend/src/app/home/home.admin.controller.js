@@ -57,22 +57,20 @@ angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthSer
         let uniqueGroupsAI = new Set();
 
         $scope.filteredCampaignData.forEach(function(campaign) {
-            if (campaign.group && campaign.group.id && !uniqueGroupsDS.has(campaign.group.id)) {
+            if (!uniqueGroupsDS.has(campaign.group.id)) {
                 uniqueGroupsDS.add(campaign.group.id);
                 $scope.usedTotemsDS += campaign.group.total_totems || 0;
             }
         });
 
         $scope.filteredCampaignAIData.forEach(function(campaign) {
-            if (campaign.group && campaign.group.id && !uniqueGroupsAI.has(campaign.group.id)) {
+            if (!uniqueGroupsAI.has(campaign.group.id)) {
                 uniqueGroupsAI.add(campaign.group.id);
                 $scope.usedTotemsAI += campaign.group.total_totems || 0;
             }
         });
 
-        const totalTotems = $scope.licenses.reduce((total, license) => {
-            return total + (license.total_totem || 0);
-        }, 0);
+        const totalTotems = $scope.licenses.reduce((total, license) => total + (license.total_totem || 0), 0);
         $scope.remainingTotems = totalTotems - ($scope.usedTotemsDS + $scope.usedTotemsAI);
 
         $scope.percentUsedTotemsDS = totalTotems > 0 ? Math.floor(($scope.usedTotemsDS / totalTotems) * 100) : 0;
