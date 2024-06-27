@@ -19,7 +19,6 @@ angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthSer
     var licenseId = AuthService.getLicenseId();
    
     $scope.loadLicenseData = function() {
-        
         LicenseService.getById(licenseId).then(function(response) {
             if (response.data && response.data.length > 0) {
                 var licenseData = response.data[0];
@@ -32,6 +31,8 @@ angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthSer
                 }
                 
                 $scope.formLicense = licenseData;
+                $scope.calculateTotems();
+                $scope.initCharts();  // Certifique-se de chamar initCharts após calculateTotems
             } else {
                 console.error('License not found');
                 alert('License not found.');
@@ -57,28 +58,26 @@ angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthSer
         let uniqueGroupsAI = new Set();
 
         $scope.filteredCampaignData.forEach(function(campaign) {
-            if (campaign.group && campaign.group.id && !uniqueGroupsDS.has(campaign.group.id)) {
+            if (!uniqueGroupsDS.has(campaign.group.id)) {
                 uniqueGroupsDS.add(campaign.group.id);
                 $scope.usedTotemsDS += campaign.group.total_totems || 0;
             }
         });
 
         $scope.filteredCampaignAIData.forEach(function(campaign) {
-            if (campaign.group && campaign.group.id && !uniqueGroupsAI.has(campaign.group.id)) {
+            if (!uniqueGroupsAI.has(campaign.group.id)) {
                 uniqueGroupsAI.add(campaign.group.id);
                 $scope.usedTotemsAI += campaign.group.total_totems || 0;
             }
         });
 
-        const totalTotems = $scope.licenses.reduce((total, license) => {
-            return total + (license.total_totem || 0);
-        }, 0);
+        const totalTotems = $scope.formLicense.total_totem || 0;
         $scope.remainingTotems = totalTotems - ($scope.usedTotemsDS + $scope.usedTotemsAI);
 
         $scope.percentUsedTotemsDS = totalTotems > 0 ? Math.floor(($scope.usedTotemsDS / totalTotems) * 100) : 0;
         $scope.percentUsedTotemsAI = totalTotems > 0 ? Math.floor(($scope.usedTotemsAI / totalTotems) * 100) : 0;
         $scope.percentRemainingTotems = totalTotems > 0 ? Math.floor(($scope.remainingTotems / totalTotems) * 100) : 0;
-    };  
+    };
 
     $scope.charts = {};
 
@@ -103,31 +102,36 @@ angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthSer
             ];
 
             chartData.forEach(data => {
-                const ctx = document.getElementById(data.id).getContext('2d');
-                if ($scope.charts[data.id]) {
-                    $scope.charts[data.id].destroy();
-                }
-                $scope.charts[data.id] = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        datasets: [{
-                            data: [data.percent, 100 - data.percent],
-                            backgroundColor: [data.color, '#e5e5e5']
-                        }]
-                    },
-                    options: {
-                        cutout: '80%',
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                enabled: false
+                const ctx = document.getElementById(data.id);
+                if (ctx) {
+                    const ctx2d = ctx.getContext('2d');
+                    if ($scope.charts[data.id]) {
+                        $scope.charts[data.id].destroy();
+                    }
+                    $scope.charts[data.id] = new Chart(ctx2d, {
+                        type: 'doughnut',
+                        data: {
+                            datasets: [{
+                                data: [data.percent, 100 - data.percent],
+                                backgroundColor: [data.color, '#e5e5e5']
+                            }]
+                        },
+                        options: {
+                            cutout: '80%',
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    enabled: false
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                } else {
+                    console.error('Element not found for chart id: ' + data.id);
+                }
             });
         }, 100);
     };
