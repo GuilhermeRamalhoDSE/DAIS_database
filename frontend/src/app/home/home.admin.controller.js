@@ -32,6 +32,7 @@ angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthSer
                 }
                 
                 $scope.formLicense = licenseData;
+                $scope.calculateTotems(); 
             } else {
                 console.error('License not found');
                 alert('License not found.');
@@ -70,7 +71,7 @@ angular.module('frontend').controller('HomeAdminController', ['$scope', 'AuthSer
             }
         });
 
-        const totalTotems = $scope.licenses.reduce((total, license) => total + (license.total_totem || 0), 0);
+        const totalTotems = $scope.formLicense.reduce((total, license) => total + (license.total_totem || 0), 0);
         $scope.remainingTotems = totalTotems - ($scope.usedTotemsDS + $scope.usedTotemsAI);
 
         $scope.percentUsedTotemsDS = totalTotems > 0 ? Math.floor(($scope.usedTotemsDS / totalTotems) * 100) : 0;
